@@ -1,5 +1,5 @@
 <h1>Short import for different IDEs</h1>
-You need Gradle! Its awesome! Its for dependence control for multiple workstations with different IDEs. 
+You need Gradle! Its awesome! Its for dependence control for multiple workstations with different IDEs. In new versions of eclipse you could find the Gradle plugin in the marketplace.
 
 Eclipse: File -> Import -> Gradle -> Gradle Project
 
