@@ -1,7 +1,10 @@
 <h1>Short import for different IDEs</h1>
 You need Gradle! Its awesome! Its for dependence control for multiple workstations with different IDEs. 
+
 Eclipse: File -> Import -> Gradle -> Gradle Project
+
 Intellij IDEA: File -> Import -> build.gradle
+
 NetBeans: File -> Open Project...
 
 <h1>How to install the project</h1>
