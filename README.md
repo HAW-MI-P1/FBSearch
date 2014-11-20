@@ -21,7 +21,7 @@ NetBeans: File -> Open Project...
 <li>Click Finish</li>
 </ol>
 
-Note: Eventually you should clean and refresh the imported project or right click on Project and go to Gradle -> Refresh Dependencies. Also check your JRE and java compiler level.
+Note: Eventually you should clean and refresh the imported project or right click on Project and go to Gradle -> Refresh Dependencies. Also check your JRE and java compiler level. The project is created with Java 1.8.
 
 <h1>How to get the appId and appSecret</h1>
 <ol>
