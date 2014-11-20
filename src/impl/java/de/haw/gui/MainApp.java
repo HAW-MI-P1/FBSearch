@@ -36,8 +36,8 @@ public class MainApp extends Application {
 
 		this.primaryStage = primaryStage;
 		this.primaryStage.setTitle("Search 4 Facebook");
-		//Image icon = new Image(getClass().getResourceAsStream("../../../pic/fb.png"));
-		//this.primaryStage.getIcons().add(icon);
+		Image icon = new Image(getClass().getResourceAsStream("pic/fb.png"));
+		this.primaryStage.getIcons().add(icon);
         searchHistory = new SearchHistory();
 		try {
 			// Load the root layout from the fxml file
