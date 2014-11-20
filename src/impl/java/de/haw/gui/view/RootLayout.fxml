@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.BorderPane?>
+
+<BorderPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.haw.gui.SearchController">
+   <top>
+      <Pane prefHeight="92.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label layoutX="17.0" layoutY="8.0" text="Cool Product Name">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Button fx:id="newSearchButton" layoutX="516.0" layoutY="35.0" mnemonicParsing="false" onAction="#handleNewSearch" prefHeight="25.0" prefWidth="70.0" text="Search" />
+            <TextField fx:id="searchStringField" layoutX="14.0" layoutY="35.0" prefHeight="25.0" prefWidth="480.0" promptText="Search ..." />
+            <Label layoutX="17.0" layoutY="70.0" text="Dont't know what to ask? Help" />
+         </children>
+      </Pane>
+   </top>
+</BorderPane>
