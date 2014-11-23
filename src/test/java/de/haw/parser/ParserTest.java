@@ -1,14 +1,13 @@
 package de.haw.parser;
 
-import static org.junit.Assert.assertTrue;
-
-import jdk.nashorn.internal.ir.annotations.Ignore;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
+
+import static org.junit.Assert.assertTrue;
 
 
 public class ParserTest {
