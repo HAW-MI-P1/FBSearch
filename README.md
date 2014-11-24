@@ -50,10 +50,10 @@ Note: Eventually you should clean and refresh the imported project or right clic
 <li>Create database <b>mip</b></li>
 <li>Create table <b>api_results</b><br/>
 <code>
-CREATE TABLE \`mip\`.\`api_results\` (
-\`k\` VARCHAR(45) NOT NULL,
-\`v\` VARCHAR(3255) NULL,
-PRIMARY KEY (\`k\`));
+CREATE TABLE `mip`.`api_results` (
+`k` VARCHAR(45) NOT NULL,
+`v` VARCHAR(3255) NULL,
+PRIMARY KEY (`k`));
 </code></li>
 <li>
   Execute code:<br>
