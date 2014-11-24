@@ -55,7 +55,13 @@ CREATE TABLE \`mip\`.\`api_results\` (
 \`v\` VARCHAR(3255) NULL,
 PRIMARY KEY (\`k\`));
 </code></li>
-<li>Change uname and password to <b>root</b> (not very safe but purpose rational).</li>
-
+<li>
+  Execute code:<br>
+  <ul>
+    <li>For Test-Setup: Change uname and password to <b>root</b> (not very safe but purpose rational)</li>
+    <li>Use operation <code>DB.connect(String url, String user, String pass);</code></li>
+  </ul>
+</li>
+</ol>
 <h3>Necessary Libs in Build Path</h3>
 <ul><li><a href="http://dev.mysql.com/downloads/connector/j/">mysql-connector-java-5.1.33-bin.jar</a></li></ul>
