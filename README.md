@@ -58,4 +58,4 @@ PRIMARY KEY (\`k\`));
 <li>Change uname and password to <b>root</b> (not very safe but purpose rational).</li>
 
 <h3>Necessary Libs in Build Path</h3>
-<ul><li>Lib: http://dev.mysql.com/downloads/connector/j/</li></ul>
+<ul><li><a href="http://dev.mysql.com/downloads/connector/j/">mysql-connector-java-5.1.33-bin.jar</a></li></ul>
