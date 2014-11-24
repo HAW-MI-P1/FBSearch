@@ -17,7 +17,7 @@ import de.haw.db.exception.IllegalArgumentException;
  * @author Florian
  *
  */
-public class ConnectionTest {
+public class ConnectTest {
 	private DBImpl db;
 	
 	/**
