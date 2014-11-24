@@ -29,6 +29,7 @@ dependencies {
 
     implCompile sourceSets.api.output
     implCompile 'commons-lang:commons-lang:2.6'
+    implCompile 'edu.stanford.nlp:stanford-corenlp:3.5.0'
 
     testCompile 'junit:junit:4.9'
     testCompile sourceSets.api.output
