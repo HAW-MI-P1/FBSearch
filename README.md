@@ -58,7 +58,7 @@ PRIMARY KEY (`k`));
 <li>
   Execute code:<br>
   <ul>
-    <li>For Test-Setup: Change uname and password to <b>root</b> (not very safe but purpose rational)</li>
+    <li>For Test-Setup change uname and password to <b>root</b> (not very safe but purpose rational)</li>
     <li>Use operation <code>DB.connect(String url, String user, String pass);</code></li>
   </ul>
 </li>
