@@ -1,9 +1,9 @@
-package de.haw.db;
+package de.haw.fuzzy;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({ConnectionTest.class, PutTest.class, GetTest.class, SaveLoadTest.class})
-public class DBTest {}
+@SuiteClasses({GetSynonymTest.class})
+public class FuzzyTest {}
