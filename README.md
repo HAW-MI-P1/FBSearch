@@ -1,3 +1,14 @@
+<h1>Components and Responsabilities</h1>
+GUI: Daniel (Fenja)
+Controller: Hagen (René)
+API-Wrapper: Raimund (Lotte, Vitalij)
+Parser: Lukas (Nora)
+DB-Controller: Florian
+Bildabgleich: René (Hagen)
+Ontologie: Fenja (Daniel)
+Fuzzy: Florian
+
+
 <h1>Short import for different IDEs</h1>
 You need Gradle! Its awesome! Its for dependence control for multiple workstations with different IDEs. In new versions of eclipse you could find the Gradle plugin in the marketplace.
 
