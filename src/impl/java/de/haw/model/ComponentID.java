@@ -2,7 +2,7 @@
  * Modellierung von Informationssystemen - FBSearch
  ******************************************************************************
  * MIP-Group:       1
- * Component:       Controller
+ * Component:       Model
  *
  * Authors:         René, Hagen
  *
@@ -17,26 +17,18 @@
  *                                 Package                                    *
  *****************************************************************************/
 
-package de.haw.controller;
+package de.haw.model;
 
 /******************************************************************************
- *                                 Imports                                    *
+ *                              Enum Definition                              *
  *****************************************************************************/
 
-import java.util.Collection;
-import de.haw.model.Person;
-
-/******************************************************************************
- *                              Class Definition                              *
- *****************************************************************************/
-
-public interface Controller
+public enum ComponentID
 {
-	
-/******************************************************************************
- *                              Public Methods                                *
- *****************************************************************************/
-	
-    public Collection<Person> search        (int searchID,                     String naturalLanguage);
-    public Collection<Person> searchExtended(int searchID, int parentSearchID, String naturalLanguage);
+    GUI, 
+    Controller, 
+    Parser, 
+    Wrapper, 
+    DB,
+    Fuzzy
 }

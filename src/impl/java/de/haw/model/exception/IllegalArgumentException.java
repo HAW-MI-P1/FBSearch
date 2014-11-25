@@ -1,4 +1,4 @@
-package de.haw.fuzzy.exception;
+package de.haw.model.exception;
 
 public class IllegalArgumentException extends RuntimeException{
 	

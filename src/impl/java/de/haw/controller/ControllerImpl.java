@@ -1,58 +1,88 @@
+/******************************************************************************
+ * Modellierung von Informationssystemen - FBSearch
+ ******************************************************************************
+ * MIP-Group:       1
+ * Component:       Controller
+ *
+ * Authors:         René, Hagen
+ *
+ * Updated:         2014.11.07
+ *
+ * Version:         0.01
+ ******************************************************************************
+ * Description:     ----
+ *****************************************************************************/
+
+/******************************************************************************
+ *                                 Package                                    *
+ *****************************************************************************/
+
 package de.haw.controller;
 
-import de.haw.app.Logger;
-import de.haw.app.LoggerImpl;
-import de.haw.db.DBImpl;
-import de.haw.model.Person;
+/******************************************************************************
+ *                                 Imports                                    *
+ *****************************************************************************/
+
+import de.haw.model.*;
 import de.haw.parser.Parser;
-import de.haw.parser.ParserImpl;
+import de.haw.app.Logger;
+import de.haw.db.DB;
 import de.haw.wrapper.Wrapper;
-import de.haw.wrapper.WrapperImpl;
+import java.util.Collection;
 import org.json.JSONObject;
 
-import java.util.Collection;
-import java.util.logging.Level;
+/******************************************************************************
+ *                              Class Definition                              *
+ *****************************************************************************/
 
-/**
- * Created by Fenja on 19.11.2014.
- */
-public class ControllerImpl implements Controller{
+public class ControllerImpl implements Controller
+{
+	
+/******************************************************************************
+ *                                  Fields                                    *
+ *****************************************************************************/
 
-    private Parser parser;
-    private DBImpl db;
-    private Wrapper wrapper;
-
-    Logger logger = new LoggerImpl(Level.ALL);
-
-    public ControllerImpl(){
-        this.parser = new ParserImpl();
-        this.db = new DBImpl();
-        this.wrapper = new WrapperImpl();
-    }
-
-    public Collection<Person> search(String naturalLanguage){
-        logger.Log(Level.INFO, "App", "Search: "+naturalLanguage);
-        Collection<Person> personData = collect(parse(naturalLanguage));
-        //save(personData);
-        return personData;
-    }
-
-   public JSONObject parse(String naturalLanguage){
-       JSONObject jsonObject = parser.parse(naturalLanguage);
-       return jsonObject;
-    }
-
-    public Collection<Person> collect(JSONObject requests){
-        Collection<Person> results = wrapper.collect(requests);
-        return results;
-    }
-
-    public Collection<Person> save(int searchID, String naturalLanguage, JSONObject requests, Collection<Person> result){
-        return db.save(searchID, naturalLanguage, requests, result);
-    }
+    public Parser  parser;
+    public Wrapper wrapper;
+    public DB      db;
     
-    public Collection<Person> load(int parentSearchID){
-        //return db.load(parentSearchID);
-    	return null;
+/******************************************************************************
+ *                         Construction & Initialization                      *
+ *****************************************************************************/
+
+	public ControllerImpl(Parser parser, Wrapper wrapper, DB db)
+	{
+		this.parser  = parser;
+		this.wrapper = wrapper;
+		this.db      = db;
+	}
+
+/******************************************************************************
+ *                              Public Methods                                *
+ *****************************************************************************/
+
+	@Override
+    public Collection<Person> search(int searchID, String naturalLanguage)
+    {
+        Logger.log("<search()>", ComponentID.Controller);
+        
+        JSONObject         requests = parser .parse  (naturalLanguage);
+        Collection<Person> result   = wrapper.collect(requests);
+                                      db     .save   (searchID, naturalLanguage, requests, result);
+        
+		return result;
     }
+
+	@Override
+	public Collection<Person> searchExtended(int searchID, int parentSearchID, String naturalLanguage)
+    {
+        Logger.log("<searchExtended()>", ComponentID.Controller);
+        
+        JSONObject         requests          = parser .parse          (naturalLanguage);
+        Collection<Person> personsOfInterest = db     .load           (parentSearchID);
+        Collection<Person> result            = wrapper.collectExtended(requests, personsOfInterest);
+                                               db     .save           (searchID, naturalLanguage, requests, result);
+        
+		return result;
+	}
 }

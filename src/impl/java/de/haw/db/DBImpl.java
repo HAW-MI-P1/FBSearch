@@ -11,10 +11,11 @@ import java.util.LinkedList;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import de.haw.db.exception.ConnectionException;
-import de.haw.db.exception.IllegalArgumentException;
-import de.haw.db.exception.InternalErrorException;
-import de.haw.db.exception.NoSuchEntryException;
+import de.haw.model.exception.ConnectionException;
+import de.haw.model.exception.IllegalArgumentException;
+import de.haw.model.exception.InternalErrorException;
+import de.haw.model.exception.NoSuchEntryException;
+import de.haw.model.DBRecord;
 import de.haw.model.Person;
 
 public class DBImpl implements DB{
@@ -27,7 +28,6 @@ public class DBImpl implements DB{
 	
 	public DBImpl(){}
 	
-	@Override
 	public void connect(String url, String user, String pass) throws ConnectionException {
 		if(url  == null || url.equals("") ) throw new IllegalArgumentException("Illegal url: "  + url);
 		if(user == null || user.equals("")) throw new IllegalArgumentException("Illegal user: " + user);
@@ -45,7 +45,6 @@ public class DBImpl implements DB{
 		
 	}
 	
-	@Override
 	public void close(){
 		try {
 			this.conn.close();
@@ -53,16 +52,16 @@ public class DBImpl implements DB{
 		{ throw new InternalErrorException("Connection already closed!"); }// end finally try
 		
 	}
-	
+
 	@Override
-	public Collection<Person> save(int searchID, String naturalLanguage, JSONObject requests, Collection<Person> result){
+	public void save(int searchID, String naturalLanguage, JSONObject requests, Collection<Person> result){
 		
 		JSONArray persons = new JSONArray();
 		
 		for (Person person : result) {
 			JSONObject p = new JSONObject();
-			p.put("firstName", person.getFirstName());
-			p.put("lastName", person.getLastName());
+			p.put("firstName", person.getFirstname());
+			p.put("lastName", person.getLastname());
 			p.put("street", person.getStreet());
 			p.put("postalCode", person.getPostalCode());
 			p.put("city", person.getCity());
@@ -77,8 +76,6 @@ public class DBImpl implements DB{
 		json.put("result", persons);
 		
 		this.put(searchID, json.toString());
-		
-		return result;
 	}
 	
 	public void put(int searchID, String value){
@@ -109,10 +106,9 @@ public class DBImpl implements DB{
 		}// end try
 		
 	}
-
-	@Override
-	public DBRecord load(int searchID) {
-		String resultStr = this.get(searchID);
+	
+	public DBRecord load_oldStyle(int parentSearchID) {
+		String resultStr = this.get(parentSearchID);
 		
 		JSONObject jsonResult = new JSONObject(resultStr);
 		LinkedList<Person> persons = new LinkedList<Person>();
@@ -121,8 +117,8 @@ public class DBImpl implements DB{
 		for (int i = 0; i < arr.length(); i++) {
 			JSONObject person = (JSONObject) arr.get(i);
 			Person p = new Person();
-			p.setFirstName(person.getString("firstName"));
-			p.setLastName(person.getString("lastName"));
+			p.setFirstname(person.getString("firstName"));
+			p.setLastname(person.getString("lastName"));
 			p.setStreet(person.getString("street"));
 			p.setPostalCode(person.getInt("postalCode"));
 			p.setCity(person.getString("city"));
@@ -131,13 +127,14 @@ public class DBImpl implements DB{
 			persons.push(p);
 		}
 		
-		DBRecord r = new DBRecordImpl(searchID,jsonResult.getString("naturalLanguage"),jsonResult.getJSONObject("request"), persons );
+		DBRecord r = new DBRecordImpl(parentSearchID,jsonResult.getString("naturalLanguage"),jsonResult.getJSONObject("request"), persons );
 		return r;
 	}
-
-    public Collection<Person> load_theRealOne(int searchID)
+	
+	@Override
+    public Collection<Person> load(int parentSearchID)
     {
-    	return null;
+    	return load_oldStyle(parentSearchID).getResult();
     }
     
 	public String get(int searchID) {

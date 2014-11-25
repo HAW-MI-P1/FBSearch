@@ -1,4 +1,4 @@
-package de.haw.db.exception;
+package de.haw.model.exception;
 
 public class InternalErrorException extends RuntimeException{
 	

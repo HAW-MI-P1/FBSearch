@@ -2,7 +2,7 @@
  * Modellierung von Informationssystemen - FBSearch
  ******************************************************************************
  * MIP-Group:       1
- * Component:       Controller
+ * Component:       Model
  *
  * Authors:         René, Hagen
  *
@@ -17,26 +17,30 @@
  *                                 Package                                    *
  *****************************************************************************/
 
-package de.haw.controller;
+package de.haw.app;
 
 /******************************************************************************
  *                                 Imports                                    *
  *****************************************************************************/
 
-import java.util.Collection;
-import de.haw.model.Person;
+import de.haw.model.ComponentID;
 
 /******************************************************************************
  *                              Class Definition                              *
  *****************************************************************************/
 
-public interface Controller
+public class Logger
 {
 	
 /******************************************************************************
  *                              Public Methods                                *
  *****************************************************************************/
 	
-    public Collection<Person> search        (int searchID,                     String naturalLanguage);
-    public Collection<Person> searchExtended(int searchID, int parentSearchID, String naturalLanguage);
+    public static void log(String msg, ComponentID component)
+    {
+        System.out.println(component.toString() + ": " + msg);
+        
+        // TODO log to file?
+        // TODO log to gui?
+    }
 }

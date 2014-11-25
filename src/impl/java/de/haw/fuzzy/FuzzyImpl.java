@@ -23,9 +23,9 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import de.haw.fuzzy.exception.ConnectionException;
-import de.haw.fuzzy.exception.IllegalArgumentException;
-import de.haw.fuzzy.exception.InternalErrorException;
+import de.haw.model.exception.ConnectionException;
+import de.haw.model.exception.IllegalArgumentException;
+import de.haw.model.exception.InternalErrorException;
 
 public class FuzzyImpl implements Fuzzy {
 	

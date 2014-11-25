@@ -1,10 +1,8 @@
-package de.haw.db;
+package de.haw.model;
 
 import java.util.Collection;
 
 import org.json.JSONObject;
-
-import de.haw.model.Person;
 
 public interface DBRecord {
 	

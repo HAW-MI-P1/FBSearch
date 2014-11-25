@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import org.json.JSONObject;
 
+import de.haw.model.DBRecord;
 import de.haw.model.Person;
 
 public class DBRecordImpl implements DBRecord {

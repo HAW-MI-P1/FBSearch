@@ -1,24 +1,43 @@
+/******************************************************************************
+ * Modellierung von Informationssystemen - FBSearch
+ ******************************************************************************
+ * MIP-Group:       1
+ * Component:       DB
+ *
+ * Authors:         René, Hagen
+ *
+ * Updated:         2014.11.07
+ *
+ * Version:         0.01
+ ******************************************************************************
+ * Description:     ----
+ *****************************************************************************/
+
+/******************************************************************************
+ *                                 Package                                    *
+ *****************************************************************************/
+
 package de.haw.db;
 
-import de.haw.db.exception.ConnectionException;
-import de.haw.model.Person;
-
-import org.json.JSONObject;
+/******************************************************************************
+ *                                 Imports                                    *
+ *****************************************************************************/
 
 import java.util.Collection;
+import de.haw.model.Person;
+import org.json.JSONObject;
 
-/**
- * Created by Fenja on 19.11.2014.
- */
-public interface DB {
-	
-	public void connect(String url, String user, String pass) throws ConnectionException;
-	
-    public Collection<Person> save(int searchID, String naturalLanguage, JSONObject requests, Collection<Person> result);
-    
-    public DBRecord load(int searchID);
-    public Collection<Person> load_theRealOne(int searchID);
+/******************************************************************************
+ *                              Class Definition                              *
+ *****************************************************************************/
 
-    public void close();
-    
+public interface DB
+{
+
+/******************************************************************************
+ *                              Public Methods                                *
+ *****************************************************************************/
+	
+    public void               save(int searchID, String naturalLanguage, JSONObject requests, Collection<Person> result);
+    public Collection<Person> load(int parentSearchID);
 }
