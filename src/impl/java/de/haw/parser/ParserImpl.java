@@ -43,7 +43,7 @@ public class ParserImpl implements Parser{
 	private void fillMaps(){
 		verb_to_key.put("like", interests);
 		verb_to_key.put("have", interests);
-		verb_to_key.put("lives", location);
+		verb_to_key.put("live", location);
 		verb_to_key.put("name", name);
 		verb_to_key.put("call", name);
 	}
@@ -149,15 +149,18 @@ public class ParserImpl implements Parser{
 		System.err.println(graph); 
 
 		//		SemgrexPattern semgrex = SemgrexPattern.compile("{tag:/NN.*/}=A [<<dobj {tag:/VB.*/}=B |<<pobj {}=C << {tag:/VB.*/}=B]  ");
-		SemgrexPattern semgrex = SemgrexPattern.compile("{tag:/NN.*/}=A <<dobj {tag:/VB.*/}=B ");
+		//SemgrexPattern semgrex = SemgrexPattern.compile("{tag:/NN.*/}=A <<dobj {tag:/VB.*/}=B ");
+		SemgrexPattern semgrex = SemgrexPattern.compile("{tag:/NN.*/}=A [<<pobj {}=C << {tag:/VB.*/}=B | <<dobj {tag:/VB.*/}=B] ");
 		SemgrexMatcher matcher = semgrex.matcher(graph);
 		Map<IndexedWord, List<IndexedWord>> verbs=new HashMap<IndexedWord, List<IndexedWord>>();
 		while (matcher.find()) {
 			// System.err.println(matcher.getNode("A") + " <<dobj " + matcher.getNode("B"));
 			IndexedWord nodeA = matcher.getNode("A");
 			IndexedWord nodeB = matcher.getNode("B");
+			IndexedWord nodeC = matcher.getNode("C");
+
 			//			System.out.println("Node B:"+nodeB);
-			//			System.out.println("Verbalphrase:" + nodeA + " Lemma:"+nodeA.lemma() + " tag:"+nodeA.tag());
+						System.out.println("Verbalphrase:" + nodeB + (nodeC!=null?" Prep: "+ nodeC:"")+ " Lemma:"+nodeA.lemma() + " tag:"+nodeA.tag());
 			List<IndexedWord>temp=verbs.get(nodeB);
 			if(temp!=null){
 				temp.add(nodeA);

@@ -12,6 +12,8 @@ import static org.junit.Assert.assertTrue;
 
 public class ParserTest {
 
+	
+	
 	Parser parser;
 	@Before
 	public void setUp() {
@@ -22,6 +24,12 @@ public class ParserTest {
 
 	@Test
 	public void testSimpleSentences() throws JSONException {
+		
+		
+		JSONObject test07=parser.parse("who lives in a desert ?");
+		System.out.println(test07);
+		
+		
 		JSONObject test01=parser.parse("who likes dogs?");
 		System.out.println("json:"+test01.toString());
 		assertTrue(test01.getString("attribute").equals("interests"));
@@ -59,6 +67,10 @@ public class ParserTest {
 		assertTrue(list05.getJSONObject(0).getJSONArray("value").get(0).equals("Jane"));
 		assertTrue(list05.getJSONObject(1).getString("attribute").equals("interests"));		
 		assertTrue(list05.getJSONObject(1).getJSONArray("value").get(0).equals("cat"));
+
+		
+		JSONObject test06=parser.parse("People who like cats ");
+		System.out.println(test06);
 
 	}
 
