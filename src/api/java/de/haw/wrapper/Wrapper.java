@@ -10,5 +10,6 @@ import java.util.Collection;
  */
 public interface Wrapper {
 
-    public Collection<Person> collect(JSONObject requests);
+    public Collection<Person> collect        (JSONObject requests);
+    public Collection<Person> collectExtended(JSONObject requests, Collection<Person> personsOfInterest);
 }

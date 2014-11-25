@@ -14,4 +14,5 @@ public interface Controller {
     public JSONObject parse(String naturalLanguage);
     public Collection<Person> collect(JSONObject requests);
     public Collection<Person> save(int searchID, String naturalLanguage, JSONObject requests, Collection<Person> result);
+    public Collection<Person> load(int parentSearchID);
 }

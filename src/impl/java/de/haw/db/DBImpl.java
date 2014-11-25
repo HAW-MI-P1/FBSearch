@@ -134,7 +134,12 @@ public class DBImpl implements DB{
 		DBRecord r = new DBRecordImpl(searchID,jsonResult.getString("naturalLanguage"),jsonResult.getJSONObject("request"), persons );
 		return r;
 	}
-	
+
+    public Collection<Person> load_theRealOne(int searchID)
+    {
+    	return null;
+    }
+    
 	public String get(int searchID) {
 		if(searchID   == 0) throw new IllegalArgumentException("Illegal Key: " + searchID);
 		

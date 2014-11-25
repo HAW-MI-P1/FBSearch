@@ -17,6 +17,7 @@ public interface DB {
     public Collection<Person> save(int searchID, String naturalLanguage, JSONObject requests, Collection<Person> result);
     
     public DBRecord load(int searchID);
+    public Collection<Person> load_theRealOne(int searchID);
 
     public void close();
     

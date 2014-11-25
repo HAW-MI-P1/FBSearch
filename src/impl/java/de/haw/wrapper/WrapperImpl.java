@@ -25,4 +25,9 @@ public class WrapperImpl implements Wrapper{
         personData.add(new Person("Martin", "Mueller"));
         return personData;
     }
+    
+    public Collection<Person> collectExtended(JSONObject requests, Collection<Person> personsOfInterest)
+    {
+    	return collect(requests);
+    }
 }

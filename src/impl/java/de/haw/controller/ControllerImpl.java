@@ -48,7 +48,11 @@ public class ControllerImpl implements Controller{
     }
 
     public Collection<Person> save(int searchID, String naturalLanguage, JSONObject requests, Collection<Person> result){
-        return null;
+        return db.save(searchID, naturalLanguage, requests, result);
     }
-
+    
+    public Collection<Person> load(int parentSearchID){
+        //return db.load(parentSearchID);
+    	return null;
+    }
 }
