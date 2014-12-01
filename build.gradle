@@ -38,6 +38,9 @@ dependencies {
     runtime configurations.implRuntime
 
     compile 'org.json:json:20090211'
+
+    compile 'org.apache.httpcomponents:httpclient:4.0-alpha4'
+    compile "org.apache.httpcomponents:httpmime:4.2.3"
 }
 
 jar {
