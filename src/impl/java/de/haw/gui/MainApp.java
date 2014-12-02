@@ -2,8 +2,11 @@ package de.haw.gui;
 
 import de.haw.controller.Controller;
 import de.haw.controller.ControllerImpl;
+import de.haw.db.DBImpl;
 import de.haw.model.Person;
 import de.haw.model.SearchHistory;
+import de.haw.parser.ParserImpl;
+import de.haw.wrapper.WrapperImpl;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -32,7 +35,7 @@ public class MainApp extends Application {
 	
 	@Override
 	public void start(Stage primaryStage) {
-        this.controller = new ControllerImpl();
+        this.controller = new ControllerImpl(new ParserImpl(), new WrapperImpl(), new DBImpl()); // TODO: give me useful objects
 
 		this.primaryStage = primaryStage;
 		this.primaryStage.setTitle("Search 4 Facebook");

@@ -60,8 +60,8 @@ public class DBImpl implements DB{
 		
 		for (Person person : result) {
 			JSONObject p = new JSONObject();
-			p.put("firstName", person.getFirstname());
-			p.put("lastName", person.getLastname());
+			p.put("firstName", person.getFirstName());
+			p.put("lastName", person.getLastName());
 			p.put("street", person.getStreet());
 			p.put("postalCode", person.getPostalCode());
 			p.put("city", person.getCity());
@@ -117,8 +117,8 @@ public class DBImpl implements DB{
 		for (int i = 0; i < arr.length(); i++) {
 			JSONObject person = (JSONObject) arr.get(i);
 			Person p = new Person();
-			p.setFirstname(person.getString("firstName"));
-			p.setLastname(person.getString("lastName"));
+			p.setFirstName(person.getString("firstName"));
+			p.setLastName(person.getString("lastName"));
 			p.setStreet(person.getString("street"));
 			p.setPostalCode(person.getInt("postalCode"));
 			p.setCity(person.getString("city"));

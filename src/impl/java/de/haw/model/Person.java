@@ -51,11 +51,11 @@ public class Person
     public String   getUserID     ()                  { return userID;                  }
     public void     setUserID     (String userID)     {   this.userID     = userID;     }
     
-    public String   getFirstname  ()                  { return firstname;               }
-    public void     setFirstname  (String firstname)  {   this.firstname  = firstname;  }
+    public String   getFirstName  ()                  { return firstname;               }
+    public void     setFirstName  (String firstname)  {   this.firstname  = firstname;  }
     
-    public String   getLastname   ()                  { return lastname;                }
-    public void     setLastname   (String lastname)   {   this.lastname   = lastname;   }
+    public String   getLastName   ()                  { return lastname;                }
+    public void     setLastName   (String lastname)   {   this.lastname   = lastname;   }
     
     public Calendar getBirthday   ()                  { return birthday;                }
     public void     setBirthday   (Calendar birthday) {   this.birthday   = birthday;   }
