@@ -31,7 +31,7 @@ public class PersonOverviewController {
     private SearchHistory searchHistory;
 
 	// Reference to the main application
-	private MainApp mainApp;
+	private GUIImpl GUIImpl;
 
 	/**
 	 * The constructor. The constructor is called before the initialize()
@@ -60,13 +60,13 @@ public class PersonOverviewController {
 	/**
 	 * Is called by the main application to give a reference back to itself.
 	 * 
-	 * @param mainApp
+	 * @param GUIImpl
 	 */
-	public void setMainApp(MainApp mainApp) {
-		this.mainApp = mainApp;
+	public void setGUIImpl(GUIImpl GUIImpl) {
+		this.GUIImpl = GUIImpl;
 
 		// Add observable list data to the table
-		personTable.setItems(mainApp.getPersonData());
+		personTable.setItems(GUIImpl.getPersonData());
 	}
 
 	public void handleFilter() {
@@ -78,8 +78,8 @@ public class PersonOverviewController {
 
         personData = showMockUpData(filterString);
         //personData = Controller.getDataByFilter(filterString);
-        mainApp.setPersonData(personData);
-        mainApp.showPersonOverview();
+        GUIImpl.setPersonData(personData);
+        GUIImpl.showPersonOverview();
 	}
 
     private ObservableList<Person> showMockUpData(String searchString) {
