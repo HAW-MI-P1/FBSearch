@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * Created by Fenja on 19.11.2014.
+ * @author lotte
  */
 public class WrapperImpl implements Wrapper{
 
@@ -15,9 +15,6 @@ public class WrapperImpl implements Wrapper{
     private AuthHandler authHandler;
 
     public WrapperImpl(){
-        // chaotic stuff for testing only
-        PropertyHandler.getInstance().setInitialProperties("1509447019293978", "d37ba2a48cd701f28e90679face51ac5", "1509447019293978|jSJ2DBNsOTgWwzzWK0QAt1bUGGQ");
-
         requestHandler = RequestHandler.getInstance();
         authHandler = new AuthHandler();
         authHandler.login();

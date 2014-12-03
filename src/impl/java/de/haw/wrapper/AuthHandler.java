@@ -8,7 +8,7 @@ import java.io.*;
 import java.net.InetSocketAddress;
 
 /**
- * Created by lotte on 28.10.14.
+ * @author lotte
  */
 public class AuthHandler {
 
@@ -43,11 +43,23 @@ public class AuthHandler {
     }
 
     public void login() {
-        startServer();
-        redirectUri = String.format("http://localhost:%d/test", myPort);
-        String requestStr = String.format("https://www.facebook.com/dialog/oauth?client_id=%s&redirect_uri=%s", appID, redirectUri);
-        System.out.println("Please copy & paste the following into your browser and grant the app access:\n");
-        System.out.println(requestStr);
+
+        if (propertyHandler.getProperty("appID") == null) {
+            System.err.println("Property appID has not been set in the properties.txt file. Please do so manually or use setProperties()");
+        } else if (propertyHandler.getProperty("oauthAccessToken") == null) {
+            System.err.println("Property oauthAccessToken has not been set in the properties.txt file. Please do so manually or use setProperties()");
+        } else if (propertyHandler.getProperty("appSecret") == null) {
+            System.err.println("Property appSecret has not been set in the properties.txt file. Please do so manually or use setProperties()");
+        }
+
+        if(propertyHandler.getProperty("userAccessToken") == null) {
+            // let the user authenticate the app *once*
+            startServer();
+            redirectUri = String.format("http://localhost:%d/test", myPort);
+            String requestStr = String.format("https://www.facebook.com/dialog/oauth?client_id=%s&redirect_uri=%s", appID, redirectUri);
+            System.out.println("Please copy & paste the following into your browser and grant the app access:\n");
+            System.out.println(requestStr);
+        }
     }
 
     class ResponseHandler implements HttpHandler {
@@ -64,12 +76,15 @@ public class AuthHandler {
                                                "&redirect_uri=%s"+
                                                "&client_secret=%s"+
                                                "&code=%s", appID, redirectUri, appSecret, userAccessCode );
-            System.out.println(exchangeStr);
             String response = requestHandler.get(exchangeStr);
-            System.out.println(response);
+            String userAccessToken = response.split("=")[1];
+
+            System.out.println("Response:\n"+response);
+            System.out.println("ExchangeStr:\n"+exchangeStr);
+            System.out.println("userAccessToken:\n"+userAccessToken);
 
             // TODO error handling
-            propertyHandler.setProperty("userAccessToken", response.split("=")[1]);
+            propertyHandler.setProperty("userAccessToken", userAccessToken);
         }
     }
 }

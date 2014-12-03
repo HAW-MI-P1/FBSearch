@@ -12,7 +12,7 @@ import java.io.InputStreamReader;
 import java.net.URISyntaxException;
 
 /**
- * Created by lotte on 28.10.14.
+ * @author lotte
  */
 public class RequestHandler {
 
