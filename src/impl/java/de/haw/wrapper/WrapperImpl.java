@@ -18,6 +18,7 @@ public class WrapperImpl implements Wrapper{
         requestHandler = RequestHandler.getInstance();
         authHandler = new AuthHandler();
         authHandler.login();
+        requestHandler.getUserId();
     }
 
     public Collection<Person> collect(JSONObject requests){

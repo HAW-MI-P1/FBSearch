@@ -5,6 +5,8 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -24,6 +26,9 @@ public class RequestHandler {
     private String appSecret;
     private String oauthAccessToken;
     private String userAccessToken;
+    private String userID;
+
+    private JSONObject json;
 
     static HttpClient httpClient;
 
@@ -35,8 +40,30 @@ public class RequestHandler {
         appSecret = propertyHandler.getProperty("appSecret");
         oauthAccessToken = propertyHandler.getProperty("oauthAccessToken");
         userAccessToken = propertyHandler.getProperty("userAccessToken");
+        userID = propertyHandler.getProperty("userID");
 
         httpClient = new DefaultHttpClient();
+    }
+
+    public String getUserId() {
+        if (userID != null) {
+            System.out.println(userID);
+            return userID;
+        }
+
+        // ask facebook for my userID
+        String requestStr= "https://graph.facebook.com/me?fields=id&access_token="+userAccessToken;
+        String response = this.get(requestStr);
+        try {
+            json = new JSONObject(response);
+            userID = (String) json.get("id");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        // store it for future reference
+        propertyHandler.setProperty("userID", userID);
+        return userID;
     }
 
     public static RequestHandler getInstance() {
@@ -45,6 +72,7 @@ public class RequestHandler {
         return instance;
     }
 
+    // TODO make this private
     public String get(String requestStr) {
         String responseStr = "";
         try {
@@ -68,9 +96,4 @@ public class RequestHandler {
     private void buildRequestStr() {
         /*TODO*/
     }
-
-    //public void get
-
-
-
 }

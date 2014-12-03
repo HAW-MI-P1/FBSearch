@@ -83,6 +83,8 @@ public class AuthHandler {
                                                "&redirect_uri=%s"+
                                                "&client_secret=%s"+
                                                "&code=%s", appID, redirectUri, appSecret, userAccessCode );
+
+            // TODO: convert to jsonobject instead of clumsily parsing!
             String response = requestHandler.get(exchangeStr);
             String userAccessToken = response.split("=")[1];
 

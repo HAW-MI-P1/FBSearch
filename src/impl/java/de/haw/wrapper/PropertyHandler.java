@@ -55,7 +55,6 @@ public class PropertyHandler {
     }
 
     public String getProperty(String key) {
-        System.out.println("getting "+key+": "+ props.getProperty(key));
         return props.getProperty(key);
     }
 
