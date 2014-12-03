@@ -74,9 +74,6 @@ public class AuthHandler {
             System.out.println(he.getResponseBody());
             userAccessCode = he.getRequestURI().getQuery().split("=")[1];//  .getQuery();
 
-            System.out.println("I can haz new access code:");
-            System.out.println(userAccessCode);
-
             // exchange code for access token
             String exchangeStr = String.format("https://graph.facebook.com/oauth/access_token?"+
                                                "client_id=%s"+
@@ -84,13 +81,8 @@ public class AuthHandler {
                                                "&client_secret=%s"+
                                                "&code=%s", appID, redirectUri, appSecret, userAccessCode );
 
-            // TODO: convert to jsonobject instead of clumsily parsing!
             String response = requestHandler.get(exchangeStr);
             String userAccessToken = response.split("=")[1];
-
-            System.out.println("Response:\n"+response);
-            System.out.println("ExchangeStr:\n"+exchangeStr);
-            System.out.println("userAccessToken:\n"+userAccessToken);
 
             // TODO error handling
             propertyHandler.setProperty("userAccessToken", userAccessToken);

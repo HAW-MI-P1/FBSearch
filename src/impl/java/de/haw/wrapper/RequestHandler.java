@@ -47,7 +47,6 @@ public class RequestHandler {
 
     public String getUserId() {
         if (userID != null) {
-            System.out.println(userID);
             return userID;
         }
 
