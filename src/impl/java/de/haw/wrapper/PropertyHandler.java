@@ -8,12 +8,20 @@ import java.util.Properties;
  */
 public class PropertyHandler {
 
-    private String propertyFile;
+    private String propertyFileName = "properties.txt";
     private static PropertyHandler instance;
     private Properties props;
 
     private PropertyHandler() {
-        propertyFile = "properties.txt";
+        // add file if it doesn't exist
+        File propertyFile = new File(propertyFileName);
+        if(!propertyFile.exists()) {
+            try {
+                propertyFile.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         props = new Properties();
         loadProps();
     }
@@ -33,6 +41,7 @@ public class PropertyHandler {
         props.setProperty("appSecret", appSecret);
         props.setProperty("oauthAccessToken", oauthAccessToken);
         storeProps();
+        System.out.println(props);
     }
 
     // TODO: fail if property is not available
@@ -42,14 +51,16 @@ public class PropertyHandler {
         System.out.println(key);
         System.out.println(property);
         storeProps();
+        System.out.println(props);
     }
 
     public String getProperty(String key) {
+        System.out.println("getting "+key+": "+ props.getProperty(key));
         return props.getProperty(key);
     }
 
     private void storeProps() {
-        try (OutputStream out = new FileOutputStream(propertyFile)) {
+        try (OutputStream out = new FileOutputStream(propertyFileName)) {
                 props.store(out, null);
         } catch (IOException e) {
             e.printStackTrace();
@@ -57,9 +68,9 @@ public class PropertyHandler {
     }
 
     private void loadProps() {
-        try (InputStream in = new FileInputStream(propertyFile)) {
+        try (InputStream in = new FileInputStream(propertyFileName)) {
             props.load(in);
-        } catch (IOException e) {
+        } catch  (IOException e){
             e.printStackTrace();
         }
     }

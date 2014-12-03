@@ -24,10 +24,6 @@ public class AuthHandler {
     public AuthHandler() {
         propertyHandler = PropertyHandler.getInstance();
         requestHandler = RequestHandler.getInstance();
-
-        appID = propertyHandler.getProperty("appID");
-        appSecret = propertyHandler.getProperty("appSecret");
-        oauthAccessToken = propertyHandler.getProperty("oauthAccessToken");
     }
 
     public void  startServer() {
@@ -43,16 +39,27 @@ public class AuthHandler {
     }
 
     public void login() {
+        boolean properlyInitialized = true;
+
+        appID = propertyHandler.getProperty("appID");
+        appSecret = propertyHandler.getProperty("appSecret");
+        oauthAccessToken = propertyHandler.getProperty("oauthAccessToken");
+
 
         if (propertyHandler.getProperty("appID") == null) {
-            System.err.println("Property appID has not been set in the properties.txt file. Please do so manually or use setProperties()");
-        } else if (propertyHandler.getProperty("oauthAccessToken") == null) {
-            System.err.println("Property oauthAccessToken has not been set in the properties.txt file. Please do so manually or use setProperties()");
-        } else if (propertyHandler.getProperty("appSecret") == null) {
-            System.err.println("Property appSecret has not been set in the properties.txt file. Please do so manually or use setProperties()");
+            properlyInitialized = false;
+            System.err.println("Property appID has not been set in the properties.txt file. Please do so manually or use setProperties() before your call to login()");
+        }
+        if (propertyHandler.getProperty("oauthAccessToken") == null) {
+            properlyInitialized = false;
+            System.err.println("Property oauthAccessToken has not been set in the properties.txt file. Please do so manually or use setProperties() before your call to login()");
+        }
+        if (propertyHandler.getProperty("appSecret") == null) {
+            properlyInitialized = false;
+            System.err.println("Property appSecret has not been set in the properties.txt file. Please do so manually or use setProperties() before your call to login()");
         }
 
-        if(propertyHandler.getProperty("userAccessToken") == null) {
+        if(properlyInitialized && propertyHandler.getProperty("userAccessToken") == null) {
             // let the user authenticate the app *once*
             startServer();
             redirectUri = String.format("http://localhost:%d/test", myPort);
