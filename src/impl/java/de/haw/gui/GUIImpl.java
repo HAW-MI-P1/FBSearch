@@ -14,6 +14,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 public class GUIImpl extends Application implements GUI {
 	
@@ -41,7 +42,8 @@ public class GUIImpl extends Application implements GUI {
 	public void start(Stage primaryStage) {
 		this.primaryStage = primaryStage;
 		this.primaryStage.setTitle("Search 4 Facebook");
-		Image icon = new Image(getClass().getResourceAsStream("pic/fb.png"));
+		InputStream is = GUIImpl.class.getResourceAsStream("pic/fb.png");
+		Image icon = new Image(is);
 		this.primaryStage.getIcons().add(icon);
         searchHistory = new SearchHistory();
 		try {
