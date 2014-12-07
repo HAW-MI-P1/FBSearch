@@ -1,5 +1,8 @@
 package de.haw.parser;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,39 +24,46 @@ public class ParserTest {
 		parser=new ParserImpl();
 	}
 
-
+	
 	@Test
 	public void testSimpleSentences() throws JSONException {
 		
 		
-		JSONObject test07=parser.parse("who lives in the Schwarzwald ?");
-		System.out.println(test07);
+		//JSONObject test07=parser.parse("who lives in the Schwarzwald ?");
+		//System.out.println(test07);
 		
 		
 		JSONObject test01=parser.parse("who likes dogs?");
 		System.out.println("json:"+test01.toString());
-		assertTrue(test01.getString("attribute").equals("interests"));
+		
+		assertTrue(test01.getJSONArray("interests").getString(0).equals("dog"));
+	/*	assertTrue(test01.getString("attribute").equals("interests"));
 		assertTrue(test01.getJSONArray("value").getString(0).equals("dog"));
-
+*/
 
 		JSONObject test02=parser.parse("who likes cats and dogs?");
 		System.out.println("json:"+test02.toString());
-		assertTrue(test02.getString("attribute").equals("interests"));
+	/*	assertTrue(test02.getString("attribute").equals("interests"));
 		assertTrue(test02.getJSONArray("value").getString(0).equals("cat"));
-		assertTrue(test02.getJSONArray("value").getString(1).equals("dog"));
+		assertTrue(test02.getJSONArray("value").getString(1).equals("dog"));*/
+		assertTrue(test02.getJSONArray("interests").getString(0).equals("cat"));
+		assertTrue(test02.getJSONArray("interests").getString(1).equals("dog"));
 
 		JSONObject test03=parser.parse("who likes (dogs and cats) or pigs?");
 		System.out.println("json:"+test03.toString());
-		assertTrue(test03.getString("attribute").equals("interests"));
+	/*	assertTrue(test03.getString("attribute").equals("interests"));
 		assertTrue(test03.getJSONArray("value").getString(0).equals("dog"));
 		assertTrue(test03.getJSONArray("value").getString(1).equals("pig"));
-		assertTrue(test03.getJSONArray("value").getString(2).equals("cat"));
+		assertTrue(test03.getJSONArray("value").getString(2).equals("cat"));*/
+		assertTrue(test03.getJSONArray("interests").getString(0).equals("dog"));
+		assertTrue(test03.getJSONArray("interests").getString(1).equals("pig"));
+		assertTrue(test03.getJSONArray("interests").getString(2).equals("cat"));
 
 
-		JSONObject test04=parser.parse("who is called Jane?");
+		JSONObject test04=parser.parse("who is called Jane Doe?");
 		System.out.println("json:"+test04.toString());
-		assertTrue(test04.getString("attribute").equals("name"));
-		assertTrue(test04.getJSONArray("value").getString(0).equals("Jane"));
+		assertTrue(getListFromJsonArray(test04.getJSONArray("name")).contains("Jane"));
+		assertTrue(getListFromJsonArray(test04.getJSONArray("name")).contains("Doe"));
 
 
 
@@ -62,15 +72,22 @@ public class ParserTest {
 		 */
 		JSONObject test05=parser.parse("who is called Jane and likes cats?");
 		System.out.println(test05);
-		JSONArray list05=test05.getJSONArray("and");
+	/*	JSONArray list05=test05.getJSONArray("and");
 		assertTrue(list05.getJSONObject(0).getString("attribute").equals("name"));		
 		assertTrue(list05.getJSONObject(0).getJSONArray("value").get(0).equals("Jane"));
 		assertTrue(list05.getJSONObject(1).getString("attribute").equals("interests"));		
-		assertTrue(list05.getJSONObject(1).getJSONArray("value").get(0).equals("cat"));
+		assertTrue(list05.getJSONObject(1).getJSONArray("value").get(0).equals("cat"));*/
+		assertTrue(getListFromJsonArray(test05.getJSONArray("name")).contains("Jane"));
+		assertTrue(getListFromJsonArray(test05.getJSONArray("interests")).contains("cat"));
 
 		
-		JSONObject test06=parser.parse("People who like cats ");
-		System.out.println(test06);
+//		JSONObject test06=parser.parse("People who like cats ");
+//		System.out.println(test06);
+		
+		JSONObject test07=parser.parse("Who lives in the Schwarzwald ?");
+		System.out.println(test07);
+		assertTrue(getListFromJsonArray(test07.getJSONArray("location")).contains("Schwarzwald"));
+		
 
 	}
 
@@ -79,6 +96,19 @@ public class ParserTest {
 	public void testMoreComplexSentences() {
 		//fail("Not yet implemented");
 		//assertTrue
+	}
+	
+	List<String> getListFromJsonArray(JSONArray json) {
+		List<String> strings=new ArrayList<String>();
+		for(int i=0; i<json.length(); i++){
+			try {
+				strings.add(json.getString(i));
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return strings;
 	}
 
 }
