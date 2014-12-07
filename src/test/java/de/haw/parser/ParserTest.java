@@ -26,7 +26,7 @@ public class ParserTest {
 	public void testSimpleSentences() throws JSONException {
 		
 		
-		JSONObject test07=parser.parse("who lives in a desert ?");
+		JSONObject test07=parser.parse("who lives in the Schwarzwald ?");
 		System.out.println(test07);
 		
 		
