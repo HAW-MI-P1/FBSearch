@@ -7,8 +7,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.haw.db.DBImpl;
-import de.haw.db.exception.IllegalArgumentException;
-import de.haw.db.exception.InternalErrorException;
+import de.haw.model.exception.IllegalArgumentException;
+import de.haw.model.exception.InternalErrorException;
 
 public class PutTest {
 	private DBImpl db;

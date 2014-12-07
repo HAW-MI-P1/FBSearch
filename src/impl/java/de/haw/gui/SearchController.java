@@ -19,8 +19,14 @@ public class SearchController {
     private Controller controller;
 
     // Reference to the main application
-    private MainApp mainApp;
+    private GUIImpl GUIImpl;
     private SearchHistory searchHistory;
+
+    private int searchID;
+
+    public SearchController(){
+        this.searchID = 0;
+    }
 
     public void setController (Controller controller){
         this.controller = controller;
@@ -33,10 +39,10 @@ public class SearchController {
     /**
      * Is called by the main application to give a reference back to itself.
      *
-     * @param mainApp
+     * @param GUIImpl
      */
-    public void setMainApp(MainApp mainApp) {
-        this.mainApp = mainApp;
+    public void setGUIImpl(GUIImpl GUIImpl) {
+        this.GUIImpl = GUIImpl;
     }
 
         /**
@@ -50,11 +56,12 @@ public class SearchController {
 
         searchHistory.newHistory(searchString);
 
-        personData.addAll(controller.search(searchString));
+        personData.addAll(controller.search(searchID, searchString));
+        searchID++;
         //personData = showMockUpData(searchString);
         //personData = Controller.getDataBySearchString(searchString);
-        mainApp.setPersonData(personData);
-        mainApp.showPersonOverview();
+        GUIImpl.setPersonData(personData);
+        GUIImpl.showPersonOverview();
     }
 
     private ObservableList<Person> showMockUpData(String searchString) {

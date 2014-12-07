@@ -8,7 +8,7 @@ import java.io.*;
 import java.net.InetSocketAddress;
 
 /**
- * Created by lotte on 28.10.14.
+ * @author lotte
  */
 public class AuthHandler {
 
@@ -24,10 +24,6 @@ public class AuthHandler {
     public AuthHandler() {
         propertyHandler = PropertyHandler.getInstance();
         requestHandler = RequestHandler.getInstance();
-
-        appID = propertyHandler.getProperty("appID");
-        appSecret = propertyHandler.getProperty("appSecret");
-        oauthAccessToken = propertyHandler.getProperty("oauthAccessToken");
     }
 
     public void  startServer() {
@@ -43,11 +39,34 @@ public class AuthHandler {
     }
 
     public void login() {
-        startServer();
-        redirectUri = String.format("http://localhost:%d/test", myPort);
-        String requestStr = String.format("https://www.facebook.com/dialog/oauth?client_id=%s&redirect_uri=%s", appID, redirectUri);
-        System.out.println("Please copy & paste the following into your browser and grant the app access:\n");
-        System.out.println(requestStr);
+        boolean properlyInitialized = true;
+
+        appID = propertyHandler.getProperty("appID");
+        appSecret = propertyHandler.getProperty("appSecret");
+        oauthAccessToken = propertyHandler.getProperty("oauthAccessToken");
+
+
+        if (propertyHandler.getProperty("appID") == null) {
+            properlyInitialized = false;
+            System.err.println("Property appID has not been set in the properties.txt file. Please do so manually or use setProperties() before your call to login()");
+        }
+        if (propertyHandler.getProperty("oauthAccessToken") == null) {
+            properlyInitialized = false;
+            System.err.println("Property oauthAccessToken has not been set in the properties.txt file. Please do so manually or use setProperties() before your call to login()");
+        }
+        if (propertyHandler.getProperty("appSecret") == null) {
+            properlyInitialized = false;
+            System.err.println("Property appSecret has not been set in the properties.txt file. Please do so manually or use setProperties() before your call to login()");
+        }
+
+        if(properlyInitialized && propertyHandler.getProperty("userAccessToken") == null) {
+            // let the user authenticate the app *once*
+            startServer();
+            redirectUri = String.format("http://localhost:%d/test", myPort);
+            String requestStr = String.format("https://www.facebook.com/dialog/oauth?client_id=%s&redirect_uri=%s", appID, redirectUri);
+            System.out.println("Please copy & paste the following into your browser and grant the app access:\n");
+            System.out.println(requestStr);
+        }
     }
 
     class ResponseHandler implements HttpHandler {
@@ -55,21 +74,18 @@ public class AuthHandler {
             System.out.println(he.getResponseBody());
             userAccessCode = he.getRequestURI().getQuery().split("=")[1];//  .getQuery();
 
-            System.out.println("I can haz new access code:");
-            System.out.println(userAccessCode);
-
             // exchange code for access token
             String exchangeStr = String.format("https://graph.facebook.com/oauth/access_token?"+
                                                "client_id=%s"+
                                                "&redirect_uri=%s"+
                                                "&client_secret=%s"+
                                                "&code=%s", appID, redirectUri, appSecret, userAccessCode );
-            System.out.println(exchangeStr);
+
             String response = requestHandler.get(exchangeStr);
-            System.out.println(response);
+            String userAccessToken = response.split("=")[1];
 
             // TODO error handling
-            propertyHandler.setProperty("userAccessToken", response.split("=")[1]);
+            propertyHandler.setProperty("userAccessToken", userAccessToken);
         }
     }
 }

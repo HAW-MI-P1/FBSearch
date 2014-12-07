@@ -10,8 +10,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.haw.db.DBImpl;
-import de.haw.db.exception.ConnectionException;
-import de.haw.db.exception.IllegalArgumentException;
+import de.haw.model.exception.ConnectionException;
+import de.haw.model.exception.IllegalArgumentException;
 
 /**
  * @author Florian
