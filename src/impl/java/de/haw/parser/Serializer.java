@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.json.JsonObject;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -72,6 +70,7 @@ public class Serializer {
 		 
 	}
 	
+	
 	public static JSONObject keywords_to_json2D(Map.Entry<String,List<String>> entry){
 
 		JSONObject json=new JSONObject();
@@ -95,7 +94,20 @@ public class Serializer {
 	}
 
 
-
+		static JSONObject serializeSubject(List<IndexedWord> list){
+			JSONObject json=new JSONObject();
+			List<String> words=words_to_lemmas(list);
+			for(String word: words){
+				try {
+					json.append("subject", dict.mapSubject(word));
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
+			return json;
+		}
 
 		public static List<String> words_to_lemmas(List<IndexedWord> list){
 		List<String> lemmas=new ArrayList<String>();
@@ -104,5 +116,35 @@ public class Serializer {
 	}
 	
 	
+		
+	static JSONObject mergeAll(List<JSONObject> list){
+		JSONObject json=new JSONObject();
+		
+		for(JSONObject json01:list){
+
+			for(String str: JSONObject.getNames(json01)){
+				try {
+				
+					/*
+					 * TODO: merge objects with the same keys
+					 */
+					
+				//	if(!(json.has(str))){
+						json.put(str,  json01.get(str));
+				//	}else{
+				//		JSONArray temp = json.getJSONArray(str);
+				//		temp.put(temp.length(), )
+				//	}
+					
+					
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		return json;
+	}
 	
 }
