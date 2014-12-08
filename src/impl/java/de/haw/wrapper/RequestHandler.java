@@ -45,6 +45,12 @@ public class RequestHandler {
         httpClient = new DefaultHttpClient();
     }
 
+    public static RequestHandler getInstance() {
+        if (instance == null)
+            instance = new RequestHandler();
+        return instance;
+    }
+
     public String getUserId() {
         if (userID != null) {
             return userID;
@@ -65,11 +71,33 @@ public class RequestHandler {
         return userID;
     }
 
-    public static RequestHandler getInstance() {
-        if (instance == null)
-            instance = new RequestHandler();
-        return instance;
+    /*
+    * getters for different search types. See https://developers.facebook.com/docs/graph-api/using-graph-api/v2.2
+    * for all available types.
+    */
+
+    /* Search for a person (if they allow their name to be searched for). */
+    public JSONObject searchForUser(String name) {
+        /*TODO implement me*/
+        return Null;
     }
+
+    /* Search for a place. */
+    public JSONObject searchForPlace(String name) {
+        /*TODO implement me*/
+        return Null;
+    }
+
+    public JSONObject searchForPlace(String name, float latitude, float longitude) {
+        /*TODO implement me*/
+        return Null;
+    }
+
+    public JSONObject searchForPlace(String name, float latitude, float longitude, float distance) {
+        /*TODO implement me*/
+        return Null;
+    }
+    // TODO: what about event, group, page, location etc?
 
     // TODO make this private
     public String get(String requestStr) {
@@ -92,7 +120,7 @@ public class RequestHandler {
         return responseStr;
     }
 
-    private void buildRequestStr() {
-        /*TODO*/
+    private void buildRequestStr(String query, String type) {
+        /*TODO implement me*/
     }
 }
