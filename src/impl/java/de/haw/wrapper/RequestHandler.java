@@ -65,10 +65,9 @@ public class RequestHandler {
         // ask facebook for my userID
         String requestStr = buildRequestStr("/me", "id", userAccessToken);
         System.out.println(userAccessToken);
-        String response = this.get(requestStr);
+        JSONObject response = this.get(requestStr);
         try {
-            json = new JSONObject(response);
-            userID = (String) json.get("id");
+            userID = (String) response.get("id");
         } catch (JSONException e) {
             System.out.println(json);
             e.printStackTrace();
@@ -82,13 +81,15 @@ public class RequestHandler {
     /*
     * getters for different search types. See https://developers.facebook.com/docs/graph-api/using-graph-api/v2.2
     * for all available types.
+    * TODO: add modifiers for fields?
     */
 
     /* Search for a person (if they allow their name to be searched for). */
     public JSONObject searchForUser(String name) {
         /*TODO implement me*/
-
-        return null;
+        String requestStr = buildRequestStr("search", name, "user", userAccessToken);
+        JSONObject response = get(requestStr);
+        return response;
     }
 
     /* Search for a place. */
@@ -113,8 +114,10 @@ public class RequestHandler {
     // TODO: what about event, group, page, location etc?
 
     // TODO make this private
-    public String get(String requestStr) {
+    public JSONObject get(String requestStr) {
         String responseStr = "";
+        JSONObject responseJSON = null;
+
         try {
             HttpGet request = new HttpGet(requestStr);
             HttpResponse response = httpClient.execute(request);
@@ -123,14 +126,17 @@ public class RequestHandler {
             while ((line = rd.readLine()) != null) {
                 responseStr += line;
             }
+            responseJSON = new JSONObject(responseStr);
         } catch (URISyntaxException e) {
             e.printStackTrace();
         } catch (HttpException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-        return responseStr;
+        return responseJSON;
     }
 
     /* endpoints can be "search", an id, "me" etc  */
