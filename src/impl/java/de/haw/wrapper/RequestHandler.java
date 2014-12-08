@@ -8,6 +8,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.awt.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -52,18 +53,24 @@ public class RequestHandler {
     }
 
     public String getUserId() {
+        if (userAccessToken == null ) {
+            System.err.println("userAccessToken missing. Please call AuthHandler.login() first.");
+            return null;
+        }
+
         if (userID != null) {
             return userID;
         }
 
         // ask facebook for my userID
-        //String requestStr= "https://graph.facebook.com/me?fields=id&access_token="+userAccessToken;
         String requestStr = buildRequestStr("/me", "id", userAccessToken);
+        System.out.println(userAccessToken);
         String response = this.get(requestStr);
         try {
             json = new JSONObject(response);
             userID = (String) json.get("id");
         } catch (JSONException e) {
+            System.out.println(json);
             e.printStackTrace();
         }
 
@@ -128,10 +135,8 @@ public class RequestHandler {
 
     /* endpoints can be "search", an id, "me" etc  */
     private String buildRequestStr(String endpoint, String query, String type, String accessToken) {
-        /*TODO implement me*/
-        return null;
+        return String.format("https://graph.facebook.com/%s?q=%s&type=%s&access_token=%s", endpoint, query, type, accessToken);
     }
-
 
     /* endpoints can be "search", an id, "me" etc  */
     private String buildRequestStr(String endpoint, String fields, String accessToken) {
