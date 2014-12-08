@@ -120,7 +120,8 @@ public class RequestHandler {
         return responseStr;
     }
 
-    private void buildRequestStr(String query, String type) {
+    /* endpoints can be "/search", an id, "/me" etc  */
+    private void buildRequestStr(String endpoint, String query, String type) {
         /*TODO implement me*/
     }
 }
