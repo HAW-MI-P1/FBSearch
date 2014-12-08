@@ -88,11 +88,15 @@ public class RequestHandler {
         return Null;
     }
 
+    /* Search for a place and narrow your search to a specific location and distance by adding the center parameter
+     * (with latitude and longitude).*/
     public JSONObject searchForPlace(String name, float latitude, float longitude) {
         /*TODO implement me*/
         return Null;
     }
 
+    /* Search for a place and narrow your search to a specific location and distance by adding the center parameter
+     * (with latitude and longitude) and an optional distance parameter.*/
     public JSONObject searchForPlace(String name, float latitude, float longitude, float distance) {
         /*TODO implement me*/
         return Null;
@@ -122,6 +126,12 @@ public class RequestHandler {
 
     /* endpoints can be "/search", an id, "/me" etc  */
     private void buildRequestStr(String endpoint, String query, String type) {
+        /*TODO implement me*/
+    }
+
+
+    /* endpoints can be "/search", an id, "/me" etc  */
+    private void buildRequestStr(String endpoint, String fields) {
         /*TODO implement me*/
     }
 }
