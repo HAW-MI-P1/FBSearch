@@ -57,7 +57,8 @@ public class RequestHandler {
         }
 
         // ask facebook for my userID
-        String requestStr= "https://graph.facebook.com/me?fields=id&access_token="+userAccessToken;
+        //String requestStr= "https://graph.facebook.com/me?fields=id&access_token="+userAccessToken;
+        String requestStr = buildRequestStr("/me", "id", userAccessToken);
         String response = this.get(requestStr);
         try {
             json = new JSONObject(response);
@@ -79,27 +80,28 @@ public class RequestHandler {
     /* Search for a person (if they allow their name to be searched for). */
     public JSONObject searchForUser(String name) {
         /*TODO implement me*/
-        return Null;
+
+        return null;
     }
 
     /* Search for a place. */
     public JSONObject searchForPlace(String name) {
         /*TODO implement me*/
-        return Null;
+        return null;
     }
 
     /* Search for a place and narrow your search to a specific location and distance by adding the center parameter
      * (with latitude and longitude).*/
     public JSONObject searchForPlace(String name, float latitude, float longitude) {
         /*TODO implement me*/
-        return Null;
+        return null;
     }
 
     /* Search for a place and narrow your search to a specific location and distance by adding the center parameter
      * (with latitude and longitude) and an optional distance parameter.*/
     public JSONObject searchForPlace(String name, float latitude, float longitude, float distance) {
         /*TODO implement me*/
-        return Null;
+        return null;
     }
     // TODO: what about event, group, page, location etc?
 
@@ -124,14 +126,15 @@ public class RequestHandler {
         return responseStr;
     }
 
-    /* endpoints can be "/search", an id, "/me" etc  */
-    private void buildRequestStr(String endpoint, String query, String type) {
+    /* endpoints can be "search", an id, "me" etc  */
+    private String buildRequestStr(String endpoint, String query, String type, String accessToken) {
         /*TODO implement me*/
+        return null;
     }
 
 
-    /* endpoints can be "/search", an id, "/me" etc  */
-    private void buildRequestStr(String endpoint, String fields) {
-        /*TODO implement me*/
+    /* endpoints can be "search", an id, "me" etc  */
+    private String buildRequestStr(String endpoint, String fields, String accessToken) {
+        return String.format("https://graph.facebook.com/%s?fields=%s&access_token=%s", endpoint, fields, accessToken);
     }
 }
