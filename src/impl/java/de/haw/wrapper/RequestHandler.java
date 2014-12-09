@@ -13,6 +13,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URISyntaxException;
+import java.util.Locale;
 
 /**
  * @author lotte
@@ -104,7 +105,6 @@ public class RequestHandler {
 
     /* Search for a person (if they allow their name to be searched for). */
     public JSONObject searchForUser(String name) {
-        /*TODO implement me*/
         String requestStr = buildRequestStr("search", name, "user", userAccessToken);
         JSONObject response = get(requestStr);
         return response;
@@ -112,22 +112,27 @@ public class RequestHandler {
 
     /* Search for a place. */
     public JSONObject searchForPlace(String name) {
-        /*TODO implement me*/
-        return null;
+        String requestStr = buildRequestStr("search", name, "place", userAccessToken);
+        System.out.println(requestStr);
+        JSONObject response = get(requestStr);
+        return response;
     }
 
     /* Search for a place and narrow your search to a specific location and distance by adding the center parameter
      * (with latitude and longitude).*/
-    public JSONObject searchForPlace(String name, float latitude, float longitude) {
-        /*TODO implement me*/
-        return null;
+    public JSONObject searchForPlace(String name, double latitude, double longitude) {
+        String requestStr = buildRequestStr("search", name, "place", latitude, longitude, userAccessToken);
+        JSONObject response = get(requestStr);
+        return response;
     }
 
     /* Search for a place and narrow your search to a specific location and distance by adding the center parameter
      * (with latitude and longitude) and an optional distance parameter.*/
-    public JSONObject searchForPlace(String name, float latitude, float longitude, float distance) {
-        /*TODO implement me*/
-        return null;
+    public JSONObject searchForPlace(String name, double latitude, double longitude, double distance) {
+        String requestStr = buildRequestStr("search", name, "place",  latitude, longitude, distance, userAccessToken);
+        System.out.println(requestStr);
+        JSONObject response = get(requestStr);
+        return response;
     }
     // TODO: what about event, group, page, location etc?
 
@@ -173,6 +178,19 @@ public class RequestHandler {
     /* endpoints can be "search", an id, "me" etc  */
     private String buildRequestStr(String endpoint, String fields, String accessToken) {
         return String.format("https://graph.facebook.com/%s?fields=%s&access_token=%s", endpoint, fields, accessToken);
+    }
+
+    /* endpoints can be "search", an id, "me" etc  */
+    private String buildRequestStr(String endpoint, String query, String type, double latitude, double longitude, String accessToken) {
+        return String.format(Locale.US, "https://graph.facebook.com/%s?q=%s&type=%s&center=%f,%f&access_token=%s",
+                                                         endpoint, query, type, latitude, longitude, accessToken);
+    }
+
+    /* endpoints can be "search", an id, "me" etc  */
+    // TODO: is distance really a double?
+    private String buildRequestStr(String endpoint, String query, String type, double latitude, double longitude, double distance, String accessToken) {
+        return String.format(Locale.US, "https://graph.facebook.com/%s?q=%s&type=%s&center=%f,%f&distance=%f&access_token=%s",
+                                                         endpoint, query, type, latitude, longitude, distance, accessToken);
     }
 
     public static String getQueryParameter(String name, String query) {
