@@ -67,8 +67,6 @@ public class AuthHandler {
             // https://developers.facebook.com/docs/facebook-login/manually-build-a-login-flow/v2.2
             redirectUri = String.format("http://localhost:%d/test", myPort);
             String requestStr = String.format("https://www.facebook.com/dialog/oauth?client_id=%s&redirect_uri=%s&response_type=code", appID, redirectUri);
-            System.out.println("Please copy & paste the following into your browser and grant the app access:\n");
-            System.out.println(requestStr);
 
             String[] cmd = {"open", requestStr};
             try {
