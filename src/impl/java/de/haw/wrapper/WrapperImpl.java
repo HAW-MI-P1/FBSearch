@@ -19,10 +19,14 @@ public class WrapperImpl implements Wrapper{
         requestHandler = RequestHandler.getInstance();
         authHandler = new AuthHandler();
         authHandler.login();
+        //testthings();
+    }
+
+    private void testthings() {
+        System.out.println(requestHandler.searchForUser("Max"));
     }
 
     public Collection<Person> collect(JSONObject requests){
-
         //Mock Up
         Collection<Person> personData = new ArrayList<Person>();
         personData.add(new Person("Hans", "Muster"));

@@ -78,6 +78,24 @@ public class RequestHandler {
         return userID;
     }
 
+    public String getExchangeStr(String redirectUri, String userAccessCode) {
+        // exchange code for access token
+        String exchangeStr = String.format("https://graph.facebook.com/oauth/access_token?"+
+                "client_id=%s"+
+                "&redirect_uri=%s"+
+                "&client_secret=%s"+
+                "&code=%s", appID, redirectUri, appSecret, userAccessCode );
+
+        //String response = get(exchangeStr);
+        //String userAccessToken = response.split("=")[1];
+        System.out.println(exchangeStr);
+
+        JSONObject response = get(exchangeStr);
+        System.out.println(response);
+
+        return null;
+    }
+
     /*
     * getters for different search types. See https://developers.facebook.com/docs/graph-api/using-graph-api/v2.2
     * for all available types.
@@ -115,8 +133,17 @@ public class RequestHandler {
 
     // TODO make this private
     public JSONObject get(String requestStr) {
-        String responseStr = "";
         JSONObject responseJSON = null;
+        try {
+            responseJSON = new JSONObject(getRaw(requestStr));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return responseJSON;
+    }
+
+    public String getRaw(String requestStr) {
+        String responseStr = "";
 
         try {
             HttpGet request = new HttpGet(requestStr);
@@ -126,17 +153,16 @@ public class RequestHandler {
             while ((line = rd.readLine()) != null) {
                 responseStr += line;
             }
-            responseJSON = new JSONObject(responseStr);
+
         } catch (URISyntaxException e) {
             e.printStackTrace();
         } catch (HttpException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
         }
-        return responseJSON;
+
+        return responseStr;
     }
 
     /* endpoints can be "search", an id, "me" etc  */
@@ -147,5 +173,25 @@ public class RequestHandler {
     /* endpoints can be "search", an id, "me" etc  */
     private String buildRequestStr(String endpoint, String fields, String accessToken) {
         return String.format("https://graph.facebook.com/%s?fields=%s&access_token=%s", endpoint, fields, accessToken);
+    }
+
+    public static String getQueryParameter(String name, String query) {
+        String[] parameters = query.split("&");
+        if(parameters.length < 1) {
+            return null;
+        }
+
+        for(String parameter : parameters) {
+            String[] keyValue = parameter.split("=");
+            if(keyValue.length != 2) {
+                throw new RuntimeException("Malformed query string " + parameter);
+            }
+
+            if(keyValue[0].equals(name)) {
+                return keyValue[1];
+            }
+        }
+
+        return null;
     }
 }
