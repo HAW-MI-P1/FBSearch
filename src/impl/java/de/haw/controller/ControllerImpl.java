@@ -67,6 +67,7 @@ public class ControllerImpl implements Controller
         Logger.log("<search()>", ComponentID.Controller);
         
         JSONObject         requests = parser .parse  (naturalLanguage);
+        System.out.println(">>"+requests);
         Collection<Person> result   = wrapper.collect(requests);
                                       db     .save   (searchID, naturalLanguage, requests, result);
         
