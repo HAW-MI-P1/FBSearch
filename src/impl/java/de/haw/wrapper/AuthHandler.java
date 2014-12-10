@@ -68,12 +68,29 @@ public class AuthHandler {
             redirectUri = String.format("http://localhost:%d/test", myPort);
             String requestStr = String.format("https://www.facebook.com/dialog/oauth?client_id=%s&redirect_uri=%s&response_type=code", appID, redirectUri);
 
-            String[] cmd = {"open", requestStr};
-            try {
-                Runtime.getRuntime().exec(cmd);
-            } catch (IOException e) {
-                e.printStackTrace();
+            String osName = System.getProperty("os.name");
+
+            if (osName.contains("Mac OS")) {
+                String[] cmd = {"open", requestStr};
+                try {
+                    Runtime.getRuntime().exec(cmd);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
+            else if(osName.contains("Windows")) {
+                String[] cmd = {"start", "\"\"" ,"\""+requestStr+"\""};
+                try {
+                    Runtime.getRuntime().exec(cmd);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            else {
+                System.out.println("Please copy & paste the following into your browser and grant the app access:\n");
+                System.out.println(requestStr);
+            }
+
         }
     }
 
