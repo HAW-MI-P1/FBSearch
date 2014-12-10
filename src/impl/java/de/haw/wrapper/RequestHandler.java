@@ -79,24 +79,6 @@ public class RequestHandler {
         return userID;
     }
 
-    public String getExchangeStr(String redirectUri, String userAccessCode) {
-        // exchange code for access token
-        String exchangeStr = String.format("https://graph.facebook.com/oauth/access_token?"+
-                "client_id=%s"+
-                "&redirect_uri=%s"+
-                "&client_secret=%s"+
-                "&code=%s", appID, redirectUri, appSecret, userAccessCode );
-
-        //String response = get(exchangeStr);
-        //String userAccessToken = response.split("=")[1];
-        System.out.println(exchangeStr);
-
-        JSONObject response = get(exchangeStr);
-        System.out.println(response);
-
-        return null;
-    }
-
     /*
     * getters for different search types. See https://developers.facebook.com/docs/graph-api/using-graph-api/v2.2
     * for all available types.
@@ -106,7 +88,6 @@ public class RequestHandler {
     /* Search for a person (if they allow their name to be searched for). */
     public JSONObject searchForUser(String name) {
         String requestStr = buildRequestStr("search", name, "user", userAccessToken);
-        System.out.println(requestStr);
         JSONObject response = get(requestStr);
         return response;
     }
@@ -114,7 +95,6 @@ public class RequestHandler {
     /* Search for a place. */
     public JSONObject searchForPlace(String name) {
         String requestStr = buildRequestStr("search", name, "place", userAccessToken);
-        System.out.println(requestStr);
         JSONObject response = get(requestStr);
         return response;
     }
@@ -131,7 +111,6 @@ public class RequestHandler {
      * (with latitude and longitude) and an optional distance parameter.*/
     public JSONObject searchForPlace(String name, double latitude, double longitude, double distance) {
         String requestStr = buildRequestStr("search", name, "place",  latitude, longitude, distance, userAccessToken);
-        System.out.println(requestStr);
         JSONObject response = get(requestStr);
         return response;
     }
@@ -187,7 +166,6 @@ public class RequestHandler {
     }
 
     /* endpoints can be "search", an id, "me" etc  */
-    // TODO: is distance really a double?
     private String buildRequestStr(String endpoint, String query, String type, double latitude, double longitude, double distance, String accessToken) {
         return String.format(Locale.US, "https://graph.facebook.com/%s?q=%s&type=%s&center=%f,%f&distance=%f&access_token=%s",
                                                          endpoint, query, type, latitude, longitude, distance, accessToken);
