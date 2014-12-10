@@ -23,7 +23,10 @@ public class GUIImpl extends Application implements GUI {
 
     private SearchHistory searchHistory;
 
-    private Controller controller;
+    /**
+     * Note: http://stackoverflow.com/questions/24678021/pass-object-from-main-class-to-javafx-application
+     */
+    static public Controller controller;
 	
 	/**
 	 * The data as an observable list of Persons.
@@ -31,7 +34,10 @@ public class GUIImpl extends Application implements GUI {
 	private ObservableList<Person> personData = FXCollections.observableArrayList();
 
     public void setController (Controller controller){
-        this.controller = controller;
+    	GUIImpl.controller = controller;
+    }
+    private Controller getController (){
+        return GUIImpl.controller;
     }
 
     public void run(){
@@ -55,7 +61,7 @@ public class GUIImpl extends Application implements GUI {
 			primaryStage.show();
 
             SearchController searchController = loader.getController();
-            searchController.setController(controller);
+            searchController.setController(getController());
             searchController.setGUIImpl(this);
             searchController.setSearchHistory(this.searchHistory);
 		} catch (IOException e) {
