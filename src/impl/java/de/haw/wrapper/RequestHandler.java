@@ -106,6 +106,7 @@ public class RequestHandler {
     /* Search for a person (if they allow their name to be searched for). */
     public JSONObject searchForUser(String name) {
         String requestStr = buildRequestStr("search", name, "user", userAccessToken);
+        System.out.println(requestStr);
         JSONObject response = get(requestStr);
         return response;
     }
@@ -136,7 +137,6 @@ public class RequestHandler {
     }
     // TODO: what about event, group, page, location etc?
 
-    // TODO make this private
     public JSONObject get(String requestStr) {
         JSONObject responseJSON = null;
         try {

@@ -19,17 +19,17 @@ public class WrapperImpl implements Wrapper{
         requestHandler = RequestHandler.getInstance();
         authHandler = new AuthHandler();
         authHandler.login();
-        //testthings();
+        testthings();
     }
 
     private void testthings() {
         System.out.println(requestHandler.searchForUser("Max"));
         System.out.println("-----------------------------------------------------------------\n");
-        System.out.println(requestHandler.searchForPlace("Reeperbahn"));
+        //System.out.println(requestHandler.searchForPlace("Reeperbahn"));
         System.out.println("-----------------------------------------------------------------\n");
-        System.out.println(requestHandler.searchForPlace("Cafe", 53.5499851056, 9.96649770869));
+        //System.out.println(requestHandler.searchForPlace("Cafe", 53.5499851056, 9.96649770869));
         System.out.println("-----------------------------------------------------------------\n");
-        System.out.println(requestHandler.searchForPlace("Cafe", 53.5499851056, 9.96649770869, 1.5345612));
+        //System.out.println(requestHandler.searchForPlace("Cafe", 53.5499851056, 9.96649770869, 1.5345612));
     }
 
     public Collection<Person> collect(JSONObject requests){
