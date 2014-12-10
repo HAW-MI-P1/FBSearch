@@ -30,7 +30,8 @@ dependencies {
     implCompile sourceSets.api.output
     implCompile 'commons-lang:commons-lang:2.6'
     implCompile 'edu.stanford.nlp:stanford-corenlp:3.5.0'
-
+    implCompile 'edu.stanford.nlp:stanford-corenlp:3.5.0:models'	
+	
     testCompile 'junit:junit:4.9'
     testCompile sourceSets.api.output
     testCompile sourceSets.impl.output
@@ -42,8 +43,9 @@ dependencies {
     compile 'org.apache.httpcomponents:httpclient:4.0-alpha4'
     compile "org.apache.httpcomponents:httpmime:4.2.3"
 
-    compile 'edu.stanford.nlp:stanford-parser:3.2.0'
-    compile 'edu.stanford.nlp:stanford-corenlp:3.4.1'
+  
+    compile 'edu.stanford.nlp:stanford-corenlp:3.5.0'
+    compile 'edu.stanford.nlp:stanford-corenlp:3.5.0:models'
 
 }
 

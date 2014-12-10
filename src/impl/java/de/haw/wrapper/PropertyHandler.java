@@ -4,26 +4,26 @@ import java.io.*;
 import java.util.Properties;
 
 /**
- * Created by lotte on 28.10.14.
+ * @author lotte
  */
 public class PropertyHandler {
 
-    /* TODO: make sure old values are overwritten */
-
+    private String propertyFileName = "properties.txt";
     private static PropertyHandler instance;
     private Properties props;
-    private Writer writer;
-    private Reader reader;
 
     private PropertyHandler() {
-        try {
-            reader = new FileReader( "properties.txt" );
-            writer = new FileWriter("properties.txt");
-            props = new Properties();
-            props.load(reader);
-        } catch (IOException e) {
-            e.printStackTrace();
+        // add file if it doesn't exist
+        File propertyFile = new File(propertyFileName);
+        if(!propertyFile.exists()) {
+            try {
+                propertyFile.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
+        props = new Properties();
+        loadProps();
     }
 
     public static PropertyHandler getInstance() {
@@ -37,28 +37,40 @@ public class PropertyHandler {
     * called once.
     * */
     public void setInitialProperties(String appID, String appSecret, String oauthAccessToken){
-        try {
-            props.setProperty("appID", appID);
-            props.setProperty("appSecret", appSecret);
-            props.setProperty("oauthAccessToken", oauthAccessToken);
-            props.store(writer, "");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        props.setProperty("appID", appID);
+        props.setProperty("appSecret", appSecret);
+        props.setProperty("oauthAccessToken", oauthAccessToken);
+        storeProps();
+        System.out.println(props);
     }
 
     // TODO: fail if property is not available
     public void setProperty(String key, String property) {
         props.setProperty(key, property);
-        try {
-            props.store(writer, "");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        System.out.println(props);
+        System.out.println(key);
+        System.out.println(property);
+        storeProps();
+        System.out.println(props);
     }
 
     public String getProperty(String key) {
         return props.getProperty(key);
     }
 
+    private void storeProps() {
+        try (OutputStream out = new FileOutputStream(propertyFileName)) {
+                props.store(out, null);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void loadProps() {
+        try (InputStream in = new FileInputStream(propertyFileName)) {
+            props.load(in);
+        } catch  (IOException e){
+            e.printStackTrace();
+        }
+    }
 }
