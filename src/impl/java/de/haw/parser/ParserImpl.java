@@ -28,7 +28,7 @@ import edu.stanford.nlp.util.ArrayCoreMap;
 import edu.stanford.nlp.util.CoreMap;
 
 public class ParserImpl implements Parser{
-
+	
 	private Dictionary dict=new Dictionary();
 
 
@@ -54,7 +54,8 @@ public class ParserImpl implements Parser{
 		SemanticGraph graph = SemanticGraphFactory.generateUncollapsedDependencies(tree);
 		//SemanticGraph graph = SemanticGraphFactory.generateCollapsedDependencies(tree);
 
-
+		graph.prettyPrint();
+		
 		//get Information from the Tree
 		List<JSONObject> jsons=new ArrayList<>();
 
@@ -62,16 +63,27 @@ public class ParserImpl implements Parser{
 		Set<IndexedWord> subjects=getSubject(graph);
 		Set<IndexedWord> conjs=getConj(graph);
 
-
-		jsons.add(Serializer.keywordlist_to_json(verbs));
+		jsons.add(Serializer.keywordlist_to_json(verbs, containsWRB(subjects)));
 		System.out.println("verbs: "+verbs);
 		jsons.add(Serializer.serializeSubject(subjects));
 		System.out.println("subjects: " + subjects);
 		jsons.add(Serializer.serializeConj(conjs));
 		return Serializer.mergeAll(jsons);
 	}
-
-
+	
+	private boolean containsWRB(Set<IndexedWord> subjects) 
+	{
+		boolean contains = false;
+		
+		for (IndexedWord subject: subjects) {
+			if (subject.tag().equals("WRB")) {
+				contains = true;
+			}
+		}
+		
+		return contains;
+	}
+	
 	/*
 	 * returns main verbs with corresponding object
 	 * */
@@ -82,7 +94,7 @@ public class ParserImpl implements Parser{
 	private Map<IndexedWord, Set<IndexedWord>> get_full_verb_and_object(SemanticGraph graph){
 
 
-		SemgrexPattern semgrex = SemgrexPattern.compile("{tag:/NN.*/}=object [<<pobj ({}=conj < {tag:/VB.*/}=verb)   | <<dobj {tag:/VB.*/}=verb ]");
+		SemgrexPattern semgrex = SemgrexPattern.compile("{tag:/NN.*/}=object [<<pobj ({}=conj < {tag:/VB.*/}=verb)   | <<dobj {tag:/VB.*/}=verb ]")	;
 		//SemgrexPattern semgrex = SemgrexPattern.compile("{tag:/NN.*/}=object [<pobj ({}< {tag:/VB.*/}=verb)  | <dobj ({tag:/VB.*/}=verb)  | <nn ({} <dobj {tag:/VB.*/}=verb) | <conj ({} <dobj {tag:/VB.*/}=verb) | <conj ( {#} > {tag:/VB.*/}=verb ) ]");
 
 		SemgrexMatcher matcher = semgrex.matcher(graph);
@@ -120,9 +132,9 @@ public class ParserImpl implements Parser{
 				temp=new HashSet<IndexedWord>();
 				temp.add(nodeObject);
 			}
-			verbs.put(nodeVerb,temp);
+			
+			verbs.put(nodeVerb, temp);
 		}
-
 
 		return verbs;
 	}

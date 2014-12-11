@@ -13,6 +13,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import edu.stanford.nlp.ling.IndexedWord;
+import edu.stanford.nlp.ling.MultiTokenTag.Tag;
 
 public class Serializer {
 
@@ -20,11 +21,15 @@ public class Serializer {
 	static Dictionary dict=new Dictionary();
 
 
-	static JSONObject keywordlist_to_json(Map <IndexedWord, Set<IndexedWord>> keywords){
+	static JSONObject keywordlist_to_json(Map <IndexedWord, Set<IndexedWord>> keywords,
+			boolean wrb){
 		Map<String,Set<String>> prevJson=new HashMap<String,Set<String>>();
 
 		for(Map.Entry<IndexedWord, Set<IndexedWord>> entry:keywords.entrySet()){
-			String key=dict.verb_to_key.get((entry.getKey()).lemma());
+			//TODO: There are for sure cases for which this solution is to simple
+			//FOR EXAMPLE: What about multiselects? e.g. Where lives Jane and who lives in Hamburg?!
+			String key = wrb ? dict.name
+					: dict.verb_to_key.get((entry.getKey()).lemma());
 			//		System.out.println("trying to find key: "+entry.getKey().lemma()+" with value "+ entry.getValue());
 			if(key != null){
 				Set<String> val = prevJson.get(key);
@@ -69,7 +74,7 @@ public class Serializer {
 			try {
 				//json.append("subject", dict.mapSubject(word));
 				json.put("subject", dict.mapSubject(word.lemma()));
-				if(word.tag().startsWith("NN")){
+				if(word.tag().startsWith("NN") && (!word.tag().equals("NN"))){
 					json.append("name", word.value());
 				}
 			} catch (JSONException e) {

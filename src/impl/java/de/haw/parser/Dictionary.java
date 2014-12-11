@@ -34,7 +34,6 @@ public class Dictionary {
 			verb_to_key.put("name", name);
 			verb_to_key.put("call", name);
 			
-			
 			word_to_subject.put("who",person);
 			word_to_subject.put("person",person);
 			word_to_subject.put("band",person);
@@ -46,6 +45,7 @@ public class Dictionary {
 			word_to_subject.put("where",location);
 			
 			word_to_subject.put("city", location);
+			word_to_subject.put("location", location);
 			
 			word_to_subject.put("restaurant", thing);
 			word_to_subject.put("university", thing);

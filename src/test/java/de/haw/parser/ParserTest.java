@@ -107,15 +107,51 @@ public class ParserTest {
 		assertTrue(getListFromJsonArray(test10.getJSONArray(interests)).contains("dog"));
 		assertTrue(getListFromJsonArray(test10.getJSONArray(name)).contains("Starbucks"));
 
+		//Following cases has Lukas to implement
+		JSONObject test11 = parser.parse("Which person is called Jane and lives in Hamburg?");
+		System.out.println(test11);
+		assertTrue(test11.getString("subject").equals(person));
+		assertTrue(getListFromJsonArray(test11.getJSONArray(location)).contains("Hamburg"));
+		assertTrue(getListFromJsonArray(test11.getJSONArray(name)).contains("Jane"));
+
+		JSONObject test12 = parser.parse("What location is called Hamburg and placed in Europe?");
+		System.out.println(test12);
+		assertTrue(test12.getString("subject").equals(location));
+		assertTrue(getListFromJsonArray(test12.getJSONArray(name)).contains("Hamburg"));
+		assertTrue(getListFromJsonArray(test12.getJSONArray(location)).contains("Europe"));
+
+		JSONObject test13 = parser.parse("Where lives Jane?");
+		System.out.println(test13);
+		assertTrue(test13.getString("subject").equals(location));
+		assertTrue(getListFromJsonArray(test13.getJSONArray(name)).contains("Jane"));
+		
+		
+		
+		JSONObject test14 = parser.parse("Where is Jane?");
+		
+		JSONObject test15 = parser.parse("How old is Jane?");
+		
+		//JSONObject test14 = parser.parse("Where is Jane's home?");
+		//System.out.println(test14);
+		
 		/*
 		 * TODO:
 		 * Which person is called Jane and lives in Hamburg
 		 * Where lives Jane
-		 
+		 * Where is Jane's home?
 		 */
 
 
 
+	}
+	
+	/**
+	 * As long as these tests fail Lukas may not rest.
+	 * 
+	 * @throws JSONException
+	 */
+	public void testMoreSimpleSentences() throws JSONException {
+		
 	}
 
 
