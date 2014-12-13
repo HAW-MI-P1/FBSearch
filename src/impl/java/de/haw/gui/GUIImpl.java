@@ -2,7 +2,6 @@ package de.haw.gui;
 
 import de.haw.controller.Controller;
 import de.haw.model.Person;
-import de.haw.model.SearchHistory;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -21,12 +20,12 @@ public class GUIImpl extends Application implements GUI {
 	private Stage primaryStage;
 	private BorderPane rootLayout;
 
-    private SearchHistory searchHistory;
 
     /**
      * Note: http://stackoverflow.com/questions/24678021/pass-object-from-main-class-to-javafx-application
      */
     static public Controller controller;
+    private SearchController searchController;
 	
 	/**
 	 * The data as an observable list of Persons.
@@ -51,7 +50,7 @@ public class GUIImpl extends Application implements GUI {
 		InputStream is = GUIImpl.class.getResourceAsStream("pic/fb.png");
 		Image icon = new Image(is);
 		this.primaryStage.getIcons().add(icon);
-        searchHistory = new SearchHistory();
+
 		try {
 			// Load the root layout from the fxml file
 			FXMLLoader loader = new FXMLLoader(GUIImpl.class.getResource("view/RootLayout.fxml"));
@@ -60,16 +59,15 @@ public class GUIImpl extends Application implements GUI {
 			primaryStage.setScene(scene);
 			primaryStage.show();
 
-            SearchController searchController = loader.getController();
+            this.searchController = loader.getController();
             searchController.setController(getController());
             searchController.setGUIImpl(this);
-            searchController.setSearchHistory(this.searchHistory);
 		} catch (IOException e) {
 			// Exception gets thrown if the fxml file could not be loaded
 			e.printStackTrace();
 		}
-		
-		showPersonOverview();
+
+		showResultOverview();
 	}
 	
 	/**
@@ -95,17 +93,16 @@ public class GUIImpl extends Application implements GUI {
 	/**
 	 * Shows the person overview scene.
 	 */
-	public void showPersonOverview() {
+	public void showResultOverview() {
 		try {
 			// Load the fxml file and set into the center of the main layout
-			FXMLLoader loader = new FXMLLoader(GUIImpl.class.getResource("view/PersonOverview.fxml"));
+			FXMLLoader loader = new FXMLLoader(GUIImpl.class.getResource("view/ResultOverview.fxml"));
 			AnchorPane overviewPage = (AnchorPane) loader.load();
 			rootLayout.setCenter(overviewPage);
 			
 			// Give the controller access to the main app
-			PersonOverviewController controller = loader.getController();
+			ResultOverviewController controller = loader.getController();
 			controller.setGUIImpl(this);
-            controller.setSearchHistory(this.searchHistory);
 			
 		} catch (IOException e) {
 			// Exception gets thrown if the fxml file could not be loaded

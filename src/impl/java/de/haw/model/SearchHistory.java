@@ -33,4 +33,12 @@ public class SearchHistory {
         searchStringList.add(filterString);
         System.out.println("addHistoryStep "+searchStringList.toString());
     }
+
+    public String getLabelFormattedString() {
+        StringBuffer listString = new StringBuffer();
+        for(String step : searchStringList){
+            listString.append(step+'\n');
+        }
+        return listString.toString();
+    }
 }

@@ -6,18 +6,11 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import jfxtras.labs.scene.control.*?>
 
-<AnchorPane prefHeight="376.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.haw.gui.PersonOverviewController">
+<AnchorPane prefHeight="376.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.haw.gui.ResultOverviewController">
   <!-- TODO Add Nodes -->
   <children>
-      <SplitPane dividerPositions="0.37919463087248323" orientation="VERTICAL" prefHeight="376.0" prefWidth="600.0">
+      <SplitPane orientation="VERTICAL" prefHeight="376.0" prefWidth="600.0">
          <items>
-            <AnchorPane prefHeight="77.0" prefWidth="598.0">
-               <children>
-                  <ListView fx:id="filterListView" editable="true" layoutX="14.0" layoutY="9.0" prefHeight="77.0" prefWidth="568.0" />
-                  <TextField fx:id="filterTextField" layoutX="14.0" layoutY="100.0" prefHeight="25.0" prefWidth="480.0" promptText="Filter ..." />
-                  <Button fx:id="addFilterButton" layoutX="514.0" layoutY="100.0" mnemonicParsing="false" onAction="#handleFilter" prefHeight="25.0" prefWidth="70.0" text="Filter" />
-               </children>
-            </AnchorPane>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="253.0" prefWidth="598.0">
           <children>
             <TableView fx:id="personTable" prefHeight="173.0" prefWidth="578.0" tableMenuButtonVisible="false" AnchorPane.bottomAnchor="9.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">

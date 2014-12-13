@@ -1,14 +1,14 @@
 package de.haw.gui;
 
-import de.haw.model.SearchHistory;
+import de.haw.model.Person;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import de.haw.model.Person;
 
-public class PersonOverviewController {
+public class ResultOverviewController {
 	@FXML
 	private TableView<Person> personTable;
 	@FXML
@@ -20,26 +20,8 @@ public class PersonOverviewController {
     @FXML
     private TableColumn<Person, String> birthdayColumn;
 
-    @FXML
-    private ListView filterListView;
-
-	@FXML
-	private TextField filterTextField;
-	@FXML
-	private Button addFilterButton;
-
-    private SearchHistory searchHistory;
-
 	// Reference to the main application
 	private GUIImpl GUIImpl;
-
-	/**
-	 * The constructor. The constructor is called before the initialize()
-	 * method.
-	 */
-	public void setSearchHistory(SearchHistory searchHistory) {
-        this.searchHistory = searchHistory;
-	}
 
 	/**
 	 * Initializes the controller class. This method is automatically called
@@ -52,9 +34,6 @@ public class PersonOverviewController {
 				new PropertyValueFactory<Person, String>("firstName"));
 		lastNameColumn.setCellValueFactory(
 				new PropertyValueFactory<Person, String>("lastName"));
-
-        //filterListView.setItems(FXCollections.observableArrayList());
-        //filterListView.setItems(searchHistory.getSearchStringList());
 	}
 
 	/**
@@ -69,18 +48,8 @@ public class PersonOverviewController {
 		personTable.setItems(GUIImpl.getPersonData());
 	}
 
-	public void handleFilter() {
-		String filterString = filterTextField.getText();
-		 ObservableList<Person> personData = FXCollections.observableArrayList();
 
-        searchHistory.addHistoryStep(filterString);
-        filterListView.setItems(searchHistory.getSearchStringList());
 
-        personData = showMockUpData(filterString);
-        //personData = Controller.getDataByFilter(filterString);
-        GUIImpl.setPersonData(personData);
-        GUIImpl.showPersonOverview();
-	}
 
     private ObservableList<Person> showMockUpData(String searchString) {
         ObservableList<Person> personData = FXCollections.observableArrayList();

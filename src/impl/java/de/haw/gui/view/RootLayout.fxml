@@ -6,9 +6,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.haw.gui.SearchController">
+<BorderPane prefHeight="494.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.haw.gui.SearchController">
    <top>
-      <Pane prefHeight="113.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+      <Pane prefHeight="221.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <children>
             <Label layoutX="17.0" layoutY="8.0" text="Cool Product Name">
                <font>
@@ -19,6 +19,9 @@
             <TextField fx:id="searchStringField" layoutX="14.0" layoutY="35.0" prefHeight="25.0" prefWidth="480.0" promptText="Search ..." />
             <Label layoutX="17.0" layoutY="70.0" text="Dont't know what to ask? Help" />
             <Label fx:id="informationLabel" layoutX="17.0" layoutY="91.0" prefHeight="17.0" prefWidth="453.0" textFill="#d00000" wrapText="true" />
+            <Label fx:id="searchHistoryLabel" alignment="TOP_LEFT" layoutX="17.0" layoutY="115.0" prefHeight="57.0" prefWidth="477.0" text="Search History..." />
+            <TextField fx:id="filterTextField" layoutX="14.0" layoutY="183.0" prefHeight="25.0" prefWidth="477.0" promptText="Filter..." />
+            <Button fx:id="addFilterButton" layoutX="516.0" layoutY="183.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="72.0" text="Filter" />
          </children>
       </Pane>
    </top>

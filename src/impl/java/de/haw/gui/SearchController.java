@@ -21,24 +21,29 @@ public class SearchController {
     @FXML
     private Label informationLabel;
 
+    public int searchID;
+    @FXML
+    private Label searchHistoryLabel;
+
+    @FXML
+    private TextField filterTextField;
+    @FXML
+    private Button addFilterButton;
+
+    private int parentSearchID;
     private Controller controller;
+    private ResultOverviewController resultOverviewController;
 
     // Reference to the main application
     private GUIImpl GUIImpl;
     private SearchHistory searchHistory;
 
-    private int searchID;
-
     public SearchController(){
-        this.searchID = 1;
+        this.searchHistory = new SearchHistory();
     }
 
     public void setController (Controller controller){
         this.controller = controller;
-    }
-
-    public void setSearchHistory(SearchHistory searchHistory){
-        this.searchHistory = searchHistory;
     }
 
     /**
@@ -48,6 +53,10 @@ public class SearchController {
      */
     public void setGUIImpl(GUIImpl GUIImpl) {
         this.GUIImpl = GUIImpl;
+    }
+
+    public void setResultOverviewController(ResultOverviewController resultOverviewController){
+        this.resultOverviewController = resultOverviewController;
     }
 
         /**
@@ -61,12 +70,14 @@ public class SearchController {
         searchStringField.clear();
 
         searchHistory.newHistory(searchString);
+        showSearchHistory();
 
         try {
+            int searchID = newSearchID();
             personData.addAll(controller.search(searchID, searchString));
-            searchID++;
+            this.parentSearchID = searchID;
             GUIImpl.setPersonData(personData);
-            GUIImpl.showPersonOverview();
+            GUIImpl.showResultOverview();
         }catch(IllegalArgumentException ex1){
             //Tell user to correct searchString
             System.out.println("SearchController(GUI): Illegal argument");
@@ -84,17 +95,37 @@ public class SearchController {
         searchStringField.setText(searchString);
     }
 
-    private ObservableList<Person> showMockUpData(String searchString) {
+    public void handleFilter() {
+        String filterString = filterTextField.getText();
         ObservableList<Person> personData = FXCollections.observableArrayList();
-        personData.add(new Person("Hans", "Muster"));
-        personData.add(new Person("Ruth", "Mueller"));
-        personData.add(new Person("Heinz", "Kurz"));
-        personData.add(new Person("Cornelia", "Meier"));
-        personData.add(new Person("Werner", "Meyer"));
-        personData.add(new Person("Lydia", "Kunz"));
-        personData.add(new Person("Anna", "Best"));
-        personData.add(new Person("Stefan", "Meier"));
-        personData.add(new Person("Martin", "Mueller"));
-        return personData;
+
+        try{
+            searchHistory.addHistoryStep(filterString);
+            personData = (ObservableList<Person>) controller.searchExtended(newSearchID(),parentSearchID,filterString);
+            GUIImpl.setPersonData(personData);
+            GUIImpl.showResultOverview();
+        }catch(IllegalArgumentException ex1){
+            //Tell user to correct searchString
+            System.out.println("SearchController(GUI): Illegal argument");
+        }catch(NoSuchEntryException ex2){
+            //Fill result table with "no results"
+            System.out.println("SearchController(GUI): No Results");
+        }catch(InternalErrorException ex3){
+            //Internal Error occured
+        }catch(Exception ex){
+            System.out.println("SearchController(GUI): Only defined Exceptions should be thrown. Please check!");
+            ex.printStackTrace();
+            informationLabel.setText("Internal Error");
+        }
+    }
+
+
+    public int newSearchID(){
+        return ++this.searchID;
+    }
+
+    public void showSearchHistory(){
+        System.out.println(searchHistory.getLabelFormattedString());
+        searchHistoryLabel.setText(searchHistory.getLabelFormattedString());
     }
 }
