@@ -55,10 +55,6 @@ public class SearchController {
         this.GUIImpl = GUIImpl;
     }
 
-    public void setResultOverviewController(ResultOverviewController resultOverviewController){
-        this.resultOverviewController = resultOverviewController;
-    }
-
         /**
          * Called when the user clicks on the New Search button.
          */
