@@ -3,6 +3,9 @@ package de.haw.gui;
 import de.haw.controller.Controller;
 import de.haw.model.Person;
 import de.haw.model.SearchHistory;
+import de.haw.model.exception.ConnectionException;
+import de.haw.model.exception.InternalErrorException;
+import de.haw.model.exception.NoSuchEntryException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -25,7 +28,7 @@ public class SearchController {
     private int searchID;
 
     public SearchController(){
-        this.searchID = 0;
+        this.searchID = 1;
     }
 
     public void setController (Controller controller){
@@ -56,12 +59,23 @@ public class SearchController {
 
         searchHistory.newHistory(searchString);
 
-        personData.addAll(controller.search(searchID, searchString));
-        searchID++;
-        //personData = showMockUpData(searchString);
-        //personData = Controller.getDataBySearchString(searchString);
-        GUIImpl.setPersonData(personData);
-        GUIImpl.showPersonOverview();
+        try {
+            personData.addAll(controller.search(searchID, searchString));
+            searchID++;
+            GUIImpl.setPersonData(personData);
+            GUIImpl.showPersonOverview();
+        }catch(IllegalArgumentException ex1){
+            //Tell user to correct searchString
+            System.out.println("SearchController(GUI): Illegal argument");
+        }catch(NoSuchEntryException ex2){
+            //Fill result table with "no results"
+            System.out.println("SearchController(GUI): No Results");
+        }catch(InternalErrorException ex3){
+            //Internal Error occured
+        }catch(Exception ex){
+            System.out.println("SearchController(GUI): Only defined Exceptions should be thrown. Please check!");
+            ex.printStackTrace();
+        }
     }
 
     private ObservableList<Person> showMockUpData(String searchString) {
