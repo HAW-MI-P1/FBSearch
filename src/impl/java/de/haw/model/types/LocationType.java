@@ -104,7 +104,6 @@ public class LocationType extends Type {
 
 	public LocationType(String street, String city, String state, String country,
                         String zip, String latitude, String longtitude) {
-		super("fix me!"); //TODO
 		this.street = street;
 		this.city = city;
 		this.state = state;

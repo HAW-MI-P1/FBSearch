@@ -23,7 +23,7 @@ public class UserOverviewController {
 	 */
 	@FXML
 	private void initialize() {
-		// Initialize the person table
+		// Initialize the user table
 		nameColumn.setCellValueFactory(
 				new PropertyValueFactory<Type, String>("Name"));
 		idColumn.setCellValueFactory(
