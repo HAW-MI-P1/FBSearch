@@ -19,19 +19,16 @@ public class SearchHistory {
     }
 
     public ObservableList<String> getSearchStringList(){
-        System.out.println("getSearchStringList "+searchStringList.toString());
         return this.searchStringList;
     }
 
     public void newHistory(String searchString) {
         searchStringList.clear();
         searchStringList.add(searchString);
-        System.out.println("newHistory "+searchStringList.toString());
     }
 
     public void addHistoryStep(String filterString) {
         searchStringList.add(filterString);
-        System.out.println("addHistoryStep "+searchStringList.toString());
     }
 
     public String getLabelFormattedString() {

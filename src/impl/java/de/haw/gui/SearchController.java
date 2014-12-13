@@ -8,7 +8,6 @@ import de.haw.model.exception.NoSuchEntryException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
@@ -17,26 +16,19 @@ public class SearchController {
     @FXML
     private TextField searchStringField;
     @FXML
-    private Button newSearchButton;
-    @FXML
     private Label informationLabel;
-
-    public int searchID;
     @FXML
     private Label searchHistoryLabel;
-
     @FXML
     private TextField filterTextField;
-    @FXML
-    private Button addFilterButton;
 
+    public int searchID;
     private int parentSearchID;
     private Controller controller;
-    private ResultOverviewController resultOverviewController;
+    private SearchHistory searchHistory;
 
     // Reference to the main application
     private GUIImpl GUIImpl;
-    private SearchHistory searchHistory;
 
     public SearchController(){
         this.searchHistory = new SearchHistory();
@@ -93,7 +85,7 @@ public class SearchController {
 
     public void handleFilter() {
         String filterString = filterTextField.getText();
-        ObservableList<Person> personData = FXCollections.observableArrayList();
+        ObservableList<Person> personData;
 
         try{
             searchHistory.addHistoryStep(filterString);
@@ -121,7 +113,6 @@ public class SearchController {
     }
 
     public void showSearchHistory(){
-        System.out.println(searchHistory.getLabelFormattedString());
         searchHistoryLabel.setText(searchHistory.getLabelFormattedString());
     }
 }
