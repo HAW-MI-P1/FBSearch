@@ -25,7 +25,7 @@ public class SearchController {
     private int searchID;
 
     public SearchController(){
-        this.searchID = 0;
+        this.searchID = 1;
     }
 
     public void setController (Controller controller){
