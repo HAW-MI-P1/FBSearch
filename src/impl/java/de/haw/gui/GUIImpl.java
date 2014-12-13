@@ -46,7 +46,7 @@ public class GUIImpl extends Application implements GUI {
 	@Override
 	public void start(Stage primaryStage) {
 		this.primaryStage = primaryStage;
-		this.primaryStage.setTitle("Search 4 Facebook");
+		this.primaryStage.setTitle("FBSearch");
 		InputStream is = GUIImpl.class.getResourceAsStream("pic/fb.png");
 		Image icon = new Image(is);
 		this.primaryStage.getIcons().add(icon);
