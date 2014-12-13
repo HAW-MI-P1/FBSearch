@@ -47,11 +47,7 @@ public class PropertyHandler {
     // TODO: fail if property is not available
     public void setProperty(String key, String property) {
         props.setProperty(key, property);
-        System.out.println(props);
-        System.out.println(key);
-        System.out.println(property);
         storeProps();
-        System.out.println(props);
     }
 
     public String getProperty(String key) {

@@ -1,6 +1,7 @@
 package de.haw.wrapper;
 
 import de.haw.model.Person;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -11,28 +12,30 @@ import java.util.Collection;
  */
 public class WrapperImpl implements Wrapper{
 
-    private  RequestHandler requestHandler;
+    private RequestHandler requestHandler;
     private AuthHandler authHandler;
 
     public WrapperImpl(){
         requestHandler = RequestHandler.getInstance();
         authHandler = new AuthHandler();
         authHandler.login();
-        requestHandler.getUserId();
+        testthings();
+    }
+
+    private void testthings() {
+        System.out.println(requestHandler.searchForUser("Max"));
+        System.out.println("-----------------------------------------------------------------\n");
+        //System.out.println(requestHandler.searchForPlace("Reeperbahn"));
+        System.out.println("-----------------------------------------------------------------\n");
+        //System.out.println(requestHandler.searchForPlace("Cafe", 53.5499851056, 9.96649770869));
+        System.out.println("-----------------------------------------------------------------\n");
+        //System.out.println(requestHandler.searchForPlace("Cafe", 53.5499851056, 9.96649770869, 1.5345612));
     }
 
     public Collection<Person> collect(JSONObject requests){
-        Collection<Person> personData = new ArrayList<Person>();
         //Mock Up
+        Collection<Person> personData = new ArrayList<Person>();
         personData.add(new Person("Hans", "Muster"));
-        personData.add(new Person("Ruth", "Mueller"));
-        personData.add(new Person("Heinz", "Kurz"));
-        personData.add(new Person("Cornelia", "Meier"));
-        personData.add(new Person("Werner", "Meyer"));
-        personData.add(new Person("Lydia", "Kunz"));
-        personData.add(new Person("Anna", "Best"));
-        personData.add(new Person("Stefan", "Meier"));
-        personData.add(new Person("Martin", "Mueller"));
         return personData;
     }
     

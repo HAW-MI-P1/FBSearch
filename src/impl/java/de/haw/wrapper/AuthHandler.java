@@ -1,11 +1,13 @@
 package de.haw.wrapper;
 
+import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 
 import java.io.*;
 import java.net.InetSocketAddress;
+import java.net.URI;
 
 /**
  * @author lotte
@@ -62,30 +64,61 @@ public class AuthHandler {
         if(properlyInitialized && propertyHandler.getProperty("userAccessToken") == null) {
             // let the user authenticate the app *once*
             startServer();
+            // https://developers.facebook.com/docs/facebook-login/manually-build-a-login-flow/v2.2
             redirectUri = String.format("http://localhost:%d/test", myPort);
-            String requestStr = String.format("https://www.facebook.com/dialog/oauth?client_id=%s&redirect_uri=%s", appID, redirectUri);
-            System.out.println("Please copy & paste the following into your browser and grant the app access:\n");
-            System.out.println(requestStr);
+            String requestStr = String.format("https://www.facebook.com/dialog/oauth?client_id=%s&redirect_uri=%s&response_type=code", appID, redirectUri);
+
+            String osName = System.getProperty("os.name");
+
+            if (osName.contains("Mac OS")) {
+                String[] cmd = {"open", requestStr};
+                try {
+                    Runtime.getRuntime().exec(cmd);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            else {
+                System.out.println("Please copy & paste the following into your browser and grant the app access:\n");
+                System.out.println(requestStr);
+            }
+
         }
     }
 
     class ResponseHandler implements HttpHandler {
-        public void handle(HttpExchange he) throws IOException {
-            System.out.println(he.getResponseBody());
-            userAccessCode = he.getRequestURI().getQuery().split("=")[1];//  .getQuery();
+        public void handle(HttpExchange he) {
+            try {
+                String response = "Success";
+                he.sendResponseHeaders(200, response.length());
+                he.getResponseBody().write(response.getBytes());
+                he.close();
 
-            // exchange code for access token
-            String exchangeStr = String.format("https://graph.facebook.com/oauth/access_token?"+
-                                               "client_id=%s"+
-                                               "&redirect_uri=%s"+
-                                               "&client_secret=%s"+
-                                               "&code=%s", appID, redirectUri, appSecret, userAccessCode );
+                URI uri = he.getRequestURI();
 
-            String response = requestHandler.get(exchangeStr);
-            String userAccessToken = response.split("=")[1];
+                userAccessCode = RequestHandler.getQueryParameter("code", uri.getQuery());
+                System.out.println("Facebook gave us a user access code: " + userAccessCode);
 
-            // TODO error handling
-            propertyHandler.setProperty("userAccessToken", userAccessToken);
+                // https://developers.facebook.com/docs/facebook-login/manually-build-a-login-flow/v2.2#exchangecode
+                String exchangeStr = String.format("https://graph.facebook.com/oauth/access_token?" +
+                        "client_id=%s" +
+                        "&redirect_uri=%s" +
+                        "&client_secret=%s" +
+                        "&code=%s", appID, redirectUri, appSecret, userAccessCode);
+
+                String userAccessTokenResponse = requestHandler.getRaw(exchangeStr);
+                String userAccessToken = RequestHandler.getQueryParameter("access_token", userAccessTokenResponse);
+
+                System.out.println("Acquired user access token: " + userAccessToken);
+
+                if(userAccessToken == null) {
+                    System.err.println("Something went wrong :(");
+                } else {
+                    propertyHandler.setProperty("userAccessToken", userAccessToken);
+                }
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 }
