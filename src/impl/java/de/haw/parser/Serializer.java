@@ -73,7 +73,7 @@ public class Serializer {
 		for(IndexedWord word: set){
 			try {
 				//json.append("subject", dict.mapSubject(word));
-				json.put("subject", dict.mapSubject(word.lemma()));
+				json.put("type", dict.mapSubject(word.lemma()));
 				if(word.tag().startsWith("NN") && (!word.tag().equals("NN"))){
 					json.append("name", word.value());
 				}
