@@ -25,8 +25,7 @@ public class ParserTest {
 
 
 	}
-
-
+	
 	@Test
 	public void testSimpleSentences() throws JSONException {
 
@@ -142,6 +141,7 @@ public class ParserTest {
 		 * explicitly asks for a location with this question.
 		 */
 		JSONObject test16 = parser.parse("Where is Wacken Festival located?");
+		System.out.println(test16);
 		
 		/*
 		 * Similar to the question 'Where is Wacken Festival located?'.
@@ -154,7 +154,7 @@ public class ParserTest {
 		 * "When starts a demonstration at monday?"
 		 */
 		JSONObject test17 = parser.parse("When starts a Demonstration?");
-		
+		System.out.println(test17);
 		
 		
 		//JSONObject test14 = parser.parse("Where is Jane's home?");

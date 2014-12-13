@@ -21,6 +21,7 @@ public class Dictionary {
 		String age="age";
 		String person="user";
 		String op="operation";
+		String event="event";
 		
 		static HashMap<String, String> verb_to_key = new HashMap<String, String>();
 		static HashMap<String, String> word_to_subject=new HashMap<String,String>();
@@ -66,9 +67,17 @@ public class Dictionary {
 			word_to_Operation.put("and", op);
 			word_to_Operation.put("or", op);
 			
-			
-			
-			
+			word_to_subject.put("demonstration", event);
+			word_to_subject.put("festival", event);
+			word_to_subject.put("party", event);
+			word_to_subject.put("birthday", event);
+			word_to_subject.put("conference", event);
+			word_to_subject.put("ceremony", event);
+			word_to_subject.put("event", event);
+			word_to_subject.put("meeting", event);
+			word_to_subject.put("wedding", event);
+			word_to_subject.put("confirmation", event);
+			word_to_subject.put("show", event);
 		}
 		
 		public String mapSubject(String str){
