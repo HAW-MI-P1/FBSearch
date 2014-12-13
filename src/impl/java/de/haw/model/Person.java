@@ -23,13 +23,16 @@ package de.haw.model;
  *                                 Imports                                    *
  *****************************************************************************/
 
+import de.haw.model.types.ResultType;
+import de.haw.model.types.Type;
+
 import java.util.Calendar;
 
 /******************************************************************************
  *                              Class Definition                              *
  *****************************************************************************/
 
-public class Person
+public class Person extends Type
 {
     
 /******************************************************************************
@@ -125,4 +128,9 @@ public class Person
 				+ ", street=" + street + ", postalCode=" + postalCode
 				+ ", city=" + city + "]";
 	}
+
+    @Override
+    public ResultType getType() {
+        return ResultType.User;
+    }
 }

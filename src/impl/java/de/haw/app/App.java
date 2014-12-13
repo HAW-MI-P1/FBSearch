@@ -13,7 +13,7 @@ public class App {
 
     public static void main (String args[]){
         Wrapper wrapper = new WrapperImpl();
-        DB dbcontrol = new DBImpl();
+        DB dbcontrol = new MockUpDBImpl();
         Parser parser = new ParserImpl();
         Controller controller = new ControllerImpl(parser, wrapper, dbcontrol);
         GUI gui = new GUIImpl();

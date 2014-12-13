@@ -4,7 +4,7 @@
  * MIP-Group:       1
  * Component:       Controller
  *
- * Authors:         René, Hagen
+ * Authors:         Renï¿½, Hagen
  *
  * Updated:         2014.11.07
  *
@@ -23,13 +23,15 @@ package de.haw.controller;
  *                                 Imports                                    *
  *****************************************************************************/
 
-import de.haw.model.*;
-import de.haw.parser.Parser;
 import de.haw.app.Logger;
 import de.haw.db.DB;
+import de.haw.model.ComponentID;
+import de.haw.model.types.Type;
+import de.haw.parser.Parser;
 import de.haw.wrapper.Wrapper;
-import java.util.Collection;
 import org.json.JSONObject;
+
+import java.util.Collection;
 
 /******************************************************************************
  *                              Class Definition                              *
@@ -62,26 +64,26 @@ public class ControllerImpl implements Controller
  *****************************************************************************/
 
 	@Override
-    public Collection<Person> search(int searchID, String naturalLanguage)
+    public Collection<Type> search(int searchID, String naturalLanguage)
     {
         Logger.log("<search()>", ComponentID.Controller);
         
         JSONObject         requests = parser .parse  (naturalLanguage);
         System.out.println(">>"+requests);
-        Collection<Person> result   = wrapper.collect(requests);
+        Collection<Type> result   = wrapper.collect(requests);
                                       db     .save   (searchID, naturalLanguage, requests, result);
         
 		return result;
     }
 
 	@Override
-	public Collection<Person> searchExtended(int searchID, int parentSearchID, String naturalLanguage)
+	public Collection<Type> searchExtended(int searchID, int parentSearchID, String naturalLanguage)
     {
         Logger.log("<searchExtended()>", ComponentID.Controller);
         
         JSONObject         requests          = parser .parse          (naturalLanguage);
-        Collection<Person> personsOfInterest = db     .load           (parentSearchID);
-        Collection<Person> result            = wrapper.collectExtended(requests, personsOfInterest);
+        Collection<Type> personsOfInterest = db     .load           (parentSearchID);
+        Collection<Type> result            = wrapper.collectExtended(requests, personsOfInterest);
                                                db     .save           (searchID, naturalLanguage, requests, result);
         
 		return result;

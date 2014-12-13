@@ -4,7 +4,7 @@
  * MIP-Group:       1
  * Component:       DB
  *
- * Authors:         René, Hagen
+ * Authors:         Renï¿½, Hagen
  *
  * Updated:         2014.11.07
  *
@@ -23,9 +23,10 @@ package de.haw.db;
  *                                 Imports                                    *
  *****************************************************************************/
 
-import java.util.Collection;
-import de.haw.model.Person;
+import de.haw.model.types.Type;
 import org.json.JSONObject;
+
+import java.util.Collection;
 
 /******************************************************************************
  *                              Class Definition                              *
@@ -38,6 +39,6 @@ public interface DB
  *                              Public Methods                                *
  *****************************************************************************/
 	
-    public void               save(int searchID, String naturalLanguage, JSONObject requests, Collection<Person> result);
-    public Collection<Person> load(int parentSearchID);
+    public void               save(int searchID, String naturalLanguage, JSONObject requests, Collection<Type> result);
+    public Collection<Type> load(int parentSearchID);
 }

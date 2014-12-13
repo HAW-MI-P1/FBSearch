@@ -1,10 +1,11 @@
 package de.haw.gui;
 
 import de.haw.controller.Controller;
-import de.haw.model.Person;
 import de.haw.model.SearchHistory;
 import de.haw.model.exception.InternalErrorException;
 import de.haw.model.exception.NoSuchEntryException;
+import de.haw.model.types.ResultType;
+import de.haw.model.types.Type;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -54,7 +55,7 @@ public class SearchController {
     private void handleNewSearch() {
         informationLabel.setText(" ");
         String searchString = searchStringField.getText();
-        ObservableList<Person> personData = FXCollections.observableArrayList();
+        ObservableList<Type> resultData = FXCollections.observableArrayList();
         searchStringField.clear();
 
         searchHistory.newHistory(searchString);
@@ -62,10 +63,10 @@ public class SearchController {
 
         try {
             int searchID = newSearchID();
-            personData.addAll(controller.search(searchID, searchString));
+            resultData.addAll(controller.search(searchID, searchString));
             this.parentSearchID = searchID;
-            GUIImpl.setPersonData(personData);
-            GUIImpl.showResultOverview();
+            showResults(resultData);
+
         }catch(IllegalArgumentException ex1){
             //Tell user to correct searchString
             System.out.println("SearchController(GUI): Illegal argument");
@@ -85,13 +86,13 @@ public class SearchController {
 
     public void handleFilter() {
         String filterString = filterTextField.getText();
-        ObservableList<Person> personData;
+        ObservableList<Type> resultData;
 
         try{
             searchHistory.addHistoryStep(filterString);
-            personData = (ObservableList<Person>) controller.searchExtended(newSearchID(),parentSearchID,filterString);
-            GUIImpl.setPersonData(personData);
-            GUIImpl.showResultOverview();
+            resultData = (ObservableList<Type>) controller.searchExtended(newSearchID(),parentSearchID,filterString);
+            showResults(resultData);
+
         }catch(IllegalArgumentException ex1){
             //Tell user to correct searchString
             System.out.println("SearchController(GUI): Illegal argument");
@@ -114,5 +115,26 @@ public class SearchController {
 
     public void showSearchHistory(){
         searchHistoryLabel.setText(searchHistory.getLabelFormattedString());
+    }
+
+    public void showResults(ObservableList<Type> resultData){
+        Type type = resultData.get(0);
+        GUIImpl.setResultData(resultData);
+
+        if(type.getType().equals(ResultType.Event)){
+            GUIImpl.showEventOverview();
+        }else if(type.getType().equals(ResultType.Group)){
+            GUIImpl.showGroupOverview();
+        }else if(type.getType().equals(ResultType.Location)){
+            GUIImpl.showLocationOverview();
+        }else if(type.getType().equals(ResultType.Page)){
+            GUIImpl.showPageOverview();
+        }else if(type.getType().equals(ResultType.Place)){
+            GUIImpl.showPlaceOverview();
+        }else if(type.getType().equals(ResultType.User)){
+            GUIImpl.showUserOverview();
+        }else {
+            //something somewere went terribly wrong...
+        }
     }
 }

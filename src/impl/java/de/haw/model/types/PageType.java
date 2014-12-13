@@ -18,8 +18,6 @@
  *****************************************************************************/
 package de.haw.model.types;
 
-import de.haw.model.CategoryType;
-
 import java.util.List;
 
 /******************************************************************************
@@ -75,7 +73,12 @@ public class PageType extends Type {
 
 	}
 
-	public PageType(String id, String name, String category,
+    @Override
+    public ResultType getType() {
+        return ResultType.Page;
+    }
+
+    public PageType(String id, String name, String category,
                     List<CategoryType> category_list) {
 		super(id);
 		this.name = name;

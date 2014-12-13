@@ -1,7 +1,7 @@
 package de.haw.gui;
 
 import de.haw.controller.Controller;
-import de.haw.model.Person;
+import de.haw.model.types.Type;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -30,7 +30,7 @@ public class GUIImpl extends Application implements GUI {
 	/**
 	 * The data as an observable list of Persons.
 	 */
-	private ObservableList<Person> personData = FXCollections.observableArrayList();
+	private ObservableList<Type> resultData = FXCollections.observableArrayList();
 
     public void setController (Controller controller){
     	GUIImpl.controller = controller;
@@ -67,7 +67,7 @@ public class GUIImpl extends Application implements GUI {
 			e.printStackTrace();
 		}
 
-		showResultOverview();
+		//showResultOverview();
 	}
 	
 	/**
@@ -82,31 +82,128 @@ public class GUIImpl extends Application implements GUI {
      * Returns the data as an observable list of Persons.
      * @return
      */
-    public ObservableList<Person> getPersonData() {
-        return personData;
+    public ObservableList<Type> getResultData() {
+        return resultData;
     }
 
-    public void setPersonData(ObservableList<Person> personData) {
-        this.personData = personData;
+    public void setResultData(ObservableList<Type> resultData) {
+        this.resultData = resultData;
     }
 
-	/**
-	 * Shows the person overview scene.
-	 */
-	public void showResultOverview() {
-		try {
-			// Load the fxml file and set into the center of the main layout
-			FXMLLoader loader = new FXMLLoader(GUIImpl.class.getResource("view/ResultOverview.fxml"));
-			AnchorPane overviewPage = (AnchorPane) loader.load();
-			rootLayout.setCenter(overviewPage);
-			
-			// Give the controller access to the main app
-			ResultOverviewController controller = loader.getController();
-			controller.setGUIImpl(this);
-			
-		} catch (IOException e) {
-			// Exception gets thrown if the fxml file could not be loaded
-			e.printStackTrace();
-		}
-	}
+    public void showEventOverview() {
+        try {
+            // Load the fxml file and set into the center of the main layout
+            FXMLLoader loader = new FXMLLoader(GUIImpl.class.getResource("view/EventOverview.fxml"));
+            AnchorPane overviewPage = (AnchorPane) loader.load();
+            rootLayout.setCenter(overviewPage);
+
+            // Give the controller access to the main app
+            EventOverviewController controller = loader.getController();
+            controller.setGUIImpl(this);
+
+        } catch (IOException e) {
+            // Exception gets thrown if the fxml file could not be loaded
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Shows the group overview scene.
+     */
+    public void showGroupOverview() {
+        try {
+            // Load the fxml file and set into the center of the main layout
+            FXMLLoader loader = new FXMLLoader(GUIImpl.class.getResource("view/GroupOverview.fxml"));
+            AnchorPane overviewPage = (AnchorPane) loader.load();
+            rootLayout.setCenter(overviewPage);
+
+            // Give the controller access to the main app
+            GroupOverviewController controller = loader.getController();
+            controller.setGUIImpl(this);
+
+        } catch (IOException e) {
+            // Exception gets thrown if the fxml file could not be loaded
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Shows the location overview scene.
+     */
+    public void showLocationOverview() {
+        try {
+            // Load the fxml file and set into the center of the main layout
+            FXMLLoader loader = new FXMLLoader(GUIImpl.class.getResource("view/LocationOverview.fxml"));
+            AnchorPane overviewPage = (AnchorPane) loader.load();
+            rootLayout.setCenter(overviewPage);
+
+            // Give the controller access to the main app
+            LocationOverviewController controller = loader.getController();
+            controller.setGUIImpl(this);
+
+        } catch (IOException e) {
+            // Exception gets thrown if the fxml file could not be loaded
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Shows the page overview scene.
+     */
+    public void showPageOverview() {
+        try {
+            // Load the fxml file and set into the center of the main layout
+            FXMLLoader loader = new FXMLLoader(GUIImpl.class.getResource("view/PageOverview.fxml"));
+            AnchorPane overviewPage = (AnchorPane) loader.load();
+            rootLayout.setCenter(overviewPage);
+
+            // Give the controller access to the main app
+            PageOverviewController controller = loader.getController();
+            controller.setGUIImpl(this);
+
+        } catch (IOException e) {
+            // Exception gets thrown if the fxml file could not be loaded
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Shows the place overview scene.
+     */
+    public void showPlaceOverview() {
+        try {
+            // Load the fxml file and set into the center of the main layout
+            FXMLLoader loader = new FXMLLoader(GUIImpl.class.getResource("view/PlaceOverview.fxml"));
+            AnchorPane overviewPage = (AnchorPane) loader.load();
+            rootLayout.setCenter(overviewPage);
+
+            // Give the controller access to the main app
+            PlaceOverviewController controller = loader.getController();
+            controller.setGUIImpl(this);
+
+        } catch (IOException e) {
+            // Exception gets thrown if the fxml file could not be loaded
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Shows the user overview scene.
+     */
+    public void showUserOverview() {
+        try {
+            // Load the fxml file and set into the center of the main layout
+            FXMLLoader loader = new FXMLLoader(GUIImpl.class.getResource("view/UserOverview.fxml"));
+            AnchorPane overviewPage = (AnchorPane) loader.load();
+            rootLayout.setCenter(overviewPage);
+
+            // Give the controller access to the main app
+            UserOverviewController controller = loader.getController();
+            controller.setGUIImpl(this);
+
+        } catch (IOException e) {
+            // Exception gets thrown if the fxml file could not be loaded
+            e.printStackTrace();
+        }
+    }
 }

@@ -25,7 +25,7 @@ package de.haw.model.types;
 /******************************************************************************
  * Class Definition *
  *****************************************************************************/
-public class LocationType {
+public class LocationType extends Type {
 
 	/******************************************************************************
 	 * Fields *
@@ -104,7 +104,7 @@ public class LocationType {
 
 	public LocationType(String street, String city, String state, String country,
                         String zip, String latitude, String longtitude) {
-		super();
+		super("fix me!"); //TODO
 		this.street = street;
 		this.city = city;
 		this.state = state;
@@ -114,7 +114,12 @@ public class LocationType {
 		this.longtitude = longtitude;
 	}
 
-	/******************************************************************************
+    @Override
+    public ResultType getType() {
+        return ResultType.Location;
+    }
+
+    /******************************************************************************
 	 * Public Methods *
 	 *****************************************************************************/
 

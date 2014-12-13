@@ -1,14 +1,15 @@
-package de.haw.model;
+package de.haw.db;
+
+import de.haw.model.types.Type;
+import org.json.JSONObject;
 
 import java.util.Collection;
-
-import org.json.JSONObject;
 
 public interface DBRecord {
 	
 	public int getSearchId();
 	public String getNaturalLanguage();
 	public JSONObject getRequests();
-	public Collection<Person> getResult();
+	public Collection<Type> getResult();
 	
 }

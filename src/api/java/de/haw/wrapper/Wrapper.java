@@ -4,7 +4,7 @@
  * MIP-Group:       1
  * Component:       Wrapper
  *
- * Authors:         René, Hagen
+ * Authors:         Renï¿½, Hagen
  *
  * Updated:         2014.11.07
  *
@@ -23,9 +23,10 @@ package de.haw.wrapper;
  *                                 Imports                                    *
  *****************************************************************************/
 
-import java.util.Collection;
-import de.haw.model.Person;
+import de.haw.model.types.Type;
 import org.json.JSONObject;
+
+import java.util.Collection;
 
 /******************************************************************************
  *                              Class Definition                              *
@@ -38,6 +39,6 @@ public interface Wrapper
  *                              Public Methods                                *
  *****************************************************************************/
 	
-    public Collection<Person> collect        (JSONObject requests);
-    public Collection<Person> collectExtended(JSONObject requests, Collection<Person> personsOfInterest);
+    public Collection<Type> collect        (JSONObject requests);
+    public Collection<Type> collectExtended(JSONObject requests, Collection<Type> personsOfInterest);
 }

@@ -16,13 +16,11 @@
 /******************************************************************************
  *                                 Package                                    *
  *****************************************************************************/
-package de.haw.model;
+package de.haw.model.types;
 
 /******************************************************************************
  *                                 Imports                                    *
  *****************************************************************************/
-
-import de.haw.model.types.Type;
 
 /******************************************************************************
  * Class Definition *
@@ -55,7 +53,12 @@ public class CategoryType extends Type {
 
 	}
 
-	public CategoryType(String id, String name, String category) {
+    @Override
+    public ResultType getType() {
+        return ResultType.Category;
+    }
+
+    public CategoryType(String id, String name, String category) {
 		super(id);
 		this.name = name;
 	}

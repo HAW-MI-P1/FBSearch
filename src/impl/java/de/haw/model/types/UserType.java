@@ -53,7 +53,12 @@ public class UserType extends Type {
 
 	}
 
-	public UserType(String id, String name) {
+    @Override
+    public ResultType getType() {
+        return ResultType.User;
+    }
+
+    public UserType(String id, String name) {
 		super(id);
 		this.name = name;
 	}

@@ -90,7 +90,12 @@ public class EventType extends Type {
 
 	}
 
-	public EventType(String id, String name, String start_time, String end_time,
+    @Override
+    public ResultType getType() {
+        return ResultType.Event;
+    }
+
+    public EventType(String id, String name, String start_time, String end_time,
                      String timezone, String location) {
 		super(id);
 		this.name = name;

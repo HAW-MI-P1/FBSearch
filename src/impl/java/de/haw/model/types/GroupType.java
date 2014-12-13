@@ -54,7 +54,12 @@ public class GroupType extends Type {
 
 	}
 
-	public GroupType(String id, String name) {
+    @Override
+    public ResultType getType() {
+        return ResultType.Group;
+    }
+
+    public GroupType(String id, String name) {
 		super(id);
 		this.name = name;
 	}

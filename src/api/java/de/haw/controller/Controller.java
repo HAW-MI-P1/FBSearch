@@ -4,7 +4,7 @@
  * MIP-Group:       1
  * Component:       Controller
  *
- * Authors:         René, Hagen
+ * Authors:         Renï¿½, Hagen
  *
  * Updated:         2014.11.07
  *
@@ -23,8 +23,9 @@ package de.haw.controller;
  *                                 Imports                                    *
  *****************************************************************************/
 
+import de.haw.model.types.Type;
+
 import java.util.Collection;
-import de.haw.model.Person;
 
 /******************************************************************************
  *                              Class Definition                              *
@@ -37,6 +38,6 @@ public interface Controller
  *                              Public Methods                                *
  *****************************************************************************/
 	
-    public Collection<Person> search        (int searchID,                     String naturalLanguage);
-    public Collection<Person> searchExtended(int searchID, int parentSearchID, String naturalLanguage);
+    public Collection<Type> search        (int searchID,                     String naturalLanguage);
+    public Collection<Type> searchExtended(int searchID, int parentSearchID, String naturalLanguage);
 }

@@ -22,8 +22,6 @@ package de.haw.model.types;
  *                                 Imports                                    *
  *****************************************************************************/
 
-import de.haw.model.CategoryType;
-
 import java.util.List;
 
 /******************************************************************************
@@ -85,7 +83,12 @@ public class PlaceType extends Type {
 
 	}
 
-	public PlaceType(String id, String name, String category, LocationType location,
+    @Override
+    public ResultType getType() {
+        return ResultType.Place;
+    }
+
+    public PlaceType(String id, String name, String category, LocationType location,
                      List<CategoryType> category_list) {
 		super(id);
 		this.name = name;

@@ -1,23 +1,20 @@
 package de.haw.db;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Collection;
-import java.util.LinkedList;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
+import de.haw.model.Person;
 import de.haw.model.exception.ConnectionException;
 import de.haw.model.exception.IllegalArgumentException;
 import de.haw.model.exception.InternalErrorException;
 import de.haw.model.exception.NoSuchEntryException;
-import de.haw.model.DBRecord;
-import de.haw.model.Person;
+import de.haw.model.types.ResultType;
+import de.haw.model.types.Type;
+import de.haw.model.types.UserType;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.sql.*;
+import java.util.Collection;
+import java.util.LinkedList;
 
 public class DBImpl implements DB{
 
@@ -55,10 +52,45 @@ public class DBImpl implements DB{
 	}
 
 	@Override
-	public void save(int searchID, String naturalLanguage, JSONObject requests, Collection<Person> result){
-		
-		JSONArray persons = new JSONArray();
-		
+	public void save(int searchID, String naturalLanguage, JSONObject requests, Collection<Type> result){
+        JSONArray results = new JSONArray();
+
+        //TODO Differ Type! User/Event/Page/...
+        //Use THIS:
+        Type type = (Type)result.toArray()[0];
+
+        if(type.getType().equals(ResultType.Event)){
+
+            JSONArray users = new JSONArray();
+            for (Type instance : result) {
+                UserType user = (UserType)instance;
+                JSONObject p = new JSONObject();
+                try {
+                    p.put("firstName", user.getName());
+                    p.put("lastName", user.getID());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                users.put(p);
+            }
+            results = users;
+        }else if(type.getType().equals(ResultType.Group)){
+
+        }else if(type.getType().equals(ResultType.Location)){
+
+        }else if(type.getType().equals(ResultType.Page)){
+
+        }else if(type.getType().equals(ResultType.Place)){
+
+        }else if(type.getType().equals(ResultType.User)){
+
+        }else {
+            //something somewere went terribly wrong...
+        }
+
+        /*
+        JSONArray persons = new JSONArray();
+
 		for (Person person : result) {
 			JSONObject p = new JSONObject();
 			try {
@@ -70,23 +102,23 @@ public class DBImpl implements DB{
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
-			
+
 //			p.put("birthday", person.getBirthday());
-			
+
 			persons.put(p);
-		}
-		
-		JSONObject json = new JSONObject();
-		try {
-			json.put("naturalLanguage", naturalLanguage);
-			json.put("request", requests);
-			json.put("result", persons);
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-		
-		
-		this.put(searchID, json.toString());
+		}*/
+
+        JSONObject json = new JSONObject();
+        try {
+            json.put("naturalLanguage", naturalLanguage);
+            json.put("request", requests);
+            json.put("result", results);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+        this.put(searchID, json.toString());
 	}
 	
 	public void put(int searchID, String value){
@@ -159,16 +191,18 @@ public class DBImpl implements DB{
 		}
 		
 		DBRecord r = null;
+        //TODO sry, commented it out to avoid errors :P
+        /*
 		try {
-			r = new DBRecordImpl(parentSearchID,jsonResult.getString("naturalLanguage"),jsonResult.getJSONObject("request"), persons );
+            r = new DBRecordImpl(parentSearchID,jsonResult.getString("naturalLanguage"),jsonResult.getJSONObject("request"), persons );
 		} catch (JSONException e) {
 			e.printStackTrace();
-		}
+		}*/
 		return r;
 	}
 	
 	@Override
-    public Collection<Person> load(int parentSearchID)
+    public Collection<Type> load(int parentSearchID)
     {
     	return load_oldStyle(parentSearchID).getResult();
     }

@@ -1,7 +1,7 @@
 package de.haw.wrapper;
 
-import de.haw.model.Person;
-import org.json.JSONException;
+import de.haw.model.types.Type;
+import de.haw.model.types.UserType;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -32,15 +32,17 @@ public class WrapperImpl implements Wrapper{
         //System.out.println(requestHandler.searchForPlace("Cafe", 53.5499851056, 9.96649770869, 1.5345612));
     }
 
-    public Collection<Person> collect(JSONObject requests){
+    public Collection<Type> collect(JSONObject requests){
         //Mock Up
-        Collection<Person> personData = new ArrayList<Person>();
-        personData.add(new Person("Hans", "Muster"));
-        return personData;
+        Collection<Type> resultData = new ArrayList<Type>();
+
+        //TODO Differ Type caused by JSON Object
+        resultData.add(new UserType("1234", "MaxMuster"));
+        return resultData;
     }
-    
-    public Collection<Person> collectExtended(JSONObject requests, Collection<Person> personsOfInterest)
-    {
-    	return collect(requests);
+
+    @Override
+    public Collection<Type> collectExtended(JSONObject requests, Collection<Type> personsOfInterest) {
+        return null;
     }
 }

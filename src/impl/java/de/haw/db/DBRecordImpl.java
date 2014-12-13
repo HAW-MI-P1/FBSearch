@@ -1,20 +1,18 @@
 package de.haw.db;
 
-import java.util.Collection;
-
+import de.haw.model.types.Type;
 import org.json.JSONObject;
 
-import de.haw.model.DBRecord;
-import de.haw.model.Person;
+import java.util.Collection;
 
 public class DBRecordImpl implements DBRecord {
 
 	private int searchID;
 	private String naturalLanguage;
 	private JSONObject requests;
-	private Collection<Person> result;
+	private Collection<Type> result;
 	
-	public DBRecordImpl(int searchID, String naturalLanguage, JSONObject requests, Collection<Person> result) {
+	public DBRecordImpl(int searchID, String naturalLanguage, JSONObject requests, Collection<Type> result) {
 		this.searchID = searchID;
 		this.naturalLanguage = naturalLanguage;
 		this.requests = requests;
@@ -37,7 +35,7 @@ public class DBRecordImpl implements DBRecord {
 	}
 
 	@Override
-	public Collection<Person> getResult(){
+	public Collection<Type> getResult(){
 		return this.result;
 	}
 
