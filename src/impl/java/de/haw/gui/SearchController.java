@@ -3,13 +3,13 @@ package de.haw.gui;
 import de.haw.controller.Controller;
 import de.haw.model.Person;
 import de.haw.model.SearchHistory;
-import de.haw.model.exception.ConnectionException;
 import de.haw.model.exception.InternalErrorException;
 import de.haw.model.exception.NoSuchEntryException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 public class SearchController {
@@ -18,6 +18,8 @@ public class SearchController {
     private TextField searchStringField;
     @FXML
     private Button newSearchButton;
+    @FXML
+    private Label informationLabel;
 
     private Controller controller;
 
@@ -53,6 +55,7 @@ public class SearchController {
          */
     @FXML
     private void handleNewSearch() {
+        informationLabel.setText(" ");
         String searchString = searchStringField.getText();
         ObservableList<Person> personData = FXCollections.observableArrayList();
         searchStringField.clear();
@@ -67,6 +70,7 @@ public class SearchController {
         }catch(IllegalArgumentException ex1){
             //Tell user to correct searchString
             System.out.println("SearchController(GUI): Illegal argument");
+            informationLabel.setText("Please check your typing");
         }catch(NoSuchEntryException ex2){
             //Fill result table with "no results"
             System.out.println("SearchController(GUI): No Results");
@@ -75,7 +79,9 @@ public class SearchController {
         }catch(Exception ex){
             System.out.println("SearchController(GUI): Only defined Exceptions should be thrown. Please check!");
             ex.printStackTrace();
+            informationLabel.setText("Internal Error");
         }
+        searchStringField.setText(searchString);
     }
 
     private ObservableList<Person> showMockUpData(String searchString) {
