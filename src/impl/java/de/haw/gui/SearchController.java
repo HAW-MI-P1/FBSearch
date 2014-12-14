@@ -65,7 +65,7 @@ public class SearchController {
             int searchID = newSearchID();
             resultData.addAll(controller.search(searchID, searchString));
             this.parentSearchID = searchID;
-            showResults(resultData);
+            if(!resultData.isEmpty())showResults(resultData);
 
         }catch(IllegalArgumentException ex1){
             //Tell user to correct searchString
@@ -92,7 +92,7 @@ public class SearchController {
         try{
             searchHistory.addHistoryStep(filterString);
             resultData = (ObservableList<Type>) controller.searchExtended(newSearchID(),parentSearchID,filterString);
-            showResults(resultData);
+            if(!resultData.isEmpty())showResults(resultData);
 
         }catch(IllegalArgumentException ex1){
             //Tell user to correct searchString

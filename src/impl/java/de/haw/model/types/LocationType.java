@@ -113,6 +113,13 @@ public class LocationType extends Type {
 		this.longtitude = longtitude;
 	}
 
+    public LocationType(String street, String city, String state, String country) {
+        this.street = street;
+        this.city = city;
+        this.state = state;
+        this.country = country;
+    }
+
     @Override
     public ResultType getType() {
         return ResultType.Location;

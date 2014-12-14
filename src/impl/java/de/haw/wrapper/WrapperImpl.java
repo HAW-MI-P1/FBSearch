@@ -2,7 +2,6 @@ package de.haw.wrapper;
 
 import de.haw.model.types.Type;
 import de.haw.model.types.UserType;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -71,7 +70,16 @@ public class WrapperImpl implements Wrapper {
 		return resultData;
 	}
 
-	@Override
+    public Collection<Type> searchForName (String type, List<String> names){
+        Collection<Type> resultData = new ArrayList<Type>();
+        if (names.size() > 0) {
+            JSONObject namesResponse = requestHandler.search(concatStrings(names), type);
+            resultData.addAll(transformResponse(namesResponse));
+        }
+        return resultData;
+    }
+
+    @Override
 	public Collection<Type> collectExtended(JSONObject requests,
 			Collection<Type> personsOfInterest) {
 		return null;
