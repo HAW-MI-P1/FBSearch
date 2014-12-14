@@ -25,10 +25,10 @@ package de.haw.controller;
 
 import de.haw.app.Logger;
 import de.haw.db.DB;
+import de.haw.filter.Filter;
 import de.haw.model.ComponentID;
 import de.haw.model.types.Type;
 import de.haw.parser.Parser;
-import de.haw.wrapper.Wrapper;
 import org.json.JSONObject;
 
 import java.util.Collection;
@@ -45,17 +45,17 @@ public class ControllerImpl implements Controller
  *****************************************************************************/
 
     public Parser  parser;
-    public Wrapper wrapper;
+    public Filter filter;
     public DB      db;
     
 /******************************************************************************
  *                         Construction & Initialization                      *
  *****************************************************************************/
 
-	public ControllerImpl(Parser parser, Wrapper wrapper, DB db)
+	public ControllerImpl(Parser parser, Filter filter, DB db)
 	{
 		this.parser  = parser;
-		this.wrapper = wrapper;
+		this.filter = filter;
 		this.db      = db;
 	}
 
@@ -70,7 +70,7 @@ public class ControllerImpl implements Controller
         
         JSONObject         requests = parser .parse  (naturalLanguage);
         System.out.println(">>"+requests);
-        Collection<Type> result   = wrapper.collect(requests);
+        Collection<Type> result   = filter.collect(requests);
                                       db     .save   (searchID, naturalLanguage, requests, result);
         
 		return result;
@@ -83,7 +83,7 @@ public class ControllerImpl implements Controller
         
         JSONObject         requests          = parser .parse          (naturalLanguage);
         Collection<Type> personsOfInterest = db     .load           (parentSearchID);
-        Collection<Type> result            = wrapper.collectExtended(requests, personsOfInterest);
+        Collection<Type> result            = filter.collectExtended(requests, personsOfInterest);
                                                db     .save           (searchID, naturalLanguage, requests, result);
         
 		return result;

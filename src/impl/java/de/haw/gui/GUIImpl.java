@@ -66,8 +66,6 @@ public class GUIImpl extends Application implements GUI {
 			// Exception gets thrown if the fxml file could not be loaded
 			e.printStackTrace();
 		}
-
-		//showResultOverview();
 	}
 	
 	/**

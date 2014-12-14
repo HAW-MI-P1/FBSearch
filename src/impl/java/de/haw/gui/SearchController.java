@@ -74,6 +74,7 @@ public class SearchController {
         }catch(NoSuchEntryException ex2){
             //Fill result table with "no results"
             System.out.println("SearchController(GUI): No Results");
+            informationLabel.setText("No results were found");
         }catch(InternalErrorException ex3){
             //Internal Error occured
         }catch(Exception ex){
@@ -99,6 +100,7 @@ public class SearchController {
         }catch(NoSuchEntryException ex2){
             //Fill result table with "no results"
             System.out.println("SearchController(GUI): No Results");
+            informationLabel.setText("No results were found");
         }catch(InternalErrorException ex3){
             //Internal Error occured
         }catch(Exception ex){
