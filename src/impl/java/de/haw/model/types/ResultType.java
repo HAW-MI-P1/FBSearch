@@ -5,11 +5,21 @@ package de.haw.model.types;
  */
 public enum ResultType {
 
-    Category,
-    Event,
-    Group,
-    Location,
-    Page,
-    Place,
-    User;
+    Category("category"),
+    Event("event"),
+    Group("group"),
+    Location("location"),
+    Page("page"),
+    Place("place"),
+    User("user");
+
+    public String name;
+
+     ResultType(String name) {
+         this.name = name;
+    }
+
+    public String getName(){
+        return this.name;
+    }
 }
