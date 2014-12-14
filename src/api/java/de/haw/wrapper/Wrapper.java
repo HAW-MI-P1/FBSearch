@@ -24,8 +24,10 @@ package de.haw.wrapper;
  *****************************************************************************/
 
 import de.haw.model.types.Type;
+
 import org.json.JSONObject;
 
+import java.net.URL;
 import java.util.Collection;
 import java.util.List;
 
@@ -44,4 +46,6 @@ public interface Wrapper
     public Collection<Type> collectExtended(JSONObject requests, Collection<Type> personsOfInterest);
 
     public Collection<Type> searchForName (String type, List<String> names);
+    public List<URL> getPicturesForPersons(Collection<Type> personsOfInterest);
+    public boolean idLivesIn(String id, String location);
 }

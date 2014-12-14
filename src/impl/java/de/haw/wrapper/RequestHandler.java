@@ -90,18 +90,37 @@ public class RequestHandler {
 		return response;
 	}
 
-    /* Search for a object of "type" (if they allow their name to be searched for). */
-    public JSONObject search(String name, String type) {
-        String requestStr = buildRequestStr("search", name, type,
-                userAccessToken);
-        JSONObject response = get(requestStr);
-        return response;
-    }
+	/*
+	 * Search for a object of "type" (if they allow their name to be searched
+	 * for).
+	 */
+	public JSONObject search(String name, String type) {
+		String requestStr = buildRequestStr("search", name, type,
+				userAccessToken);
+		JSONObject response = get(requestStr);
+		return response;
+	}
 
 	/* Search for a place. */
 	public JSONObject searchForPlace(String name) {
 		String requestStr = buildRequestStr("search", name, "place",
 				userAccessToken);
+		JSONObject response = get(requestStr);
+		return response;
+	}
+
+	/* Search for an id. */
+	public JSONObject searchForID(String id, String fields) {
+		String requestStr = buildRequestStr(id, fields, userAccessToken);
+		JSONObject response = get(requestStr);
+		return response;
+	}
+
+	/* Search for an id. */
+	public JSONObject picturesForUserIDs(String userIDs) {
+		String requestStr = String.format(
+				"https://graph.facebook.com/picture?ids=%s&redirect=false&access_token=%s",
+				userIDs, userAccessToken);
 		JSONObject response = get(requestStr);
 		return response;
 	}
