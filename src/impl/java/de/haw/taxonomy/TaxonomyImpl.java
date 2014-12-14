@@ -3,7 +3,7 @@ package de.haw.taxonomy;
 import java.util.ArrayList;
 import java.util.List;
 
-//import org.apache.jena.riot.RDFDataMgr;
+import org.apache.jena.riot.RDFDataMgr;
 import org.apache.log4j.Level;
 import org.apache.log4j.LogManager;
 
@@ -20,7 +20,7 @@ public class TaxonomyImpl implements Taxonomy{
 	
 	public TaxonomyImpl(){
 		LogManager.getRootLogger().setLevel(Level.OFF);
-		//model = RDFDataMgr.loadModel("de/haw/taxonomy/default.rdf") ;
+		model = RDFDataMgr.loadModel("de/haw/taxonomy/default.rdf") ;
 	}
 	
 	@Override
