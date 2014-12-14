@@ -25,10 +25,12 @@ package de.haw.controller;
 
 import de.haw.app.Logger;
 import de.haw.db.DB;
+import de.haw.detector.Detector;
 import de.haw.filter.Filter;
 import de.haw.model.ComponentID;
 import de.haw.model.types.Type;
 import de.haw.parser.Parser;
+
 import org.json.JSONObject;
 
 import java.util.Collection;
@@ -39,24 +41,26 @@ import java.util.Collection;
 
 public class ControllerImpl implements Controller
 {
-	
+
 /******************************************************************************
  *                                  Fields                                    *
  *****************************************************************************/
 
-    public Parser  parser;
-    public Filter filter;
-    public DB      db;
+    public Parser   parser;
+    public Filter   filter;
+    public DB       db;
+    public Detector detector;
     
 /******************************************************************************
  *                         Construction & Initialization                      *
  *****************************************************************************/
 
-	public ControllerImpl(Parser parser, Filter filter, DB db)
+	public ControllerImpl(Parser parser, Filter filter, DB db, Detector detector)
 	{
-		this.parser  = parser;
-		this.filter = filter;
-		this.db      = db;
+		this.parser   = parser;
+		this.filter   = filter;
+		this.db       = db;
+		this.detector = detector;
 	}
 
 /******************************************************************************
@@ -68,10 +72,11 @@ public class ControllerImpl implements Controller
     {
         Logger.log("<search()>", ComponentID.Controller);
         
-        JSONObject         requests = parser .parse  (naturalLanguage);
-        System.out.println(">>"+requests);
+        JSONObject       requests = parser.parse  (naturalLanguage);
+        Logger.log(">>" + requests, ComponentID.Controller);
+	    
         Collection<Type> result   = filter.collect(requests);
-                                      db     .save   (searchID, naturalLanguage, requests, result);
+                                    db    .save   (searchID, naturalLanguage, requests, result);
         
 		return result;
     }
@@ -81,10 +86,11 @@ public class ControllerImpl implements Controller
     {
         Logger.log("<searchExtended()>", ComponentID.Controller);
         
-        JSONObject         requests          = parser .parse          (naturalLanguage);
-        Collection<Type> personsOfInterest = db     .load           (parentSearchID);
-        Collection<Type> result            = filter.collectExtended(requests, personsOfInterest);
-                                               db     .save           (searchID, naturalLanguage, requests, result);
+        JSONObject         requests        = parser  .parse          (naturalLanguage);
+        Collection<Type> personsOfInterest = db      .load           (parentSearchID);
+        Collection<Type> result            = filter  .collectExtended(requests, personsOfInterest);
+                         result            = detector.detectObject   (result, "elephant"); // TODO give me an object to search for
+                                             db      .save           (searchID, naturalLanguage, requests, result);
         
 		return result;
 	}

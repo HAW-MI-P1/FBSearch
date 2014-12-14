@@ -4,6 +4,8 @@ import de.haw.controller.Controller;
 import de.haw.controller.ControllerImpl;
 import de.haw.db.DB;
 import de.haw.db.MockUpDBImpl;
+import de.haw.detector.Detector;
+import de.haw.detector.DetectorImpl;
 import de.haw.filter.Filter;
 import de.haw.filter.FilterImpl;
 import de.haw.gui.GUI;
@@ -23,7 +25,8 @@ public class App {
         Filter filter = new FilterImpl(wrapper);
         DB dbcontrol = new MockUpDBImpl();
         Parser parser = new ParserImpl();
-        Controller controller = new ControllerImpl(parser, filter, dbcontrol);
+        Detector detector = new DetectorImpl();
+        Controller controller = new ControllerImpl(parser, filter, dbcontrol, detector);
         GUI gui = new GUIImpl();
         gui.setController(controller);
         gui.run();
