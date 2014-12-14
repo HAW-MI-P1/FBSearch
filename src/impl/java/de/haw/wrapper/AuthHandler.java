@@ -1,6 +1,5 @@
 package de.haw.wrapper;
 
-import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
@@ -18,7 +17,6 @@ public class AuthHandler {
     private RequestHandler requestHandler;
     private String appID;
     private String appSecret;
-    private String oauthAccessToken;
     private String userAccessCode;
     private String redirectUri;
     private int myPort = 8200;
@@ -45,7 +43,7 @@ public class AuthHandler {
 
         appID = propertyHandler.getProperty("appID");
         appSecret = propertyHandler.getProperty("appSecret");
-        oauthAccessToken = propertyHandler.getProperty("oauthAccessToken");
+        propertyHandler.getProperty("oauthAccessToken");
 
 
         if (propertyHandler.getProperty("appID") == null) {
