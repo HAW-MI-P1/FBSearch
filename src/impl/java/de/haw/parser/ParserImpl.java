@@ -54,7 +54,8 @@ public class ParserImpl implements Parser{
 		SemanticGraph graph = SemanticGraphFactory.generateUncollapsedDependencies(tree);
 		//SemanticGraph graph = SemanticGraphFactory.generateCollapsedDependencies(tree);
 
-
+		System.out.println(graph);
+		
 		//get Information from the Tree
 		List<JSONObject> jsons=new ArrayList<>();
 
@@ -82,7 +83,7 @@ public class ParserImpl implements Parser{
 	private Map<IndexedWord, Set<IndexedWord>> get_full_verb_and_object(SemanticGraph graph){
 
 
-		SemgrexPattern semgrex = SemgrexPattern.compile("{tag:/NN.*/}=object [<<pobj ({}=conj < {tag:/VB.*/}=verb)   | <<dobj {tag:/VB.*/}=verb ]");
+		SemgrexPattern semgrex = SemgrexPattern.compile("{tag:/NN.*/}=object [<<pobj ({}=conj < {tag:/VB.*/}=verb)   | 1,3<<dobj {tag:/VB.*/}=verb ]");
 		//SemgrexPattern semgrex = SemgrexPattern.compile("{tag:/NN.*/}=object [<pobj ({}< {tag:/VB.*/}=verb)  | <dobj ({tag:/VB.*/}=verb)  | <nn ({} <dobj {tag:/VB.*/}=verb) | <conj ({} <dobj {tag:/VB.*/}=verb) | <conj ( {#} > {tag:/VB.*/}=verb ) ]");
 
 		SemgrexMatcher matcher = semgrex.matcher(graph);
