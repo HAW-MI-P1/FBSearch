@@ -175,10 +175,6 @@ public class RequestHandler {
 				responseStr += line;
 			}
 
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
-		} catch (HttpException e) {
-			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

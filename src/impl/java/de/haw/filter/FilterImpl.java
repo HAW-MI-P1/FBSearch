@@ -23,7 +23,10 @@ public class FilterImpl implements Filter {
 
     @Override
     public Collection<Type> collect(JSONObject requests) {
-        Collection<Type> resultData = new ArrayList<Type>();
+    	
+    	return wrapper.collect(requests);
+    	
+        /*Collection<Type> resultData = new ArrayList<Type>();
         // Get subject from requests
         String subject = "-";
         try {
@@ -53,7 +56,7 @@ public class FilterImpl implements Filter {
 
         System.out.println("Results by name and location: "+resultData.size());
 
-        return resultData;
+        return resultData;*/
     }
 
     @Override
