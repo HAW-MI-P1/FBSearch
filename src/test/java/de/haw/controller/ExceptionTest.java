@@ -14,6 +14,8 @@ import de.haw.filter.Filter;
 import de.haw.filter.FilterImpl;
 import de.haw.parser.Parser;
 import de.haw.parser.ParserImpl;
+import de.haw.taxonomy.Taxonomy;
+import de.haw.taxonomy.TaxonomyImpl;
 import de.haw.wrapper.Wrapper;
 import de.haw.wrapper.WrapperImpl;
 
@@ -39,7 +41,8 @@ public class ExceptionTest
         DB dbcontrol = new MockUpDBImpl();
         Parser parser = new ParserImpl();
         Detector detector = new DetectorImpl();
-        Controller controller = new ControllerImpl(parser, filter, dbcontrol, detector);
+        Taxonomy taxonomy = new TaxonomyImpl();
+        Controller controller = new ControllerImpl(parser, filter, dbcontrol, detector, taxonomy);
         
         try
 		{
@@ -59,7 +62,8 @@ public class ExceptionTest
         DB dbcontrol = new MockUpDBImpl();
         Parser parser = new ParserImpl();
         Detector detector = new DetectorImpl();
-        Controller controller = new ControllerImpl(parser, filter, dbcontrol, detector);
+        Taxonomy taxonomy = new TaxonomyImpl();
+        Controller controller = new ControllerImpl(parser, filter, dbcontrol, detector, taxonomy);
         
         try
 		{

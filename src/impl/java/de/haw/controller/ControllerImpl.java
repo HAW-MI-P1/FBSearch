@@ -30,6 +30,7 @@ import de.haw.filter.Filter;
 import de.haw.model.ComponentID;
 import de.haw.model.types.Type;
 import de.haw.parser.Parser;
+import de.haw.taxonomy.Taxonomy;
 
 import org.json.JSONObject;
 
@@ -50,17 +51,19 @@ public class ControllerImpl implements Controller
     public Filter   filter;
     public DB       db;
     public Detector detector;
+    public Taxonomy taxonomy;
     
 /******************************************************************************
- *                         Construction & Initialization                      *
+ *                         Construction & Initialization                      
  *****************************************************************************/
 
-	public ControllerImpl(Parser parser, Filter filter, DB db, Detector detector)
+	public ControllerImpl(Parser parser, Filter filter, DB db, Detector detector, Taxonomy taxonomy)
 	{
 		this.parser   = parser;
 		this.filter   = filter;
 		this.db       = db;
 		this.detector = detector;
+		this.taxonomy = taxonomy;
 	}
 
 /******************************************************************************

@@ -12,6 +12,8 @@ import de.haw.gui.GUI;
 import de.haw.gui.GUIImpl;
 import de.haw.parser.Parser;
 import de.haw.parser.ParserImpl;
+import de.haw.taxonomy.Taxonomy;
+import de.haw.taxonomy.TaxonomyImpl;
 import de.haw.wrapper.Wrapper;
 import de.haw.wrapper.WrapperImpl;
 
@@ -26,7 +28,8 @@ public class App {
         DB dbcontrol = new MockUpDBImpl();
         Parser parser = new ParserImpl();
         Detector detector = new DetectorImpl();
-        Controller controller = new ControllerImpl(parser, filter, dbcontrol, detector);
+        Taxonomy taxonomy = new TaxonomyImpl();
+        Controller controller = new ControllerImpl(parser, filter, dbcontrol, detector, taxonomy);
         GUI gui = new GUIImpl();
         gui.setController(controller);
         gui.run();
