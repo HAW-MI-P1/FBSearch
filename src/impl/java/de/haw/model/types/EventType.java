@@ -133,10 +133,10 @@ public class EventType extends Type {
 		this.location = location;
 	}
 
-	public EventType(String name, String start_time, String end_time,
-			String timezone, String location, LocationType venue,
-			UserType owner_user) {
-		super();
+	public EventType(String id, String name, String start_time,
+			String end_time, String timezone, String location,
+			LocationType venue, UserType owner_user) {
+		super(id);
 		this.name = name;
 		this.start_time = start_time;
 		this.end_time = end_time;
@@ -146,10 +146,10 @@ public class EventType extends Type {
 		this.owner_user = owner_user;
 	}
 
-	public EventType(String name, String start_time, String end_time,
-			String timezone, String location, LocationType venue,
-			PageType owner_page) {
-		super();
+	public EventType(String id, String name, String start_time,
+			String end_time, String timezone, String location,
+			LocationType venue, PageType owner_page) {
+		super(id);
 		this.name = name;
 		this.start_time = start_time;
 		this.end_time = end_time;
@@ -159,9 +159,10 @@ public class EventType extends Type {
 		this.owner_page = owner_page;
 	}
 
-	public EventType(String name, String start_time, String end_time,
-			String timezone, String location, UserType owner_user) {
-		super();
+	public EventType(String id, String name, String start_time,
+			String end_time, String timezone, String location,
+			UserType owner_user) {
+		super(id);
 		this.name = name;
 		this.start_time = start_time;
 		this.end_time = end_time;
@@ -170,9 +171,10 @@ public class EventType extends Type {
 		this.owner_user = owner_user;
 	}
 
-	public EventType(String name, String start_time, String end_time,
-			String timezone, String location, PageType owner_page) {
-		super();
+	public EventType(String id, String name, String start_time,
+			String end_time, String timezone, String location,
+			PageType owner_page) {
+		super(id);
 		this.name = name;
 		this.start_time = start_time;
 		this.end_time = end_time;

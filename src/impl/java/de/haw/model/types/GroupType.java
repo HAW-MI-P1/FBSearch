@@ -92,28 +92,30 @@ public class GroupType extends Type {
 		this.name = name;
 	}
 
-	public GroupType(String name, LocationType venue, UserType owner_user) {
-		super();
+	public GroupType(String id, String name, LocationType venue,
+			UserType owner_user) {
+		super(id);
 		this.name = name;
 		this.venue = venue;
 		this.owner_user = owner_user;
 	}
 
-	public GroupType(String name, LocationType venue, PageType owner_page) {
-		super();
+	public GroupType(String id, String name, LocationType venue,
+			PageType owner_page) {
+		super(id);
 		this.name = name;
 		this.venue = venue;
 		this.owner_page = owner_page;
 	}
 
-	public GroupType(String name, UserType owner_user) {
-		super();
+	public GroupType(String id, String name, UserType owner_user) {
+		super(id);
 		this.name = name;
 		this.owner_user = owner_user;
 	}
 
-	public GroupType(String name, PageType owner_page) {
-		super();
+	public GroupType(String id, String name, PageType owner_page) {
+		super(id);
 		this.name = name;
 		this.owner_page = owner_page;
 	}

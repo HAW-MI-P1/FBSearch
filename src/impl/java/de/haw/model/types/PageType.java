@@ -111,10 +111,10 @@ public class PageType extends Type {
 		this.category_list = category_list;
 	}
 
-	public PageType(String category, String name,
+	public PageType(String id, String category, String name,
 			List<CategoryType> category_list, String about,
 			LocationType location) {
-		super();
+		super(id);
 		this.category = category;
 		this.name = name;
 		this.category_list = category_list;
