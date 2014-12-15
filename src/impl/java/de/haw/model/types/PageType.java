@@ -36,6 +36,9 @@ public class PageType extends Type {
 	private String name;
 	private List<CategoryType> category_list;
 
+	private String about;
+	private LocationType location;
+
 	/******************************************************************************
 	 * Getter / Setter *
 	 *****************************************************************************/
@@ -64,6 +67,22 @@ public class PageType extends Type {
 		this.category_list = category_list;
 	}
 
+	public String getAbout() {
+		return about;
+	}
+
+	public void setAbout(String about) {
+		this.about = about;
+	}
+
+	public LocationType getLocation() {
+		return location;
+	}
+
+	public void setLocation(LocationType location) {
+		this.location = location;
+	}
+
 	/******************************************************************************
 	 * Construction & Initialization *
 	 *****************************************************************************/
@@ -73,17 +92,34 @@ public class PageType extends Type {
 
 	}
 
-    @Override
-    public ResultType getType() {
-        return ResultType.Page;
-    }
+	@Override
+	public ResultType getType() {
+		return ResultType.Page;
+	}
 
-    public PageType(String id, String name, String category,
-                    List<CategoryType> category_list) {
+	public PageType(String id, String name, String category) {
+		super(id);
+		this.name = name;
+		this.category = category;
+	}
+
+	public PageType(String id, String name, String category,
+			List<CategoryType> category_list) {
 		super(id);
 		this.name = name;
 		this.category = category;
 		this.category_list = category_list;
+	}
+
+	public PageType(String category, String name,
+			List<CategoryType> category_list, String about,
+			LocationType location) {
+		super();
+		this.category = category;
+		this.name = name;
+		this.category_list = category_list;
+		this.about = about;
+		this.location = location;
 	}
 
 	/******************************************************************************

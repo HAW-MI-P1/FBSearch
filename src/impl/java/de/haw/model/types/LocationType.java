@@ -37,6 +37,7 @@ public class LocationType extends Type {
 	private String zip;
 	private String latitude;
 	private String longtitude;
+	private String id;
 
 	/******************************************************************************
 	 * Getter / Setter *
@@ -98,12 +99,20 @@ public class LocationType extends Type {
 		this.longtitude = longtitude;
 	}
 
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
 	/******************************************************************************
 	 * Construction & Initialization *
 	 *****************************************************************************/
 
-	public LocationType(String street, String city, String state, String country,
-                        String zip, String latitude, String longtitude) {
+	public LocationType(String id, String street, String city, String state,
+			String country, String zip, String latitude, String longtitude) {
 		this.street = street;
 		this.city = city;
 		this.state = state;
@@ -111,21 +120,24 @@ public class LocationType extends Type {
 		this.zip = zip;
 		this.latitude = latitude;
 		this.longtitude = longtitude;
+		this.id = id;
 	}
 
-    public LocationType(String street, String city, String state, String country) {
-        this.street = street;
-        this.city = city;
-        this.state = state;
-        this.country = country;
-    }
+	public LocationType(String id, String street, String city, String state,
+			String country) {
+		this.street = street;
+		this.city = city;
+		this.state = state;
+		this.country = country;
+		this.id = id;
+	}
 
-    @Override
-    public ResultType getType() {
-        return ResultType.Location;
-    }
+	@Override
+	public ResultType getType() {
+		return ResultType.Location;
+	}
 
-    /******************************************************************************
+	/******************************************************************************
 	 * Public Methods *
 	 *****************************************************************************/
 
