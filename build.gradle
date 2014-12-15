@@ -50,6 +50,15 @@ dependencies {
 	compile 'org.apache.jena:jena-arq:2.12.1'
 }
 
+//forces gradle to use xml-apis:xml-apis:1.4.01 instead of the older xml-apis:xml-apis:2.0.2 (somebody should get punished for this!)
+//http://forums.gradle.org/gradle/topics/oddity_in_the_output_of_dependencyinsight_task
+//http://mvnrepository.com/artifact/xml-apis/xml-apis
+configurations.all {
+	resolutionStrategy {
+	    force 'xml-apis:xml-apis:1.4.01'
+	}
+}
+
 jar {
     from sourceSets.api.output
     from sourceSets.impl.output
