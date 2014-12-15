@@ -140,8 +140,9 @@ public class ParserTest {
 		 * But I still see the problem that in my opinion the end user
 		 * explicitly asks for a location with this question.
 		 */
-		JSONObject test16 = parser.parse("Where is Wacken Festival located?");
+		JSONObject test16 = parser.parse("Where is Wacken Festival located in Europe?");
 		System.out.println(test16);
+		test16 = parser.parse("Where is Wacken Festival located?");
 		
 		/*
 		 * Similar to the question 'Where is Wacken Festival located?'.
