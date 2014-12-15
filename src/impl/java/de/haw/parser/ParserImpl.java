@@ -51,22 +51,23 @@ public class ParserImpl implements Parser{
 		SemanticGraph graph = SemanticGraphFactory.generateUncollapsedDependencies(tree);
 		//SemanticGraph graph = SemanticGraphFactory.generateCollapsedDependencies(tree);
 
-		graph.prettyPrint();
+		//graph.prettyPrint();
+		
+		System.out.println(graph);
 		
 		//get Information from the Tree
 		List<JSONObject> jsons=new ArrayList<>();
 
 		Map<IndexedWord, Set<IndexedWord>> verbs= get_full_verb_and_object(graph);
-		if (verbs.isEmpty()) {
-			get_adverb_with_cooperate_verb(graph);
-		}
+		
 		
 		Set<IndexedWord> subjects=getSubject(graph);
 		Set<IndexedWord> conjs=getConj(graph);
 
-		jsons.add(Serializer.keywordlist_to_json(verbs, containsWRB(subjects)));
 		System.out.println("verbs: "+verbs);
 		jsons.add(Serializer.serializeSubject(subjects));
+		get_adverb_with_cooperate_verb(graph);
+		jsons.add(Serializer.keywordlist_to_json(verbs, containsWRB(subjects)));
 		System.out.println("subjects: " + subjects);
 		jsons.add(Serializer.serializeConj(conjs));
 		return Serializer.mergeAll(jsons);
@@ -219,7 +220,7 @@ public class ParserImpl implements Parser{
 		if (subjects.isEmpty()) {
 			String nounPattern = "{tag:/NN.*/}=S1 ? >>nn {tag:/NN.*/}=S2 ? >>nn {tag:/NN.*/}=S3";
 			semgrex = SemgrexPattern.compile(
-					"[{tag:/JJ.*/}=adverb | {tag:/VBZ.*/}=verb]"
+					"[{tag:/JJ.*/}=adverb | {tag:/VB.*/}=verb]"
 					+ "[>>nsubj " + nounPattern + " | >>nsubjpass " + nounPattern + "]");
 			matcher = semgrex.matcher(graph);
 			while (matcher.find()) {
