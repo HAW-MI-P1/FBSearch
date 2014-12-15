@@ -31,7 +31,7 @@ public class TaxonomyImpl implements Taxonomy{
 					"{<http://taxonomy/"+item+"> rela:childOf ?x }" +
 					" UNION "+
 					"{ ?x rela:childOf <http://taxonomy/"+item+"> }" +
-				"}";
+				"} LIMIT 3";
 	    Query query = QueryFactory.create(queryString);
 
 	    // Execute the query and obtain results
