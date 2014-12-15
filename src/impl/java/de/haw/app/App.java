@@ -6,8 +6,6 @@ import de.haw.db.DB;
 import de.haw.db.MockUpDBImpl;
 import de.haw.detector.Detector;
 import de.haw.detector.DetectorImpl;
-import de.haw.filter.Filter;
-import de.haw.filter.FilterImpl;
 import de.haw.gui.GUI;
 import de.haw.gui.GUIImpl;
 import de.haw.parser.Parser;
@@ -24,12 +22,11 @@ public class App {
 
     public static void main (String args[]){
         Wrapper wrapper = new WrapperImpl();
-        Filter filter = new FilterImpl(wrapper);
         DB dbcontrol = new MockUpDBImpl();
         Parser parser = new ParserImpl();
         Detector detector = new DetectorImpl();
         Taxonomy taxonomy = new TaxonomyImpl();
-        Controller controller = new ControllerImpl(parser, filter, dbcontrol, detector, taxonomy);
+        Controller controller = new ControllerImpl(parser, wrapper, dbcontrol, detector, taxonomy);
         GUI gui = new GUIImpl();
         gui.setController(controller);
         gui.run();

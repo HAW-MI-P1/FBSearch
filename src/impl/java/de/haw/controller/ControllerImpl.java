@@ -26,13 +26,11 @@ package de.haw.controller;
 import de.haw.app.Logger;
 import de.haw.db.DB;
 import de.haw.detector.Detector;
-import de.haw.filter.Filter;
 import de.haw.model.ComponentID;
 import de.haw.model.types.Type;
 import de.haw.parser.Parser;
 import de.haw.taxonomy.Taxonomy;
-
-import org.json.JSONArray;
+import de.haw.wrapper.Wrapper;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -51,7 +49,7 @@ public class ControllerImpl implements Controller
  *****************************************************************************/
 
     public Parser   parser;
-    public Filter   filter;
+    public Wrapper wrapper;
     public DB       db;
     public Detector detector;
     public Taxonomy taxonomy;
@@ -61,10 +59,10 @@ public class ControllerImpl implements Controller
  *                         Construction & Initialization                      
  *****************************************************************************/
 
-	public ControllerImpl(Parser parser, Filter filter, DB db, Detector detector, Taxonomy taxonomy)
+	public ControllerImpl(Parser parser, Wrapper wrapper, DB db, Detector detector, Taxonomy taxonomy)
 	{
 		this.parser   = parser;
-		this.filter   = filter;
+		this.wrapper = wrapper;
 		this.db       = db;
 		this.detector = detector;
 		this.taxonomy = taxonomy;
@@ -83,7 +81,7 @@ public class ControllerImpl implements Controller
         lastRequestResult = requests;
         Logger.log(">>" + requests, ComponentID.Controller);
 	    
-        Collection<Type> result   = filter.collect(requests);
+        Collection<Type> result   = wrapper.collect(requests);
                                     db    .save   (searchID, naturalLanguage, requests, result);
         
 		return result;
@@ -97,7 +95,7 @@ public class ControllerImpl implements Controller
         JSONObject         requests        = parser  .parse          (naturalLanguage);
         lastRequestResult = requests;
         Collection<Type> personsOfInterest = db      .load           (parentSearchID);
-        Collection<Type> result            = filter  .collectExtended(requests, personsOfInterest);
+        Collection<Type> result            = wrapper.collectExtended(requests, personsOfInterest);
                          result            = detector.detectObject   (result, "elephant"); // TODO give me an object to search for
                                              db      .save           (searchID, naturalLanguage, requests, result);
         
