@@ -87,12 +87,14 @@ public class SearchController {
 
     public void handleFilter() {
         String filterString = filterTextField.getText();
-        ObservableList<Type> resultData;
+        ObservableList<Type> resultData = FXCollections.observableArrayList();
 
         try{
             searchHistory.addHistoryStep(filterString);
-            resultData = (ObservableList<Type>) controller.searchExtended(newSearchID(),parentSearchID,filterString);
+            showSearchHistory();
+            resultData.addAll(controller.searchExtended(newSearchID(),parentSearchID,filterString));
             if(!resultData.isEmpty())showResults(resultData);
+            else discardResultTable();
 
         }catch(IllegalArgumentException ex1){
             //Tell user to correct searchString
@@ -108,6 +110,10 @@ public class SearchController {
             ex.printStackTrace();
             informationLabel.setText("Internal Error");
         }
+    }
+
+    private void discardResultTable() {
+        //TODO: showno results!
     }
 
 
