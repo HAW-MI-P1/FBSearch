@@ -15,7 +15,7 @@ public class GetSynonymTest {
 
 	@Test
 	public void testGetSynonym() {
-		String[] response = this.fuzzy.getSynonym("peter", 0x0F);
+		String[] response = this.fuzzy.getSynonym("lion", 0x0F);
 
 		if(response.length <= 1){ fail(); }
 	}
