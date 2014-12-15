@@ -77,7 +77,7 @@ public class ExceptionTest
 	{
         Collection<String> expResult = Arrays.asList("Deutschland", "Altona");
         controller.search(0, "Who is called Angela Merkel and lives in Hamburg?");
-        Collection<String> result = controller.searchRecs();
+        Collection<String> result = controller.searchRecs("place");
         assertEquals(result,expResult);
 	}
 }

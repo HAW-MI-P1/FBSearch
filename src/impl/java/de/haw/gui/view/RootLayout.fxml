@@ -17,8 +17,8 @@
             </Label>
             <Button fx:id="newSearchButton" layoutX="516.0" layoutY="35.0" mnemonicParsing="false" onAction="#handleNewSearch" prefHeight="25.0" prefWidth="70.0" text="Search" />
             <TextField fx:id="searchStringField" layoutX="14.0" layoutY="35.0" onAction="#handleNewSearch" prefHeight="25.0" prefWidth="480.0" promptText="Search ..." />
-            <Label layoutX="17.0" layoutY="70.0" text="Dont't know what to ask? Help" />
-            <Label fx:id="informationLabel" layoutX="17.0" layoutY="91.0" prefHeight="17.0" prefWidth="453.0" textFill="#d00000" wrapText="true" />
+            <Label fx:id="recommendationLabel" layoutX="17.0" layoutY="70.0" prefHeight="17.0" prefWidth="477.0" />
+            <Label fx:id="informationLabel" layoutX="17.0" layoutY="91.0" prefHeight="17.0" prefWidth="477.0" textFill="#d00000" wrapText="true" />
             <Label fx:id="searchHistoryLabel" alignment="TOP_LEFT" layoutX="17.0" layoutY="115.0" prefHeight="57.0" prefWidth="477.0" text="Search History..." />
             <TextField fx:id="filterTextField" layoutX="14.0" layoutY="183.0" onAction="#handleFilter" prefHeight="25.0" prefWidth="477.0" promptText="Filter..." />
             <Button fx:id="addFilterButton" layoutX="516.0" layoutY="183.0" mnemonicParsing="false" onAction="#handleFilter" prefHeight="25.0" prefWidth="72.0" text="Filter" />

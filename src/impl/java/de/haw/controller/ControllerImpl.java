@@ -103,12 +103,12 @@ public class ControllerImpl implements Controller
 	}
 
 	@Override
-	public Collection<String> searchRecs()
+	public Collection<String> searchRecs(String category)
 	{
         Collection<String> result= new ArrayList<String>();
         if(lastRequestResult != null){
 			try {
-				String item = lastRequestResult.getString("place");
+				String item = lastRequestResult.getString(category);
 				item = item.substring(2, item.length() -2);
 				result = taxonomy.search(item);
 			} catch (JSONException e) {}
