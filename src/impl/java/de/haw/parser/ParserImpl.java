@@ -3,16 +3,13 @@ package de.haw.parser;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.Map.Entry;
 import java.util.Set;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
-
 
 import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.ling.IndexedWord;
@@ -28,7 +25,7 @@ import edu.stanford.nlp.util.ArrayCoreMap;
 import edu.stanford.nlp.util.CoreMap;
 
 public class ParserImpl implements Parser{
-
+	
 	private Dictionary dict=new Dictionary();
 
 
@@ -54,25 +51,71 @@ public class ParserImpl implements Parser{
 		SemanticGraph graph = SemanticGraphFactory.generateUncollapsedDependencies(tree);
 		//SemanticGraph graph = SemanticGraphFactory.generateCollapsedDependencies(tree);
 
-		System.out.println(graph);
+		graph.prettyPrint();
 		
 		//get Information from the Tree
 		List<JSONObject> jsons=new ArrayList<>();
 
 		Map<IndexedWord, Set<IndexedWord>> verbs= get_full_verb_and_object(graph);
+		if (verbs.isEmpty()) {
+			get_adverb_with_cooperate_verb(graph);
+		}
+		
 		Set<IndexedWord> subjects=getSubject(graph);
 		Set<IndexedWord> conjs=getConj(graph);
 
-
-		jsons.add(Serializer.keywordlist_to_json(verbs));
+		jsons.add(Serializer.keywordlist_to_json(verbs, containsWRB(subjects)));
 		System.out.println("verbs: "+verbs);
 		jsons.add(Serializer.serializeSubject(subjects));
 		System.out.println("subjects: " + subjects);
 		jsons.add(Serializer.serializeConj(conjs));
 		return Serializer.mergeAll(jsons);
 	}
-
-
+	
+	private boolean containsWRB(Set<IndexedWord> subjects) 
+	{
+		boolean contains = false;
+		
+		for (IndexedWord subject: subjects) {
+			if (subject.tag().equals("WRB")) {
+				contains = true;
+			}
+		}
+		
+		return contains;
+	}
+	
+	/**
+	 * @return all adverbs with and corresponding prepositional object(s)
+	 */
+	private Map<IndexedWord, Set<IndexedWord>> get_adverb_with_cooperate_verb(SemanticGraph graph) {
+		SemgrexPattern semgrex = SemgrexPattern.compile(
+				"{tag:/JJ.*/}=adverb [>>cop {tag:/VB.*/}=verb & ? >>pobj ({tag:/NN.*/}=object)]");
+		SemgrexMatcher matcher = semgrex.matcher(graph);
+		Map<IndexedWord, Set<IndexedWord>> adverbs = 
+				new HashMap<IndexedWord, Set<IndexedWord>>();
+		
+		while (matcher.find()) {
+			//IndexedWord nodeVerb = matcher.getNode("verb");
+			IndexedWord nodeAdverb = matcher.getNode("adverb");
+			IndexedWord nodeObject = matcher.getNode("object");
+			
+			System.out.println("Found adverb " + nodeAdverb.lemma());
+			if (nodeObject != null) {
+				System.out.println("with object " + nodeObject.lemma());
+			}
+			
+			Set<IndexedWord> additions = adverbs.get(nodeAdverb);
+			if (additions == null) {
+				additions = new HashSet<IndexedWord>();
+			}
+			additions.add(nodeObject);
+			adverbs.put(nodeAdverb, additions);
+		}
+		
+		return adverbs;
+	}
+	
 	/*
 	 * returns main verbs with corresponding object
 	 * */
@@ -121,9 +164,9 @@ public class ParserImpl implements Parser{
 				temp=new HashSet<IndexedWord>();
 				temp.add(nodeObject);
 			}
-			verbs.put(nodeVerb,temp);
+			
+			verbs.put(nodeVerb, temp);
 		}
-
 
 		return verbs;
 	}
@@ -172,6 +215,23 @@ public class ParserImpl implements Parser{
 				subjects.add(nodeA);
 			}
 		}
+		
+		if (subjects.isEmpty()) {
+			String nounPattern = "{tag:/NN.*/}=S1 ? >>nn {tag:/NN.*/}=S2 ? >>nn {tag:/NN.*/}=S3";
+			semgrex = SemgrexPattern.compile(
+					"[{tag:/JJ.*/}=adverb | {tag:/VBZ.*/}=verb]"
+					+ "[>>nsubj " + nounPattern + " | >>nsubjpass " + nounPattern + "]");
+			matcher = semgrex.matcher(graph);
+			while (matcher.find()) {
+				for (int i = 0; i < 3; i++) {
+					IndexedWord subject = matcher.getNode("S" + i);
+					if (subject != null) {
+						subjects.add(subject);
+					}
+				}
+			}
+		}
+		
 		if( subjects.isEmpty()){
 			semgrex = SemgrexPattern.compile("{tag:/WP.*/}=A");
 			matcher = semgrex.matcher(graph);
