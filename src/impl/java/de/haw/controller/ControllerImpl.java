@@ -32,8 +32,11 @@ import de.haw.model.types.Type;
 import de.haw.parser.Parser;
 import de.haw.taxonomy.Taxonomy;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 /******************************************************************************
@@ -52,6 +55,7 @@ public class ControllerImpl implements Controller
     public DB       db;
     public Detector detector;
     public Taxonomy taxonomy;
+    private JSONObject lastRequestResult = null;
     
 /******************************************************************************
  *                         Construction & Initialization                      
@@ -76,6 +80,7 @@ public class ControllerImpl implements Controller
         Logger.log("<search()>", ComponentID.Controller);
         
         JSONObject       requests = parser.parse  (naturalLanguage);
+        lastRequestResult = requests;
         Logger.log(">>" + requests, ComponentID.Controller);
 	    
         Collection<Type> result   = filter.collect(requests);
@@ -90,11 +95,26 @@ public class ControllerImpl implements Controller
         Logger.log("<searchExtended()>", ComponentID.Controller);
         
         JSONObject         requests        = parser  .parse          (naturalLanguage);
+        lastRequestResult = requests;
         Collection<Type> personsOfInterest = db      .load           (parentSearchID);
         Collection<Type> result            = filter  .collectExtended(requests, personsOfInterest);
                          result            = detector.detectObject   (result, "elephant"); // TODO give me an object to search for
                                              db      .save           (searchID, naturalLanguage, requests, result);
         
+		return result;
+	}
+
+	@Override
+	public Collection<String> searchRecs()
+	{
+        Collection<String> result= new ArrayList<String>();
+        if(lastRequestResult != null){
+			try {
+				String item = lastRequestResult.getString("place");
+				item = item.substring(2, item.length() -2);
+				result = taxonomy.search(item);
+			} catch (JSONException e) {}
+        }
 		return result;
 	}
 }

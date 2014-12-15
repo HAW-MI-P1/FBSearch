@@ -1,6 +1,11 @@
 package de.haw.controller;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
 import org.junit.After;
 import org.junit.Before;
@@ -73,5 +78,23 @@ public class ExceptionTest
         {
 			fail();
         }
+	}
+	
+	@Test
+	public void testSearchRecs()
+	{
+		Wrapper wrapper = new WrapperImpl();
+        Filter filter = new FilterImpl(wrapper);
+        DB dbcontrol = new MockUpDBImpl();
+        Parser parser = new ParserImpl();
+        Detector detector = new DetectorImpl();
+        Taxonomy taxonomy = new TaxonomyImpl();
+        Controller controller = new ControllerImpl(parser, filter, dbcontrol, detector, taxonomy);
+        
+        
+        Collection<String> expResult = Arrays.asList("Deutschland", "Altona");
+        controller.search(0, "Who is called Angela Merkel and lives in Hamburg?");
+        Collection<String> result = controller.searchRecs();
+        assertEquals(result,expResult);
 	}
 }

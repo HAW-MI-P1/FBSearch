@@ -26,6 +26,7 @@ package de.haw.controller;
 import de.haw.model.types.Type;
 
 import java.util.Collection;
+import java.util.List;
 
 /******************************************************************************
  *                              Class Definition                              *
@@ -40,4 +41,5 @@ public interface Controller
 	
     public Collection<Type> search        (int searchID,                     String naturalLanguage);
     public Collection<Type> searchExtended(int searchID, int parentSearchID, String naturalLanguage);
+    public Collection<String> searchRecs();
 }
