@@ -26,19 +26,23 @@ import edu.stanford.nlp.util.CoreMap;
 
 public class ParserImpl implements Parser{
 	
+	private StanfordCoreNLP pipeline;
 	private Dictionary dict=new Dictionary();
-
-
-	@Override
-	public JSONObject parse(String naturalLanguage) {
-
+	
+	public ParserImpl(){
 		//create parsing toolchain
 		Properties props=new Properties();
 		//	props.put("pos.model", "edu/stanford/nlp/models/pos-tagger/english-left3words/english-left3words-distsim.tagger");
 		//	props.put("annotators","tokenize, ssplit, pos, lemma, ner, parse, dcoref");
 		props.put("pos.model", "edu/stanford/nlp/models/pos-tagger/english-left3words/english-left3words-distsim.tagger");
 		props.put("annotators","tokenize, ssplit, pos, lemma, parse");
-		StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
+		pipeline = new StanfordCoreNLP(props);
+	}
+
+	@Override
+	public JSONObject parse(String naturalLanguage) {
+
+
 
 		//Annotate String and initialize evaluation graph
 		Annotation annotation = new Annotation(naturalLanguage);
