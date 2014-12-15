@@ -26,7 +26,6 @@ package de.haw.controller;
 import de.haw.model.types.Type;
 
 import java.util.Collection;
-import java.util.List;
 
 /******************************************************************************
  *                              Class Definition                              *
