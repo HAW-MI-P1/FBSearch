@@ -54,7 +54,6 @@ public class TaxonomyImpl implements Taxonomy{
 				}
 			}
 	    }
-	    System.out.println(">>>"+result);
 		return result;
 	}
 }
