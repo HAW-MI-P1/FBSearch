@@ -56,7 +56,7 @@ public class Serializer {
 			json.put("operation", translate(query.getConjunction()));
 			for (Attributes attribute: attributes) {
 				String attrName = translate(attribute);
-				List<String> entries = query.getAttribute(attrName);
+				List<String> entries = query.getAttribute(attribute);
 				for (String entry: entries) {
 					json.append(attrName, entries);
 				}

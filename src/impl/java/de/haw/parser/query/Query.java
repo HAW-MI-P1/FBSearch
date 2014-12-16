@@ -57,8 +57,12 @@ public class Query {
 		values.add(value);
 	}
 	
-	public List<String> getAttribute(String attribute) {
+	public List<String> getAttribute(Attributes attribute) {
 		return attributeLists.get(attribute);
+	}
+	
+	public Set<Attributes> getAttributes() {
+		return attributeLists.keySet();
 	}
 	
 	public boolean hasAttributes(Set<Attributes> attributes) {
