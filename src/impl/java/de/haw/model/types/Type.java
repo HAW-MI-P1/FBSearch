@@ -60,4 +60,14 @@ public abstract class Type {
 	 *****************************************************************************/
 
     public abstract ResultType getType();
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof Type && this.getID().equals( ((Type) obj).getID() );
+    }
+
+    @Override
+    public int hashCode() {
+        return getID().hashCode();
+    }
 }

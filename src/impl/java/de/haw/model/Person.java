@@ -26,7 +26,9 @@ package de.haw.model;
 import de.haw.model.types.ResultType;
 import de.haw.model.types.Type;
 
+import java.net.URL;
 import java.util.Calendar;
+import java.util.List;
 
 /******************************************************************************
  *                              Class Definition                              *
@@ -39,38 +41,42 @@ public class Person extends Type
  *                                  Fields                                    *
  *****************************************************************************/
     
-    private String   userID;
-    private String   firstname;
-    private String   lastname;
-	private Calendar birthday;
-	private String   street;
-	private int      postalCode;
-    private String   city;
+    private String    userID;
+    private String    firstname;
+    private String    lastname;
+	private Calendar  birthday;
+	private String    street;
+	private int       postalCode;
+    private String    city;
+    private List<URL> pictures;
     
 /******************************************************************************
  *                              Getter / Setter                               *
  *****************************************************************************/
 
-    public String   getUserID     ()                  { return userID;                  }
-    public void     setUserID     (String userID)     {   this.userID     = userID;     }
+    public String    getUserID     ()                   { return userID;                  }
+    public void      setUserID     (String userID)      {   this.userID     = userID;     }
     
-    public String   getFirstName  ()                  { return firstname;               }
-    public void     setFirstName  (String firstname)  {   this.firstname  = firstname;  }
+    public String    getFirstName  ()                   { return firstname;               }
+    public void      setFirstName  (String firstname)   {   this.firstname  = firstname;  }
     
-    public String   getLastName   ()                  { return lastname;                }
-    public void     setLastName   (String lastname)   {   this.lastname   = lastname;   }
+    public String    getLastName   ()                   { return lastname;                }
+    public void      setLastName   (String lastname)    {   this.lastname   = lastname;   }
     
-    public Calendar getBirthday   ()                  { return birthday;                }
-    public void     setBirthday   (Calendar birthday) {   this.birthday   = birthday;   }
+    public Calendar  getBirthday   ()                   { return birthday;                }
+    public void      setBirthday   (Calendar birthday)  {   this.birthday   = birthday;   }
     
-    public String   getStreet     ()                  { return street;                  }
-    public void     setStreet     (String street)     {   this.street     = street;     }
+    public String    getStreet     ()                   { return street;                  }
+    public void      setStreet     (String street)      {   this.street     = street;     }
     
-    public int      getPostalCode ()                  { return postalCode;              }
-    public void     setPostalCode (int postalCode)    {   this.postalCode = postalCode; }
+    public int       getPostalCode ()                   { return postalCode;              }
+    public void      setPostalCode (int postalCode)     {   this.postalCode = postalCode; }
     
-    public String   getCity       ()                  { return city;                    }
-    public void     setCity       (String city)       {   this.city        = city;      }
+    public String    getCity       ()                   { return city;                    }
+    public void      setCity       (String city)        {   this.city        = city;      }
+    
+    public List<URL> getPictures   ()                   { return pictures;                }
+    public void      setPictures   (List<URL> pictures) {   this.pictures    = pictures;  }
     
 /******************************************************************************
  *                         Construction & Initialization                      *
@@ -114,6 +120,18 @@ public class Person extends Type
 		this.street     = street;
 		this.postalCode = postalCode;
 		this.city       = city;
+	}
+    
+    public Person(String userID, String firstname, String lastname, Calendar birthday, String street, int postalCode, String city, List<URL> pictures)
+    {
+		this.userID     = userID;
+		this.firstname  = firstname;
+		this.lastname   = lastname;
+		this.birthday   = birthday;
+		this.street     = street;
+		this.postalCode = postalCode;
+		this.city       = city;
+		this.pictures   = pictures;
 	}
     
 /******************************************************************************
