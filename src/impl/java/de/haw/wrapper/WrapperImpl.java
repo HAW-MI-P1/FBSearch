@@ -2,17 +2,13 @@ package de.haw.wrapper;
 
 import de.haw.model.types.Type;
 import de.haw.model.types.UserType;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author lotte
@@ -87,6 +83,8 @@ public class WrapperImpl implements Wrapper {
 			}
 		}
 
+        System.out.println("collect results: "+ resultData.size());
+
 		return resultData;
 	}
 
@@ -157,7 +155,25 @@ public class WrapperImpl implements Wrapper {
 	@Override
 	public Collection<Type> collectExtended(JSONObject requests,
 			Collection<Type> personsOfInterest) {
-		return null;
+        // run second collect
+        Collection<Type> filterSearchResult = collect(requests);
+        /*if(!filterSearchResult.isEmpty()) {
+            System.out.println(personsOfInterest.size());
+            System.out.println(filterSearchResult.size());
+            filterSearchResult.retainAll(personsOfInterest);
+            //TODO: this stupid "retains" won't work
+        }
+        System.out.println("filter results: "+ filterSearchResult.size());
+		return filterSearchResult;*/
+        Collection<Type> results = new ArrayList<Type>();
+
+        for (Type obj : personsOfInterest) {
+            if(filterSearchResult.contains(obj)) {
+                results.add(obj);
+            }
+        }
+        System.out.println("Results: "+results.size());
+        return results;
 	}
 
 	private Collection<Type> transformResponse(JSONObject response) {
