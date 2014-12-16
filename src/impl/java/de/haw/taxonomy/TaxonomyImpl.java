@@ -14,6 +14,7 @@ import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.QueryExecutionFactory;
 import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.query.ResultSet;
+import com.hp.hpl.jena.query.ResultSetFormatter;
 import com.hp.hpl.jena.rdf.model.Model;
 
 public class TaxonomyImpl implements Taxonomy{
@@ -30,12 +31,14 @@ public class TaxonomyImpl implements Taxonomy{
 	
 	@Override
 	public List<String> search(String taxonomy,String elem) {
-		String queryString = "PREFIX rela: <http://taxonomy.org/relationship/> " +
-				"SELECT ?x " +
+		String queryString = "PREFIX place: <http://taxonomy.org/places/> " +
+				"SELECT ?name " +
 				"WHERE {" +
-					"{<http://taxonomy/"+elem+"> rela:childOf ?x }" +
+					"{<http://taxonomy/"+elem+"> place:childOf ?x ." +
+					"?x place:title ?name .}" +
 					" UNION "+
-					"{ ?x rela:childOf <http://taxonomy/"+elem+"> }" +
+					"{ ?x place:childOf <http://taxonomy/"+elem+"> ." +
+					"?x place:title ?name .}" +
 				"} LIMIT 3";
 	    Query query = QueryFactory.create(queryString);
 
@@ -46,10 +49,12 @@ public class TaxonomyImpl implements Taxonomy{
 		    QueryExecution qe = QueryExecutionFactory.create(query, model);
 		    ResultSet results = qe.execSelect();
 		    
+		    //ResultSetFormatter.out(System.out, (com.hp.hpl.jena.query.ResultSet) results,query);
+		    
 		    if (results.hasNext()) {
 				while (results.hasNext()) {
 					//format name of "elem" from http://xxx/elem style to "elem"
-					String currentElem = results.next().getResource("x").toString().split("/")[3];
+					String currentElem = results.next().getLiteral("name").getString();
 					result.add(currentElem);
 				}
 			}
