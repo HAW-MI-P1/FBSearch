@@ -1,5 +1,7 @@
 package de.haw.gui;
 
+import java.util.Collection;
+
 import de.haw.controller.Controller;
 import de.haw.model.SearchHistory;
 import de.haw.model.exception.InternalErrorException;
@@ -16,6 +18,8 @@ public class SearchController {
 
     @FXML
     private TextField searchStringField;
+    @FXML
+    private Label recommendationLabel;
     @FXML
     private Label informationLabel;
     @FXML
@@ -128,7 +132,7 @@ public class SearchController {
     public void showResults(ObservableList<Type> resultData){
         Type type = resultData.get(0);
         GUIImpl.setResultData(resultData);
-
+    	getAndSetRecommendations("place");
         if(type.getType().equals(ResultType.Event)){
             GUIImpl.showEventOverview();
         }else if(type.getType().equals(ResultType.Group)){
@@ -142,7 +146,19 @@ public class SearchController {
         }else if(type.getType().equals(ResultType.User)){
             GUIImpl.showUserOverview();
         }else {
-            //something somewere went terribly wrong...
+            //something somewhere went terribly wrong...
         }
     }
+    
+	private void getAndSetRecommendations(String category){
+		Collection<String> recData= controller.searchRecs(category);
+		recommendationLabel.setText("");
+		for(String data : recData){
+			if(recommendationLabel.getText().isEmpty()){
+	    		recommendationLabel.setText("Why don't you try: "+data);
+			} else {
+	    		recommendationLabel.setText(recommendationLabel.getText()+", "+data);
+			}
+		}
+	}
 }

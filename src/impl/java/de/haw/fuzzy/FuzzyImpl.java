@@ -9,6 +9,8 @@ import java.io.StringReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -63,19 +65,136 @@ public class FuzzyImpl implements Fuzzy {
 	public String[] getSynonym(String word, int opt) {
 		if( word == null || word.equals("") ){ throw new IllegalArgumentException("Illegal word: "  + word); }
 		
-		try{
-			this.targetURL = API_URL + "?q=" + this.makeUTF8(word);
-		} 
-		catch (Exception e)
-		{throw new InternalErrorException(""); }
-
-		return this.getSynonymXML(word, opt);
+		word = word.toLowerCase();
+		
+		// 1. translate English input to German
+		String[] r = translate(word,"en","de");
+		
+		// 2. find synonym
+		LinkedList<String> resList = new LinkedList<String>();
+		for(String w : r){
+			try{
+				this.targetURL = API_URL + "?q=" + this.makeUTF8(w);
+			} 
+			catch (Exception e)
+			{throw new InternalErrorException(""); }
+			
+			String[] a = this.getSynonymXML(w, opt);
+			
+			for (String aPart : a) {
+				// 3. re-translate words
+				String[] r2 = translate(aPart,"de","en");
+				
+				for (String r2Part : r2) {
+					resList.add(r2Part);
+				}
+				
+			}
+			
+		}
+		
+		for (String string : resList) {
+			System.out.println(string);
+		}
+		
+		String[] returnRes = new String[0];
+		
+		return resList.toArray(returnRes);
 //		return this.getSynonymJSON(word, opt);
 		
 	}
-
+	
 	
 	// Private operations
+	
+	
+	private String[] translate(String word, String from, String to){
+		String param = "action=query&prop=iwlinks&format=json&iwlimit=30&iwprefix=" + to + "&titles=" + word;
+		String targetURLs = "http://" + from + ".wiktionary.org/w/api.php";
+		
+		try {
+			// Create connection
+			this.url = new URL(this.makeUTF8(targetURLs));
+
+			this.connection = (HttpURLConnection) url.openConnection();
+			this.connection.setRequestMethod("GET");
+			this.connection.setRequestProperty("Content-Type",
+					"application/json");
+
+			this.connection.setRequestProperty("Content-Length",
+					"" + Integer.toString(targetURLs.length()));
+			this.connection.setRequestProperty("Content-Language", "en-US");
+
+			this.connection.setUseCaches(false);
+			this.connection.setDoInput(true);
+			this.connection.setDoOutput(true);
+
+			// Send request
+			
+			DataOutputStream wr = null;
+			
+			try{
+				wr = new DataOutputStream(
+						this.connection.getOutputStream());
+			}
+			catch(Exception e){ throw new ConnectionException(); }
+			
+			wr.writeBytes(param);
+			wr.flush();
+			wr.close();
+
+			// Get Response
+			InputStream is = this.connection.getInputStream();
+			BufferedReader rd = new BufferedReader(new InputStreamReader(is,
+					"UTF-8"));
+			String line;
+			StringBuffer response = new StringBuffer();
+			while ((line = rd.readLine()) != null) {
+				response.append(line);
+				response.append('\r');
+			}
+			rd.close();
+			
+			System.out.println("Fuzzy still working");
+			
+			LinkedList<String> resList = new LinkedList<String>();
+			try {
+				JSONObject obj = new JSONObject(response.toString());
+				JSONObject pages = obj.getJSONObject("query").getJSONObject("pages");
+				@SuppressWarnings("rawtypes")
+				Iterator keys = pages.keys();
+				while (keys.hasNext()) {
+					Object key = keys.next();
+					if(key.toString().equals("-1")){break;}
+					
+					JSONArray res = pages.getJSONObject(key.toString()).getJSONArray("iwlinks");
+					
+					for (int i = 0; i < res.length(); i++) {
+						resList.add(res.getJSONObject(i).getString("*").replace("Special:Search/", ""));
+					}
+					
+				}
+				
+			} catch (JSONException e1) {
+				// No match found
+				System.err.println("Fuzzy: No translation found!");
+			}
+			
+			String[] result = new String[0];
+			
+			
+			return resList.toArray(result);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+
+		} finally {
+			if (this.connection != null) {
+				this.connection.disconnect();
+			}
+		}
+	}
 	
 	private String[] getSynonymXML(String word, int opt) {
 		this.urlParameters = this.MODE_ALL + "&" + this.DATATYPE_XML;
@@ -260,9 +379,9 @@ public class FuzzyImpl implements Fuzzy {
 	}
 
 	private String makeUTF8(final String toConvert) {
-		return toConvert.replaceAll("Ä", "%c3%84").replaceAll("Ö", "%c3%96")
-				.replaceAll("Ü", "%c3%9c").replaceAll("ä", "%c3%a4")
-				.replaceAll("ö", "%c3%b6").replaceAll("ü", "%c3%bc");
+		return toConvert.replaceAll("Ã„", "%c3%84").replaceAll("Ã–", "%c3%96")
+				.replaceAll("Ãœ", "%c3%9c").replaceAll("Ã¤", "%c3%a4")
+				.replaceAll("Ã¶", "%c3%b6").replaceAll("Ã¼", "%c3%bc");
 	}
 
 	private String cleanBraces(String words) {

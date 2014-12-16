@@ -40,5 +40,5 @@ public interface Controller
 	
     public Collection<Type> search        (int searchID,                     String naturalLanguage);
     public Collection<Type> searchExtended(int searchID, int parentSearchID, String naturalLanguage);
-    public Collection<String> searchRecs();
+    public Collection<String> searchRecs(String category);
 }
