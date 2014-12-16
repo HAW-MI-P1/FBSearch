@@ -35,7 +35,7 @@ public class ParserTest {
 	}
 	
 	@Test
-	public void testSentences() throws JSONException {
+	public void testSentencesDone() throws JSONException {
 
 
 
@@ -187,7 +187,7 @@ public class ParserTest {
 	}
 	
 	@Test
-	public void testAdvSentences() throws JSONException {
+	public void testSentencesTodo() throws JSONException {
 		
 		
 		JSONObject test14 = parser.parse("Where is Jane?");
