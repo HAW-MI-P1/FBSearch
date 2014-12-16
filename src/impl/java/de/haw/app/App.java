@@ -1,5 +1,7 @@
 package de.haw.app;
 
+import java.util.Arrays;
+
 import de.haw.controller.Controller;
 import de.haw.controller.ControllerImpl;
 import de.haw.db.DB;
@@ -25,7 +27,7 @@ public class App {
         DB dbcontrol = new MockUpDBImpl();
         Parser parser = new ParserImpl();
         Detector detector = new DetectorImpl();
-        Taxonomy taxonomy = new TaxonomyImpl();
+        Taxonomy taxonomy = new TaxonomyImpl(Arrays.asList("place"));
         Controller controller = new ControllerImpl(parser, wrapper, dbcontrol, detector, taxonomy);
         GUI gui = new GUIImpl();
         gui.setController(controller);

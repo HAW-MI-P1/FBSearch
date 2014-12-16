@@ -1,7 +1,9 @@
 package de.haw.taxonomy;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.jena.riot.RDFDataMgr;
 import org.apache.log4j.Level;
@@ -16,36 +18,42 @@ import com.hp.hpl.jena.rdf.model.Model;
 
 public class TaxonomyImpl implements Taxonomy{
 	
-	private Model model;
+	private Map<String, Model> models = new HashMap<String, Model>();
 	
-	public TaxonomyImpl(){
+	public TaxonomyImpl(List<String> taxonomys){
 		LogManager.getRootLogger().setLevel(Level.OFF);
-		model = RDFDataMgr.loadModel("de/haw/taxonomy/default.rdf") ;
+		for(String taxonomy : taxonomys){
+			Model model = RDFDataMgr.loadModel("taxonomy/"+taxonomy+".rdf") ;
+			models.put(taxonomy,model);
+		}
 	}
 	
 	@Override
-	public List<String> search(String item) {
+	public List<String> search(String taxonomy,String elem) {
 		String queryString = "PREFIX rela: <http://taxonomy.org/relationship/> " +
 				"SELECT ?x " +
 				"WHERE {" +
-					"{<http://taxonomy/"+item+"> rela:childOf ?x }" +
+					"{<http://taxonomy/"+elem+"> rela:childOf ?x }" +
 					" UNION "+
-					"{ ?x rela:childOf <http://taxonomy/"+item+"> }" +
+					"{ ?x rela:childOf <http://taxonomy/"+elem+"> }" +
 				"} LIMIT 3";
 	    Query query = QueryFactory.create(queryString);
 
 	    // Execute the query and obtain results
-	    QueryExecution qe = QueryExecutionFactory.create(query, model);
-	    ResultSet results = qe.execSelect();
-	    
+	    Model model = models.get(taxonomy);
 	    List<String> result = new ArrayList<String>();
-	    if (results.hasNext()) {
-			while (results.hasNext()) {
-				//format name of "elem" from http://xxx/elem style to "elem"
-				String currentElem = results.next().getResource("x").toString().split("/")[3];
-				result.add(currentElem);
+	    if(model != null){
+		    QueryExecution qe = QueryExecutionFactory.create(query, model);
+		    ResultSet results = qe.execSelect();
+		    
+		    if (results.hasNext()) {
+				while (results.hasNext()) {
+					//format name of "elem" from http://xxx/elem style to "elem"
+					String currentElem = results.next().getResource("x").toString().split("/")[3];
+					result.add(currentElem);
+				}
 			}
-		}
+	    }
 		return result;
 	}
 }

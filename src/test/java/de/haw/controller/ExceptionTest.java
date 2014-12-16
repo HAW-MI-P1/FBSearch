@@ -36,7 +36,7 @@ public class ExceptionTest
         dbcontrol = new MockUpDBImpl();
         parser = new ParserImpl();
         detector = new DetectorImpl();
-        taxonomy = new TaxonomyImpl();
+        taxonomy = new TaxonomyImpl(Arrays.asList("place"));
         controller = new ControllerImpl(parser, wrapper, dbcontrol, detector, taxonomy);
 	}
 	
