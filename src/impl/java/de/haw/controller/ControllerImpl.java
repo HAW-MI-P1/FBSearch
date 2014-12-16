@@ -110,7 +110,7 @@ public class ControllerImpl implements Controller
 			try {
 				String item = lastRequestResult.getString(category);
 				item = item.substring(2, item.length() -2);
-				result = taxonomy.search(item);
+				result = taxonomy.search(category,item);
 			} catch (JSONException e) {}
         }
 		return result;
