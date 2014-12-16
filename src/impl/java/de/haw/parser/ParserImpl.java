@@ -67,7 +67,7 @@ public class ParserImpl implements Parser{
 		System.out.println("verbs: "+verbs);
 		jsons.add(Serializer.serializeSubject(subjects));
 		get_adverb_with_cooperate_verb(graph);
-		jsons.add(Serializer.keywordlist_to_json(verbs, containsWRB(subjects)));
+		jsons.add(Serializer.serializeVerbs(verbs, containsWRB(subjects)));
 		System.out.println("subjects: " + subjects);
 		jsons.add(Serializer.serializeConj(conjs));
 		return Serializer.mergeAll(jsons);
@@ -181,7 +181,7 @@ public class ParserImpl implements Parser{
 		SemgrexPattern semgrex = SemgrexPattern.compile(" {tag:/WP.*/}=A <</nsubj.*/ {tag:/VB.*/}=C ");
 		SemgrexMatcher matcher = semgrex.matcher(graph);
 
-		while(matcher.find()){
+		while(matcher.find()) {
 			IndexedWord nodeA = matcher.getNode("A");
 			IndexedWord nodeB = matcher.getNode("B");;
 
