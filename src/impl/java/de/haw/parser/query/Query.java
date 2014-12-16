@@ -43,13 +43,22 @@ public class Query {
 		this.selection = selection;
 	}
 	
+	public Selections getSelection() {
+		return selection;
+	}
+	
 	public void addAttribute(Attributes attribute, String value) {
 		List<String> values = attributeLists.get(attribute);
 		if (values == null) {
 			values = new LinkedList<String>();
 			attributeLists.put(attribute, values);
 		}
+		//TODO: check for double entries
 		values.add(value);
+	}
+	
+	public List<String> getAttribute(String attribute) {
+		return attributeLists.get(attribute);
 	}
 	
 	public boolean hasAttributes(Set<Attributes> attributes) {

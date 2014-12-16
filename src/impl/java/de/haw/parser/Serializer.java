@@ -1,6 +1,5 @@
 package de.haw.parser;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -8,19 +7,69 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import de.haw.parser.query.Attributes;
+import de.haw.parser.query.Conjunctions;
+import de.haw.parser.query.Query;
+import de.haw.parser.query.Selections;
 import edu.stanford.nlp.ling.IndexedWord;
-import edu.stanford.nlp.ling.MultiTokenTag.Tag;
 
 public class Serializer {
 
 
+	private static Map<Object,String> translateTable = new HashMap<Object, String>();
+	
 	static Dictionary dict=new Dictionary();
 
-
+	static {
+		createTranslateTable();
+	}
+	
+	private static void createTranslateTable() {
+		translateTable.put(Attributes.AGES, "age");
+		translateTable.put(Attributes.INTERESTS, "interests");
+		translateTable.put(Attributes.LOCATIONS, "location");
+		translateTable.put(Attributes.NAMES, "name");
+		translateTable.put(Conjunctions.AND, "and");
+		translateTable.put(Conjunctions.OR, "or");
+		translateTable.put(Selections.EVENT, "event");
+		translateTable.put(Selections.GROUP, "group");
+		translateTable.put(Selections.PAGE, "page");
+		translateTable.put(Selections.PLACE, "place");
+		translateTable.put(Selections.USER, "user");
+	}
+	
+	private static String translate(Object object) {
+		//TODO: throw exception if query part can't be translated
+		return translateTable.get(object);
+	}
+	
+	static JSONObject serializeQuery(Query query) {
+		JSONObject json = new JSONObject();
+		Attributes[] attributes = new Attributes[]{Attributes.AGES,
+				Attributes.INTERESTS, Attributes.LOCATIONS, Attributes.NAMES};
+		
+		try {
+			json.put("type", translate(query.getConjunction()));
+			json.put("operation", translate(query.getConjunction()));
+			for (Attributes attribute: attributes) {
+				String attrName = translate(attribute);
+				List<String> entries = query.getAttribute(attrName);
+				for (String entry: entries) {
+					json.append(attrName, entries);
+				}
+			}
+		}
+		catch(JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+			
+		return json;
+	}
+	
 	static JSONObject serializeVerbs(Map <IndexedWord, Set<IndexedWord>> keywords,
 			boolean wrb){
 		Map<String,Set<String>> prevJson=new HashMap<String,Set<String>>();
