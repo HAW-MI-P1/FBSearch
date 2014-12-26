@@ -75,7 +75,7 @@ public class Logger
         
         try
         {
-			writer.write(now + str);
+			writer.write(now + str + "\n");
 	        writer.flush();
 		}
         catch (IOException e)

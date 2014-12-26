@@ -14,13 +14,13 @@ public class TaxonomyTests {
 	
 	@Before
 	public void setup(){
-		taxonomy = new TaxonomyImpl();
+		taxonomy = new TaxonomyImpl(Arrays.asList("place"));
 	}
 	
 	@Test
 	public void testSearch(){
 		List<String> expResult = Arrays.asList("Deutschland", "Altona");
-		List<String> result = taxonomy.search("Hamburg");
+		List<String> result = taxonomy.search("place","Hamburg");
 		assertEquals(result,expResult);
 	}
 }

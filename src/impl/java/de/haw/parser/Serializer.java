@@ -21,7 +21,7 @@ public class Serializer {
 	static Dictionary dict=new Dictionary();
 
 
-	static JSONObject keywordlist_to_json(Map <IndexedWord, Set<IndexedWord>> keywords,
+	static JSONObject serializeVerbs(Map <IndexedWord, Set<IndexedWord>> keywords,
 			boolean wrb){
 		Map<String,Set<String>> prevJson=new HashMap<String,Set<String>>();
 

@@ -112,16 +112,21 @@ public class UserType extends Type {
 		return ResultType.User;
 	}
 
-	public UserType(String name, String first_name, String last_name) {
-		super();
+	public UserType(String id, String name) {
+		super(id);
+		this.name = name;
+	}
+
+	public UserType(String id, String name, String first_name, String last_name) {
+		super(id);
 		this.name = name;
 		this.first_name = first_name;
 		this.last_name = last_name;
 	}
 
-	public UserType(String name, String first_name, String last_name,
-			String link, String updated_time) {
-		super();
+	public UserType(String id, String name, String first_name,
+			String last_name, String link, String updated_time) {
+		super(id);
 		this.name = name;
 		this.first_name = first_name;
 		this.last_name = last_name;

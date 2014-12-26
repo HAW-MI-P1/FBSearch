@@ -26,19 +26,23 @@ import edu.stanford.nlp.util.CoreMap;
 
 public class ParserImpl implements Parser{
 	
+	private StanfordCoreNLP pipeline;
 	private Dictionary dict=new Dictionary();
-
-
-	@Override
-	public JSONObject parse(String naturalLanguage) {
-
+	
+	public ParserImpl(){
 		//create parsing toolchain
 		Properties props=new Properties();
 		//	props.put("pos.model", "edu/stanford/nlp/models/pos-tagger/english-left3words/english-left3words-distsim.tagger");
 		//	props.put("annotators","tokenize, ssplit, pos, lemma, ner, parse, dcoref");
 		props.put("pos.model", "edu/stanford/nlp/models/pos-tagger/english-left3words/english-left3words-distsim.tagger");
 		props.put("annotators","tokenize, ssplit, pos, lemma, parse");
-		StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
+		pipeline = new StanfordCoreNLP(props);
+	}
+
+	@Override
+	public JSONObject parse(String naturalLanguage) {
+
+
 
 		//Annotate String and initialize evaluation graph
 		Annotation annotation = new Annotation(naturalLanguage);
@@ -51,24 +55,22 @@ public class ParserImpl implements Parser{
 		SemanticGraph graph = SemanticGraphFactory.generateUncollapsedDependencies(tree);
 		//SemanticGraph graph = SemanticGraphFactory.generateCollapsedDependencies(tree);
 
-		//graph.prettyPrint();
-		
-		System.out.println(graph);
+		graph.prettyPrint();
 		
 		//get Information from the Tree
 		List<JSONObject> jsons=new ArrayList<>();
 
 		Map<IndexedWord, Set<IndexedWord>> verbs= get_full_verb_and_object(graph);
-		
+		if (verbs.isEmpty()) {
+			get_adverb_with_cooperate_verb(graph);
+		}
 		
 		Set<IndexedWord> subjects=getSubject(graph);
 		Set<IndexedWord> conjs=getConj(graph);
 
-		System.out.println("verbs: "+verbs);
+		jsons.add(Serializer.serializeVerbs(verbs, containsWRB(subjects)));
 		jsons.add(Serializer.serializeSubject(subjects));
 		get_adverb_with_cooperate_verb(graph);
-		jsons.add(Serializer.keywordlist_to_json(verbs, containsWRB(subjects)));
-		System.out.println("subjects: " + subjects);
 		jsons.add(Serializer.serializeConj(conjs));
 		return Serializer.mergeAll(jsons);
 	}
@@ -181,7 +183,7 @@ public class ParserImpl implements Parser{
 		SemgrexPattern semgrex = SemgrexPattern.compile(" {tag:/WP.*/}=A <</nsubj.*/ {tag:/VB.*/}=C ");
 		SemgrexMatcher matcher = semgrex.matcher(graph);
 
-		while(matcher.find()){
+		while(matcher.find()) {
 			IndexedWord nodeA = matcher.getNode("A");
 			IndexedWord nodeB = matcher.getNode("B");;
 
@@ -220,7 +222,7 @@ public class ParserImpl implements Parser{
 		if (subjects.isEmpty()) {
 			String nounPattern = "{tag:/NN.*/}=S1 ? >>nn {tag:/NN.*/}=S2 ? >>nn {tag:/NN.*/}=S3";
 			semgrex = SemgrexPattern.compile(
-					"[{tag:/JJ.*/}=adverb | {tag:/VB.*/}=verb]"
+					"[{tag:/JJ.*/}=adverb | {tag:/VBZ.*/}=verb]"
 					+ "[>>nsubj " + nounPattern + " | >>nsubjpass " + nounPattern + "]");
 			matcher = semgrex.matcher(graph);
 			while (matcher.find()) {
