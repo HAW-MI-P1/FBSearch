@@ -32,10 +32,10 @@ public class ParserImpl implements Parser{
 	public ParserImpl(){
 		//create parsing toolchain
 		Properties props=new Properties();
-		//	props.put("pos.model", "edu/stanford/nlp/models/pos-tagger/english-left3words/english-left3words-distsim.tagger");
-		//	props.put("annotators","tokenize, ssplit, pos, lemma, ner, parse, dcoref");
-		props.put("pos.model", "edu/stanford/nlp/models/pos-tagger/english-left3words/english-left3words-distsim.tagger");
-		props.put("annotators","tokenize, ssplit, pos, lemma, parse");
+			props.put("pos.model", "edu/stanford/nlp/models/pos-tagger/english-left3words/english-left3words-distsim.tagger");
+			props.put("annotators","tokenize, ssplit, pos, lemma, ner, parse, dcoref");
+		//props.put("pos.model", "edu/stanford/nlp/models/pos-tagger/english-left3words/english-left3words-distsim.tagger");
+		//props.put("annotators","tokenize, ssplit, pos, lemma, parse");
 		pipeline = new StanfordCoreNLP(props);
 	}
 
@@ -55,8 +55,8 @@ public class ParserImpl implements Parser{
 		SemanticGraph graph = SemanticGraphFactory.generateUncollapsedDependencies(tree);
 		//SemanticGraph graph = SemanticGraphFactory.generateCollapsedDependencies(tree);
 
-		graph.prettyPrint();
-		
+		//graph.prettyPrint();
+		System.out.println(graph);
 		//get Information from the Tree
 		List<JSONObject> jsons=new ArrayList<>();
 
@@ -65,16 +65,20 @@ public class ParserImpl implements Parser{
 			get_adverb_with_cooperate_verb(graph);
 		}
 		
+		Set<IndexedWord> question=getQuestionWord(graph);	
 		Set<IndexedWord> subjects=getSubject(graph);
 		Set<IndexedWord> conjs=getConj(graph);
-
-		jsons.add(Serializer.serializeVerbs(verbs, containsWRB(subjects)));
+			
+		jsons.add(Serializer.serializeQuestionWords(question));
+		jsons.add(Serializer.serializeVerbs(verbs, question.iterator().next()));
 		jsons.add(Serializer.serializeSubject(subjects));
 		get_adverb_with_cooperate_verb(graph);
 		jsons.add(Serializer.serializeConj(conjs));
 		return Serializer.mergeAll(jsons);
 	}
 	
+	
+	//TODO: Delete, not useful
 	private boolean containsWRB(Set<IndexedWord> subjects) 
 	{
 		boolean contains = false;
@@ -115,7 +119,6 @@ public class ParserImpl implements Parser{
 			additions.add(nodeObject);
 			adverbs.put(nodeAdverb, additions);
 		}
-		
 		return adverbs;
 	}
 	
@@ -129,7 +132,7 @@ public class ParserImpl implements Parser{
 	private Map<IndexedWord, Set<IndexedWord>> get_full_verb_and_object(SemanticGraph graph){
 
 
-		SemgrexPattern semgrex = SemgrexPattern.compile("{tag:/NN.*/}=object [<<pobj ({}=conj < {tag:/VB.*/}=verb)   | 1,3<<dobj {tag:/VB.*/}=verb ]");
+		SemgrexPattern semgrex = SemgrexPattern.compile("{tag:/NN.*/}=object [<<pobj ({}=conj < {tag:/VB.*/}=verb)   | 1,2<<dobj {tag:/VB.*/}=verb ]");
 		//SemgrexPattern semgrex = SemgrexPattern.compile("{tag:/NN.*/}=object [<pobj ({}< {tag:/VB.*/}=verb)  | <dobj ({tag:/VB.*/}=verb)  | <nn ({} <dobj {tag:/VB.*/}=verb) | <conj ({} <dobj {tag:/VB.*/}=verb) | <conj ( {#} > {tag:/VB.*/}=verb ) ]");
 
 		SemgrexMatcher matcher = semgrex.matcher(graph);
@@ -173,6 +176,22 @@ public class ParserImpl implements Parser{
 
 		return verbs;
 	}
+	
+	private Set<IndexedWord> getQuestionWord(SemanticGraph graph){
+		Set<IndexedWord> question=new HashSet<IndexedWord>();
+		
+			SemgrexPattern semgrex = SemgrexPattern.compile("{tag:/W.*/}=A");
+			SemgrexMatcher matcher = semgrex.matcher(graph);
+
+			while(matcher.find()) {
+				IndexedWord nodeA = matcher.getNode("A");
+
+				System.out.println("Question Word: "+nodeA);
+				question.add(nodeA);
+			}
+		
+		return question;
+	}
 
 	private Set<IndexedWord> getSubject(SemanticGraph graph){
 		//System.out.println("trying to get subject");
@@ -195,7 +214,7 @@ public class ParserImpl implements Parser{
 
 		if(subjects.isEmpty()){
 			//{tag:/WR.*/}=A <<advmod {tag:/VB.*/}=C )
-			semgrex = SemgrexPattern.compile(" {tag:/WR.*/}=A <<advmod {tag:/VB.*/}=C ");
+			semgrex = SemgrexPattern.compile(" {tag:/VB.*/}=C >>/auxpass | advmod/ {tag:/WR.*/}=A ?>>/nsubj.*/ {tag:/NN.*/}=B");
 			matcher = semgrex.matcher(graph);
 
 			while(matcher.find()){
@@ -206,7 +225,8 @@ public class ParserImpl implements Parser{
 				System.out.println("pradicate: "+nodeB);
 				 */
 				subjects.add(nodeA);
-			}
+				if(nodeB!=null) subjects.add(nodeB);
+		}
 		}
 
 		if( subjects.isEmpty()){
@@ -244,7 +264,8 @@ public class ParserImpl implements Parser{
 				//System.out.println("Subject: "+nodeA);
 				subjects.add(nodeA);
 			}
-		}			
+		}		
+		System.out.println("subjects: " + subjects);
 		return subjects;
 	}
 
