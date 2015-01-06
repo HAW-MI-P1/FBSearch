@@ -35,9 +35,7 @@ import de.haw.wrapper.Wrapper;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
+import java.util.*;
 
 /******************************************************************************
  *                              Class Definition                              *
@@ -147,11 +145,29 @@ public class ControllerImpl implements Controller
 			} catch (JSONException e) {}
             try {
                 String name = lastRequestResult.getString("name");
+                name = name.substring(2, name.length()-2);
                 Collection<String> synonyms = fuzzy.getSynonym(name, 0x01);
+                synonyms = clearSynonyms(synonyms);
                 result.addAll(synonyms);
             } catch (JSONException e2) {}
             catch (NullPointerException n) {}
         }
 		return result;
 	}
+
+    private Collection<String> clearSynonyms(Collection<String> synonyms){
+        Set<String> results = new HashSet<String>();
+        for(String s : synonyms){
+            s.toLowerCase();
+            results.add(s);
+        }
+        List<String> syn = new ArrayList<String>();
+        Iterator it = results.iterator();
+        for(int i = 3; i > 0; i--) {
+            if (it.hasNext()){
+                syn.add(it.next().toString());
+            }
+        }
+        return syn;
+    }
 }
