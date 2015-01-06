@@ -26,12 +26,12 @@ package de.haw.controller;
 import de.haw.app.Logger;
 import de.haw.db.DB;
 import de.haw.detector.Detector;
+import de.haw.fuzzy.Fuzzy;
 import de.haw.model.ComponentID;
 import de.haw.model.types.Type;
 import de.haw.parser.Parser;
 import de.haw.taxonomy.Taxonomy;
 import de.haw.wrapper.Wrapper;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -55,19 +55,21 @@ public class ControllerImpl implements Controller
     public DB       db;
     public Detector detector;
     public Taxonomy taxonomy;
+    public Fuzzy fuzzy;
     private JSONObject lastRequestResult = null;
     
 /******************************************************************************
  *                         Construction & Initialization                      
  *****************************************************************************/
 
-	public ControllerImpl(Parser parser, Wrapper wrapper, DB db, Detector detector, Taxonomy taxonomy)
+	public ControllerImpl(Parser parser, Wrapper wrapper, DB db, Detector detector, Taxonomy taxonomy, Fuzzy fuzzy)
 	{
 		this.parser   = parser;
 		this.wrapper = wrapper;
 		this.db       = db;
 		this.detector = detector;
 		this.taxonomy = taxonomy;
+        this.fuzzy = fuzzy;
 	}
 
 /******************************************************************************
@@ -90,7 +92,7 @@ public class ControllerImpl implements Controller
     }
 
 	@Override
-	public Collection<Type> searchExtended(int searchID, int parentSearchID, String naturalLanguage)
+	public Collection<Type> searchExtended(int searchID, int parentSearchID, String naturalLanguage, boolean searchPicture)
     {
         Logger.log("<searchExtended()>", ComponentID.Controller);
         
@@ -98,7 +100,9 @@ public class ControllerImpl implements Controller
         lastRequestResult = requests;
         Collection<Type> personsOfInterest = db      .load          (parentSearchID);
         Collection<Type> result            = wrapper.collectExtended(requests, personsOfInterest);
-                         result            = detectObject           (result, requests);
+        if(searchPicture) {
+            result            = detectObject           (result, requests);
+        }
                                              db      .save          (searchID, naturalLanguage, requests, result);
         
 		return result;
@@ -138,9 +142,15 @@ public class ControllerImpl implements Controller
         if(lastRequestResult != null){
 			try {
 				String item = lastRequestResult.getString(category);
-				item = item.substring(2, item.length() -2);
-				result = taxonomy.search(category,item);
+                item = item.substring(2, item.length() - 2);
+                result.addAll(taxonomy.search(category, item));
 			} catch (JSONException e) {}
+            try {
+                String name = lastRequestResult.getString("name");
+                Collection<String> synonyms = fuzzy.getSynonym(name, 0x01);
+                result.addAll(synonyms);
+            } catch (JSONException e2) {}
+            catch (NullPointerException n) {}
         }
 		return result;
 	}

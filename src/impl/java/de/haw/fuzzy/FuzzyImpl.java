@@ -1,21 +1,8 @@
 package de.haw.fuzzy;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.StringReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
+import de.haw.model.exception.ConnectionException;
+import de.haw.model.exception.IllegalArgumentException;
+import de.haw.model.exception.InternalErrorException;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,9 +12,13 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import de.haw.model.exception.ConnectionException;
-import de.haw.model.exception.IllegalArgumentException;
-import de.haw.model.exception.InternalErrorException;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.*;
 
 public class FuzzyImpl implements Fuzzy {
 	
@@ -52,26 +43,31 @@ public class FuzzyImpl implements Fuzzy {
 	private final String MODE_ALL      = "mode=all";
 	private final String DATATYPE_JSON = "format=application/json";
 	private final String DATATYPE_XML  = "format=text/xml";
-
-	
-	// Constructor
-	
-	public FuzzyImpl(){}
-
 	
 	// Public operations
-	
+
+    /**
+     *
+     * @param word to find synonyms for.
+     * @param opt set the type of fuzzy search. <br>
+     * 0x01: Search for synonym sets<br>
+     * 0x02: Search for similar words<br>
+     * 0x04: Search for substrings containing this words<br>
+     * 0x08: Search for the words at the beginning<br>
+     * 0x0F: Enable all search options<br>
+     * @return
+     */
 	@Override
-	public String[] getSynonym(String word, int opt) {
-		if( word == null || word.equals("") ){ throw new IllegalArgumentException("Illegal word: "  + word); }
+	public Collection<String> getSynonym(String word, int opt) {
+		if( word == null || word.equals("")){ throw new IllegalArgumentException("Illegal word: "  + word); }
 		
 		word = word.toLowerCase();
 		
 		// 1. translate English input to German
 		String[] r = translate(word,"en","de");
-		
+
 		// 2. find synonym
-		LinkedList<String> resList = new LinkedList<String>();
+        List<String> resList = new ArrayList<String>();
 		for(String w : r){
 			try{
 				this.targetURL = API_URL + "?q=" + this.makeUTF8(w);
@@ -97,9 +93,7 @@ public class FuzzyImpl implements Fuzzy {
 			System.out.println(string);
 		}
 		
-		String[] returnRes = new String[0];
-		
-		return resList.toArray(returnRes);
+		return resList;
 //		return this.getSynonymJSON(word, opt);
 		
 	}

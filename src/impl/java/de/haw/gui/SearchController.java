@@ -1,7 +1,5 @@
 package de.haw.gui;
 
-import java.util.Collection;
-
 import de.haw.controller.Controller;
 import de.haw.model.SearchHistory;
 import de.haw.model.exception.InternalErrorException;
@@ -11,8 +9,11 @@ import de.haw.model.types.Type;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+
+import java.util.Collection;
 
 public class SearchController {
 
@@ -26,6 +27,8 @@ public class SearchController {
     private Label searchHistoryLabel;
     @FXML
     private TextField filterTextField;
+    @FXML
+    private CheckBox checkPicture;
 
     public int searchID;
     private int parentSearchID;
@@ -64,6 +67,7 @@ public class SearchController {
 
         searchHistory.newHistory(searchString);
         showSearchHistory();
+        checkPicture.setDisable(false);
 
         try {
             int searchID = newSearchID();
@@ -92,11 +96,12 @@ public class SearchController {
     public void handleFilter() {
         String filterString = filterTextField.getText();
         ObservableList<Type> resultData = FXCollections.observableArrayList();
+        boolean searchPicture = checkPicture.isSelected();
 
         try{
             searchHistory.addHistoryStep(filterString);
             showSearchHistory();
-            resultData.addAll(controller.searchExtended(newSearchID(),parentSearchID,filterString));
+            resultData.addAll(controller.searchExtended(newSearchID(),parentSearchID,filterString,searchPicture));
             if(!resultData.isEmpty())showResults(resultData);
             else discardResultTable();
 

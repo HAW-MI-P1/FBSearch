@@ -19,6 +19,8 @@
 
 package de.haw.fuzzy;
 
+import java.util.Collection;
+
 /******************************************************************************
  *                              Class Definition                              *
  *****************************************************************************/
@@ -41,5 +43,5 @@ public interface Fuzzy
 	 * 0x0F: Enable all search options<br>
 	 * @return Array of all matches.<br>
 	 */
-	public String[] getSynonym(String word, int opt);
+	public Collection<String> getSynonym(String word, int opt);
 }
