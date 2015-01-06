@@ -4,6 +4,8 @@ import de.haw.db.DB;
 import de.haw.db.MockUpDBImpl;
 import de.haw.detector.Detector;
 import de.haw.detector.DetectorImpl;
+import de.haw.fuzzy.Fuzzy;
+import de.haw.fuzzy.FuzzyImpl;
 import de.haw.parser.Parser;
 import de.haw.parser.ParserImpl;
 import de.haw.taxonomy.Taxonomy;
@@ -28,6 +30,7 @@ public class ExceptionTest
     Detector detector;
     Taxonomy taxonomy;
     Controller controller;
+    Fuzzy fuzzy;
 
 	@Before
 	public void setUp()
@@ -37,7 +40,8 @@ public class ExceptionTest
         parser = new ParserImpl();
         detector = new DetectorImpl();
         taxonomy = new TaxonomyImpl(Arrays.asList("place"));
-        controller = new ControllerImpl(parser, wrapper, dbcontrol, detector, taxonomy);
+        fuzzy = new FuzzyImpl();
+        controller = new ControllerImpl(parser, wrapper, dbcontrol, detector, taxonomy, fuzzy);
 	}
 	
 	@After
@@ -64,7 +68,7 @@ public class ExceptionTest
 	{
         try
 		{
-            controller.searchExtended(1, 0, "lorem ipsum");
+            controller.searchExtended(1, 0, "lorem ipsum", false);
 		} 
 		catch (Exception e)
         {
