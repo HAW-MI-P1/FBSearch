@@ -1,13 +1,19 @@
 <rdf:RDF
     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-    xmlns:rela="http://taxonomy.org/relationship/" > 
+    xmlns:place="http://taxonomy.org/places/" > 
+  <rdf:Description rdf:about="http://taxonomy/Deutschland">
+    <place:title>Deutschland</place:title>
+  </rdf:Description>
   <rdf:Description rdf:about="http://taxonomy/Altona">
-    <rela:childOf rdf:resource="http://taxonomy/Hamburg"/>
+    <place:childOf rdf:resource="http://taxonomy/Hamburg"/>
+    <place:title>Altona</place:title>
   </rdf:Description>
   <rdf:Description rdf:about="http://taxonomy/Schleswig-Holstein">
-    <rela:childOf rdf:resource="http://taxonomy/Deutschland"/>
+    <place:childOf rdf:resource="http://taxonomy/Deutschland"/>
+    <place:title>Schleswig-Holstein</place:title>
   </rdf:Description>
   <rdf:Description rdf:about="http://taxonomy/Hamburg">
-    <rela:childOf rdf:resource="http://taxonomy/Deutschland"/>
+    <place:childOf rdf:resource="http://taxonomy/Deutschland"/>
+    <place:title>Hamburg</place:title>
   </rdf:Description>
 </rdf:RDF>

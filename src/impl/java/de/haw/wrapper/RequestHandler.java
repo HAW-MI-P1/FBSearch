@@ -149,8 +149,15 @@ public class RequestHandler {
 		JSONObject response = get(requestStr);
 		return response;
 	}
-
-	// TODO: what about event, group, page, location etc?
+	
+	/* Search for a page by name. */
+	public JSONObject searchForPage(String name) {
+		String requestStr = buildRequestStr("search", name, "page", userAccessToken);
+		JSONObject response = get(requestStr);
+		return response;
+	}
+	
+	// TODO: what about event, group, location etc?
 
 	public JSONObject get(String requestStr) {
 		JSONObject responseJSON = null;

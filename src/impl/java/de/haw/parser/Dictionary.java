@@ -14,6 +14,7 @@ public class Dictionary {
 	
 	//THIS IS JUST FOR GETTING STARTED...
 		//possible values for json:
+		String type="type";
 		String interests="interests";
 		String location="place";
 		String thing="page";
@@ -26,6 +27,8 @@ public class Dictionary {
 		static HashMap<String, String> verb_to_key = new HashMap<String, String>();
 		static HashMap<String, String> word_to_subject=new HashMap<String,String>();
 		static HashMap<String, String> word_to_Operation=new HashMap<String,String>();
+		static HashMap<String, String> qword_to_type=new HashMap<String,String>();
+		static HashMap<String, String> ners_to_description=new HashMap<String,String>();
 		private void fillMaps(){
 			verb_to_key.put("like", interests);
 			verb_to_key.put("have", interests);
@@ -78,6 +81,21 @@ public class Dictionary {
 			word_to_subject.put("wedding", event);
 			word_to_subject.put("confirmation", event);
 			word_to_subject.put("show", event);
+			
+			qword_to_type.put("who", person);
+			qword_to_type.put("where", location);
+			qword_to_type.put("which", thing);
+			
+			ners_to_description.put("location", location);
+			ners_to_description.put("person", name);
+			ners_to_description.put("organisation", thing);
+			ners_to_description.put("date", age);
+			
+			
+		}
+		
+		public String mapVerb(String str){
+			return verb_to_key.get(str.toLowerCase());
 		}
 		
 		public String mapSubject(String str){
@@ -88,5 +106,13 @@ public class Dictionary {
 			return word_to_Operation.get(str.toLowerCase());
 		}
 		
+		public String mapQuestionWord(String str){
+			return qword_to_type.get(str.toLowerCase());
+		}		
+		public String mapNer(String str){
+			return ners_to_description.get(str.toLowerCase());
+		}
+		
+
 
 }

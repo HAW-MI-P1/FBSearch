@@ -70,23 +70,43 @@ public class Serializer {
 		return json;
 	}
 	
-	static JSONObject serializeVerbs(Map <IndexedWord, Set<IndexedWord>> keywords,
-			boolean wrb){
+	static JSONObject serializeVerbs(Map <IndexedWord, Set<IndexedWord>> keywords, IndexedWord type){
 		Map<String,Set<String>> prevJson=new HashMap<String,Set<String>>();
+		System.out.println("keywords: "+ keywords);
+		for(Map.Entry<IndexedWord, Set<IndexedWord>> entry :keywords.entrySet()){
+		
+		// key = dict.mapQuestionWord(type.lemma()) ? dict.name :dict.mapVerb(entry.getKey().lemma());
+			System.out.println("type tag: "+type.tag());
+			
+	//		String key =  dict.mapVerb(entry.getKey().lemma())!=null ? dict.mapVerb(entry.getKey().lemma()) : dict.mapNer(entry.getValue().iterator().next().ner());
+			String key =  dict.mapNer(entry.getValue().iterator().next().ner())!=null ? dict.mapNer(entry.getValue().iterator().next().ner()): dict.mapVerb(entry.getKey().lemma());
 
-		for(Map.Entry<IndexedWord, Set<IndexedWord>> entry:keywords.entrySet()){
-			//TODO: There are for sure cases for which this solution is to simple
-			//FOR EXAMPLE: What about multiselects? e.g. Where lives Jane and who lives in Hamburg?!
-			String key = wrb ? dict.name
-					: dict.verb_to_key.get((entry.getKey()).lemma());
-			//		System.out.println("trying to find key: "+entry.getKey().lemma()+" with value "+ entry.getValue());
-			if(key != null){
-				Set<String> val = prevJson.get(key);
-				Set<String> val2=words_to_lemmas(entry.getValue());
-				//		System.out.println("lemmas: "+val2);
-				if(val != null)val2.addAll(val);
-				prevJson.put(key, val2);
-			}//TODO: ELSE: resparse for object
+			System.out.println("ner: "+entry.getValue().iterator().next().ner());
+			
+			String mappedVerb=dict.mapVerb(entry.getKey().lemma());
+			String mappedNer=dict.mapNer(entry.getValue().iterator().next().ner());
+			String mappedW=dict.mapQuestionWord(type.lemma());
+			
+			if(mappedVerb!=null && mappedNer!=null){
+				if(mappedVerb.equals(mappedNer)){
+					key=mappedVerb;
+				}
+				else if(mappedVerb.equals(dict.name) && mappedNer.equals(dict.location)){
+					key=dict.name;
+				}
+				else if(mappedVerb.equals(dict.location)&& mappedNer.equals(dict.name)){
+					key=dict.name;
+				}
+				else if(mappedVerb.equals(dict.interests)){
+					key=dict.interests;
+				}
+			}
+
+			Set<String> val = prevJson.get(key);
+			Set<String> val2=words_to_lemmas(entry.getValue());
+			System.out.println("adding criterias: "+val + " : "+val2);
+			if(val != null)val2.addAll(val);
+			prevJson.put(key, val2);
 
 		}
 
@@ -163,7 +183,21 @@ public class Serializer {
 
 		return json;
 	}
-
+	
+	
+	public static JSONObject serializeQuestionWords(Set<IndexedWord> question) {
+		JSONObject json=new JSONObject();
+		for(IndexedWord word: question){
+			try {
+				json.put(dict.type,dict.mapQuestionWord(word.lemma()));
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		// TODO Auto-generated method stub
+		return json;
+	}
 
 
 	static JSONObject mergeAll(List<JSONObject> list){
@@ -198,6 +232,10 @@ public class Serializer {
 
 		return json;
 	}
+
+
+
+
 
 
 

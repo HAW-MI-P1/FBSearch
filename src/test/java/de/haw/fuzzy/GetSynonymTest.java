@@ -1,9 +1,12 @@
 package de.haw.fuzzy;
 
-import static org.junit.Assert.*;
-
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.Collection;
+
+import static org.junit.Assert.fail;
 
 public class GetSynonymTest {
 	Fuzzy fuzzy;
@@ -15,9 +18,9 @@ public class GetSynonymTest {
 
 	@Test
 	public void testGetSynonym() {
-		String[] response = this.fuzzy.getSynonym("lion", 0x0F);
+		Collection<String> response = this.fuzzy.getSynonym("lion", 0x0F);
 
-		if(response.length <= 1){ fail(); }
+		if(response.size() <= 1){ fail(); }
 	}
 	
 	@Test
@@ -39,5 +42,11 @@ public class GetSynonymTest {
 		catch (Exception e) {}
 
 	}
+
+    @Test
+    public void testGetAllSynonymsForLion() {
+        Collection<String> synonyms = fuzzy.getSynonym("lion", 0x01);
+        Assert.assertEquals(13, synonyms.size());
+    }
 
 }

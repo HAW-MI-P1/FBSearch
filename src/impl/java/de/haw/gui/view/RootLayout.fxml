@@ -22,6 +22,7 @@
             <Label fx:id="searchHistoryLabel" alignment="TOP_LEFT" layoutX="17.0" layoutY="115.0" prefHeight="57.0" prefWidth="477.0" text="Search History..." />
             <TextField fx:id="filterTextField" layoutX="14.0" layoutY="183.0" onAction="#handleFilter" prefHeight="25.0" prefWidth="477.0" promptText="Filter..." />
             <Button fx:id="addFilterButton" layoutX="516.0" layoutY="183.0" mnemonicParsing="false" onAction="#handleFilter" prefHeight="25.0" prefWidth="72.0" text="Filter" />
+            <CheckBox fx:id="checkPicture" disable="true" layoutX="516.0" layoutY="155.0" mnemonicParsing="false" text="Picture" />
          </children>
       </Pane>
    </top>
