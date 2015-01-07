@@ -10,8 +10,8 @@ import de.haw.fuzzy.Fuzzy;
 import de.haw.fuzzy.FuzzyImpl;
 import de.haw.gui.GUI;
 import de.haw.gui.GUIImpl;
-import de.haw.parser.OldParserImpl;
 import de.haw.parser.Parser;
+import de.haw.parser.ParserImpl;
 import de.haw.taxonomy.Taxonomy;
 import de.haw.taxonomy.TaxonomyImpl;
 import de.haw.wrapper.Wrapper;
@@ -27,7 +27,7 @@ public class App {
     public static void main (String args[]){
         Wrapper wrapper = new WrapperImpl();
         DB dbcontrol = new MockUpDBImpl();
-        Parser parser = new OldParserImpl();
+        Parser parser = new ParserImpl();
         Detector detector = new DetectorImpl();
         Taxonomy taxonomy = new TaxonomyImpl(Arrays.asList("place"));
         Fuzzy fuzzy = new FuzzyImpl();
