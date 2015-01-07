@@ -193,119 +193,64 @@ public class ParserTest {
 
 	}
 	
-
 	@Test
-	@Ignore
-	public void testSentencesTodo() throws JSONException {
-		
-		JSONObject test14 = parser.parse("Where is Jane?");
-		
-		
-		
-		JSONObject test15 = parser.parse("How old is Jane?");
-		
-		/*
-		 * Here I think the trick is to rescan the objects word for
-		 * word and get a match from Festival=>event in the directory,
-		 * and further change query type from location (got earlier
-		 * from Where) to event.
-		 * 
-		 * But I still see the problem that in my opinion the end user
-		 * explicitly asks for a location with this question.
-		 */
+	public void Test15() throws JSONException {
+		JSONObject test15 = parser.parse("Where is Jane?");
+		System.out.println(test15);
+		assertTrue(test15.getString(type).equals(location));
+		assertTrue(getListFromJsonArray(test15.getJSONArray(name)).contains("Jane"));
+	}
+	
+	/**
+	 * TODO: FUER LUKAS
+	 * Hier koennte dann die Adverbsuche doch noch zum Einsatz kommen.
+	 * Naemlich dass das Adverb located dazu fuehrt, dass in Europe als Suchkriterium
+	 * benutzt wird.
+	 * @throws JSONException
+	 */
+	@Test
+	public void Test16() throws JSONException {
 		JSONObject test16 = parser.parse("Where is Wacken Festival located in Europe?");
 		System.out.println(test16);
-		test16 = parser.parse("Where is Wacken Festival located?");
-		
-		/*
-		 * Similar to the question 'Where is Wacken Festival located?'.
-		 * But now the dictionary scan of the subject brings type event
-		 * from the word demonstration.
-		 * 
-		 * The problem now is that now a query on any event had to be done.
-		 * So we should consider to support that the end user makes a time
-		 * constraint, like:
-		 * "When starts a demonstration at monday?"
-		 * 
-		 * DIESE FRAGE MACHT KEIN SINN SOLANGE WIR NICHT ALS TYPE EINEN ZEITPUNKT DEFNIEREN KÖNNEN
-		 * wir bräuchten sowas wie : 
-		 * 		type:Date 
-		 * -> haben wir bisher nicht genutzt. es reicht jedenfalls nicht es auf EVENT zu mappen, 
-		 * selbst wenn natürlich die FB-Gruppe für die Beantwortung der Frage das suchen müsste.
-		 */
-	//	JSONObject test17 = parser.parse("When starts a Demonstration?");
-	//	System.out.println(test17);
-		
-		
-		//JSONObject test14 = parser.parse("Where is Jane's home?");
-		//System.out.println(test14);
-		
-		/*
-		 * TODO:
-		 * Where is Jane's home? (genitiv => name, subject => type)
-		 */
+		assertTrue(test16.getString(type).equals("event"));
+		assertTrue(getListFromJsonArray(test16.getJSONArray(name)).contains("Wacken"));
+		assertTrue(getListFromJsonArray(test16.getJSONArray(name)).contains("Festival"));
+		assertTrue(getListFromJsonArray(test16.getJSONArray(location)).contains("Europe"));
+	}
+	
+	@Test
+	public void Test17() throws JSONException {
+		JSONObject test17 = parser.parse("Where is Wacken Festival located?");
+		System.out.println(test17);
+		assertTrue(test17.getString(type).equals("event"));
+		assertTrue(getListFromJsonArray(test17.getJSONArray(name)).contains("Wacken"));
+		assertTrue(getListFromJsonArray(test17.getJSONArray(name)).contains("Festival"));
+	}
 
-
-		
+	@Test
+	public void Test18() throws JSONException {
 		JSONObject test18 = parser.parse("Where is Jane placed?");
 		System.out.println(test18);
 		assertTrue(test18.getString(type).equals(location));
 		assertTrue(getListFromJsonArray(test18.getJSONArray(name)).contains("Jane"));
-		
-		
-		
-	//	JSONObject test15 = parser.parse("How old is Jane?");
-
-		
-		/*
-		 * Here I think the trick is to rescan the objects word for
-		 * word and get a match from Festival=>event in the directory,
-		 * and further change query type from location (got earlier
-		 * from Where) to event.
-		 * 
-		 * But I still see the problem that in my opinion the end user
-		 * explicitly asks for a location with this question.
-		 */
-		JSONObject test19 = parser.parse("Where is Wacken Festival located in Europe?");
-		System.out.println(test19);
-		assertTrue(test16.getString(type).equals(location));
-		assertTrue(getListFromJsonArray(test19.getJSONArray(name)).contains("Wacken"));
-		assertTrue(getListFromJsonArray(test19.getJSONArray(name)).contains("Festival"));
-		assertTrue(getListFromJsonArray(test19.getJSONArray(location)).contains("Europe"));
-		
-		
-		JSONObject test20 = parser.parse("Where is Wacken Festival located?");
-		System.out.println(test20);
-		assertTrue(test20.getString(type).equals(location));
-		assertTrue(getListFromJsonArray(test20.getJSONArray(name)).contains("Wacken"));
-		assertTrue(getListFromJsonArray(test20.getJSONArray(name)).contains("Festival"));
-		
-		/*
-		 * Similar to the question 'Where is Wacken Festival located?'.
-		 * But now the dictionary scan of the subject brings type event
-		 * from the word demonstration.
-		 * 
-		 * The problem now is that now a query on any event had to be done.
-		 * So we should consider to support that the end user makes a time
-		 * constraint, like:
-		 * "When starts a demonstration at monday?"
-		 */
-	
-		//	JSONObject test17 = parser.parse("When starts a Demonstration?");
-	//	System.out.println(test17);
-		
-		
-		//JSONObject test14 = parser.parse("Where is Jane's home?");
-		//System.out.println(test14);
-		
-		/*
-		 * TODO:
-		 * Where is Jane's home? (genitiv => name, subject => type)
-		 */
-		
 	}
 	
+	@Test
+	public void Test19() throws JSONException {
+		JSONObject test19 = parser.parse("Where is Jane's home?");
+		System.out.println(test19);
+		assertTrue(test19.getString(type).equals(location));
+		assertTrue(getListFromJsonArray(test19.getJSONArray(name)).contains("Jane"));
+	}	
 
+	@Test
+	public void Test20() throws JSONException {
+		JSONObject test20 = parser.parse("Which festival is named Wacken?");
+		System.out.println(test20);
+		assertTrue(test20.getString(type).equals("event"));
+		assertTrue(getListFromJsonArray(test20.getJSONArray(name)).contains("Wacken"));
+	}	
+	
 	List<String> getListFromJsonArray(JSONArray json) {
 		List<String> strings=new ArrayList<String>();
 		for(int i=0; i<json.length(); i++){
