@@ -24,11 +24,11 @@ public class SearchHistory {
 
     public void newHistory(String searchString) {
         searchStringList.clear();
-        searchStringList.add(searchString);
+        if(searchString != null && !searchString.isEmpty()) searchStringList.add(searchString);
     }
 
     public void addHistoryStep(String filterString) {
-        searchStringList.add(filterString);
+        if(filterString != null && !filterString.isEmpty()) searchStringList.add(filterString);
     }
 
     public String getLabelFormattedString() {
