@@ -10,5 +10,5 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({ControllerTests.class, DBTests.class, FuzzyTests.class, GeneralTests.class, ParserTests.class, WrapperTests.class })
+@SuiteClasses({SearchHistoryTests.class, ControllerTests.class, DBTests.class, FuzzyTests.class, GeneralTests.class, ParserTests.class, WrapperTests.class })
 public class AllTests {}
