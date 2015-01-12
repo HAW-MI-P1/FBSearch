@@ -6,6 +6,7 @@ import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
@@ -203,5 +204,11 @@ public class GUIImpl extends Application implements GUI {
             // Exception gets thrown if the fxml file could not be loaded
             e.printStackTrace();
         }
+    }
+
+    public void showNoResults() {
+        Node node = this.rootLayout.getCenter();
+        this.rootLayout.getChildren().remove(node); //<****Remove the node from children****>
+        this.rootLayout.setCenter(null);
     }
 }

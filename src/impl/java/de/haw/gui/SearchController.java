@@ -122,7 +122,9 @@ public class SearchController {
     }
 
     private void discardResultTable() {
-        //TODO: showno results!
+        GUIImpl.showNoResults();
+        showSearchHistory();
+        getAndSetRecommendations("place");
     }
 
 
