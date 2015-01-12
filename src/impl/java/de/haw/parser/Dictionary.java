@@ -14,15 +14,15 @@ public class Dictionary {
 	
 	//THIS IS JUST FOR GETTING STARTED...
 		//possible values for json:
-		String type="type";
-		String interests="interests";
-		String location="place";
-		String thing="page";
-		String name ="name";
-		String age="age";
-		String person="user";
-		String op="operation";
-		String event="event";
+		public final static String type="type";
+		public final static String interests="interests";
+		public final static String location="place";
+		public final static String thing="page";
+		public final static String name ="name";
+		public final static String age="age";
+		public final static String person="user";
+		public final static String op="operation";
+		public final static String event="event";
 		
 		static HashMap<String, String> verb_to_key = new HashMap<String, String>();
 		static HashMap<String, String> word_to_subject=new HashMap<String,String>();
@@ -37,6 +37,8 @@ public class Dictionary {
 			verb_to_key.put("place", location);
 			verb_to_key.put("name", name);
 			verb_to_key.put("call", name);
+			//Adverben
+			verb_to_key.put("located", location);
 			
 			word_to_subject.put("who",person);
 			word_to_subject.put("person",person);

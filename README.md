@@ -1,12 +1,13 @@
 <h1>Components and Responsabilities</h1>
-GUI: Daniel (Fenja)
-Controller: Hagen (René)
-API-Wrapper: Raimund (Lotte, Vitalij)
-Parser: Lukas (Nora)
-DB-Controller: Florian
-Bildabgleich: René (Hagen)
-Ontologie: Fenja (Daniel)
-Fuzzy: Florian
+GUI: Fenja (Daniel)<br>
+Controller: Hagen (René)<br>
+API-Wrapper: Raimund (Lotte, Vitalij)<br>
+Parser: Lukas (Nora)<br>
+DB-Controller: Florian<br>
+Bildabgleich: René (Hagen)<br>
+Taxonomy: Daniel (Fenja)<br>
+Fuzzy: Florian<br>
+QoS: Matthies (Vitalij)
 
 
 <h1>Short import for different IDEs</h1>
@@ -54,6 +55,10 @@ Note: Eventually you should clean and refresh the imported project or right clic
 <li>Connect to facebook</li>
 <li>Get your fabulous news feed!</li>
 </ol>
+
+<h1>How to make Image Detector work</h1>
+This only works for Windows at the moment.
+Add lib/OpenCV-3.0.0BETA/opencv-300.jar to the project-library
 
 <h1>How to setup DB-Controller</h1>
 <ol>

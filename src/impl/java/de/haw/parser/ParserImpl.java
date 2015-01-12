@@ -3,7 +3,6 @@ package de.haw.parser;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -41,9 +40,6 @@ public class ParserImpl implements Parser{
 
 	@Override
 	public JSONObject parse(String naturalLanguage) {
-
-
-
 		//Annotate String and initialize evaluation graph
 		Annotation annotation = new Annotation(naturalLanguage);
 		pipeline.annotate(annotation);
@@ -61,9 +57,7 @@ public class ParserImpl implements Parser{
 		List<JSONObject> jsons=new ArrayList<>();
 
 		Map<IndexedWord, Set<IndexedWord>> verbs= get_full_verb_and_object(graph);
-		if (verbs.isEmpty()) {
-			get_adverb_with_cooperate_verb(graph);
-		}
+		Map<IndexedWord, Set<IndexedWord>> adverbs = get_adverb_with_prop(graph);
 		
 		Set<IndexedWord> question=getQuestionWord(graph);	
 		Set<IndexedWord> subjects=getSubject(graph);
@@ -71,8 +65,8 @@ public class ParserImpl implements Parser{
 			
 		jsons.add(Serializer.serializeQuestionWords(question));
 		jsons.add(Serializer.serializeVerbs(verbs, question.iterator().next()));
+		jsons.add(Serializer.serializeAdverbs(adverbs));
 		jsons.add(Serializer.serializeSubject(subjects));
-		get_adverb_with_cooperate_verb(graph);
 		jsons.add(Serializer.serializeConj(conjs));
 		return Serializer.mergeAll(jsons);
 	}
@@ -95,7 +89,7 @@ public class ParserImpl implements Parser{
 	/**
 	 * @return all adverbs with and corresponding prepositional object(s)
 	 */
-	private Map<IndexedWord, Set<IndexedWord>> get_adverb_with_cooperate_verb(SemanticGraph graph) {
+	private Map<IndexedWord, Set<IndexedWord>> get_adverb_with_prop(SemanticGraph graph) {
 		SemgrexPattern semgrex = SemgrexPattern.compile(
 				"{tag:/JJ.*/}=adverb [>>cop {tag:/VB.*/}=verb & ? >>pobj ({tag:/NN.*/}=object)]");
 		SemgrexMatcher matcher = semgrex.matcher(graph);
@@ -116,7 +110,9 @@ public class ParserImpl implements Parser{
 			if (additions == null) {
 				additions = new HashSet<IndexedWord>();
 			}
-			additions.add(nodeObject);
+			if (nodeObject != null) {
+				additions.add(nodeObject);
+			}
 			adverbs.put(nodeAdverb, additions);
 		}
 		return adverbs;
@@ -282,4 +278,5 @@ public class ParserImpl implements Parser{
 		//System.out.println("found conjunctions: "+ conjs);
 		return conjs;
 	}
+	
 }

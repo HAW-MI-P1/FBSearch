@@ -1,6 +1,5 @@
 package de.haw.parser;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -8,19 +7,38 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import edu.stanford.nlp.ling.IndexedWord;
-import edu.stanford.nlp.ling.MultiTokenTag.Tag;
 
 public class Serializer {
 
-
+	private static Map<Object,String> translateTable = new HashMap<Object, String>();
+	
 	static Dictionary dict=new Dictionary();
 
-
+	static JSONObject serializeAdverbs(Map<IndexedWord, Set<IndexedWord>> adverbs) {
+		JSONObject json = new JSONObject();
+		
+		for (IndexedWord adverb: adverbs.keySet()) {
+			String key = dict.mapVerb(adverb.lemma());
+			
+			if (key != null) {
+				for (IndexedWord prop: adverbs.get(adverb)) {
+					try {
+						json.append(key, prop.lemma());
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+		
+		return json;
+	}
+	
 	static JSONObject serializeVerbs(Map <IndexedWord, Set<IndexedWord>> keywords, IndexedWord type){
 		Map<String,Set<String>> prevJson=new HashMap<String,Set<String>>();
 		System.out.println("keywords: "+ keywords);
@@ -82,8 +100,6 @@ public class Serializer {
 		return json; 
 
 	}
-
-
 
 	static JSONObject serializeSubject(Set<IndexedWord> set){
 		JSONObject json=new JSONObject();
