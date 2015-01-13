@@ -1,7 +1,9 @@
 package de.haw.wrapper;
 
+import de.haw.model.WebPicture;
 import de.haw.model.types.Type;
 import de.haw.model.types.UserType;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -98,8 +100,8 @@ public class WrapperImpl implements Wrapper {
 		return resultData;
 	}
 
-	public List<URL> getPicturesForPersons(Collection<Type> personsOfInterest) {
-		List<URL> result = new ArrayList<URL>();
+	public List<WebPicture> getPicturesForPersons(Collection<Type> personsOfInterest) {
+		List<WebPicture> result = new ArrayList<WebPicture>();
 		StringBuilder userIDs = new StringBuilder();
 		int count = 0;
 		for (Type p : personsOfInterest) {
@@ -126,7 +128,7 @@ public class WrapperImpl implements Wrapper {
 			try {
 				JSONObject user = response.getJSONObject(key);
 				JSONObject data = user.getJSONObject("data");
-				result.add(new URL(data.getString("url")));
+				result.add(new WebPicture(new URL(data.getString("url"))));
 			} catch (JSONException | MalformedURLException e) {
 				System.out.println("no picture for: " + key);
 			}

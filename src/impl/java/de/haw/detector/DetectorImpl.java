@@ -24,7 +24,6 @@ package de.haw.detector;
  *****************************************************************************/
 
 import java.io.*;
-import java.net.URL;
 import java.util.*;
 
 import org.opencv.imgcodecs.*;
@@ -32,9 +31,9 @@ import org.opencv.imgproc.*;
 import org.opencv.core.*;
 import org.opencv.core.Core.*;
 
-import de.haw.model.Person;
 import de.haw.model.WebPicture;
 import de.haw.model.types.Type;
+import de.haw.model.types.UserType;
 
 /******************************************************************************
  *                              Class Definition                              *
@@ -80,14 +79,14 @@ public class DetectorImpl implements Detector
 		{
 			for (Type personType : result) 
 			{
-				Person person = (Person) personType;
+				UserType person = (UserType) personType;
 				
 				boolean foundObjectForPerson = false;
 				
-				// image loop
-				for (URL url : person.getPictures()) 
+				// loop through all pictures
+				for (WebPicture picture : person.getPictures()) 
 				{
-					boolean objectFound = this.findObjectInImage(new WebPicture(url), objectName);
+					boolean objectFound = this.findObjectInImage(picture, objectName);
 					if(objectFound)
 					{
 						foundObjectForPerson = true;

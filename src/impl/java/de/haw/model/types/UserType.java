@@ -18,6 +18,11 @@
  *****************************************************************************/
 package de.haw.model.types;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import de.haw.model.WebPicture;
+
 /******************************************************************************
  *                                 Imports                                    *
  *****************************************************************************/
@@ -37,6 +42,7 @@ public class UserType extends Type {
 	private String updated_time;
 	private boolean is_silhouette;
 	private String uri;
+	private List<WebPicture> pictures = new ArrayList<WebPicture>();
 
 	/******************************************************************************
 	 * Getter / Setter *
@@ -98,6 +104,14 @@ public class UserType extends Type {
 		this.uri = uri;
 	}
 
+	public List<WebPicture> getPictures() {
+		return pictures;
+	}
+
+	public void setPictures(List<WebPicture> pictures) {
+		this.pictures = pictures;
+	}
+
 	/******************************************************************************
 	 * Construction & Initialization *
 	 *****************************************************************************/
@@ -137,5 +151,10 @@ public class UserType extends Type {
 	/******************************************************************************
 	 * Public Methods *
 	 *****************************************************************************/
-
+	
+	public void addPicture(WebPicture picture)
+	{
+		pictures.add(picture);
+	}
+	
 }
