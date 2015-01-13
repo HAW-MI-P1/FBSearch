@@ -30,36 +30,59 @@ public class TaxonomyTests {
         assertEquals(expResult, result);
 
         expResult = new ArrayList<String>();
-        result = taxonomy.search(null, "Altona");
-        assertEquals(expResult, result);
-
-        expResult = new ArrayList<String>();
-        result = taxonomy.search("place", null);
-        assertEquals(expResult, result);
-
-        expResult = new ArrayList<String>();
-        result = taxonomy.search(null, null);
-        assertEquals(expResult, result);
-
-        expResult = new ArrayList<String>();
-        result = taxonomy.search("", "Altona");
-        assertEquals(expResult, result);
-
-        expResult = new ArrayList<String>();
-        result = taxonomy.search("place", "");
-        assertEquals(expResult, result);
-
-        expResult = new ArrayList<String>();
-        result = taxonomy.search("", "");
-        assertEquals(expResult, result);
-
-        expResult = new ArrayList<String>();
         result = taxonomy.search("place", "a");
         assertEquals(expResult, result);
     }
 
-    @Test(expected = org.apache.jena.riot.RiotNotFoundException.class)
-    public void fileMissing() throws org.apache.jena.riot.RiotNotFoundException {
+    @Test(expected = de.haw.model.exception.IllegalArgumentException.class)
+    public void NullPointerArgs() {
+        List<String> expResult = new ArrayList<String>();
+        List<String> result = taxonomy.search(null, null);
+        assertEquals(expResult, result);
+    }
+
+    @Test(expected = de.haw.model.exception.IllegalArgumentException.class)
+    public void NullPointerArg1() {
+        List<String> expResult = new ArrayList<String>();
+        List<String> result = taxonomy.search(null, "Altona");
+        assertEquals(expResult, result);
+    }
+
+    @Test(expected = de.haw.model.exception.IllegalArgumentException.class)
+    public void NullPointerArg2() {
+        List<String> expResult = new ArrayList<String>();
+        List<String> result = taxonomy.search("place", null);
+        assertEquals(expResult, result);
+    }
+
+    @Test(expected = de.haw.model.exception.IllegalArgumentException.class)
+    public void EmptyArgs() {
+        List<String> expResult = new ArrayList<String>();
+        List<String> result = taxonomy.search("", "");
+        assertEquals(expResult, result);
+    }
+
+    @Test(expected = de.haw.model.exception.IllegalArgumentException.class)
+    public void EmptyArg1() {
+        List<String> expResult = new ArrayList<String>();
+        List<String> result = taxonomy.search("", "Altona");
+        assertEquals(expResult, result);
+    }
+
+    @Test(expected = de.haw.model.exception.IllegalArgumentException.class)
+    public void EmptyArg2() {
+        List<String> expResult = new ArrayList<String>();
+        List<String> result = taxonomy.search("place", "");
+        assertEquals(expResult, result);
+    }
+
+    @Test(expected = de.haw.model.exception.IllegalArgumentException.class)
+    public void FileMissing() {
         taxonomy = new TaxonomyImpl(Arrays.asList("fasdf"));
+    }
+
+    @Test(expected = de.haw.model.exception.IllegalArgumentException.class)
+    public void InitNullPointer() {
+        taxonomy = new TaxonomyImpl(null);
     }
 }
