@@ -56,6 +56,11 @@ public class ParserTest {
         JSONObject test01=parser.parse("fasdfhaks djfnlkjadfg");
     }
 
+    @Test(expected = de.haw.model.exception.IllegalArgumentException.class)
+    public void TestPartlyTypoInput() {
+        JSONObject test01=parser.parse("Who djfnlkjadfg");
+    }
+
     @Test
 	public void Test01() throws JSONException{
 		JSONObject test01=parser.parse("Who likes dogs?");
