@@ -35,8 +35,28 @@ public class ParserTest {
 
 
 	}
-	
-	@Test
+
+    @Test(expected = de.haw.model.exception.IllegalArgumentException.class)
+    public void TestEmpty() {
+        parser.parse("");
+    }
+
+    @Test(expected = de.haw.model.exception.IllegalArgumentException.class)
+    public void TestNullPointer() {
+        JSONObject test01=parser.parse(null);
+    }
+
+    @Test(expected = de.haw.model.exception.IllegalArgumentException.class)
+    public void TestTypoInput() {
+        JSONObject test01=parser.parse("fasdfhaksdjfnlkjadfg");
+    }
+
+    @Test(expected = de.haw.model.exception.IllegalArgumentException.class)
+    public void TestTypoInput2() {
+        JSONObject test01=parser.parse("fasdfhaks djfnlkjadfg");
+    }
+
+    @Test
 	public void Test01() throws JSONException{
 		JSONObject test01=parser.parse("Who likes dogs?");
 		System.out.println("json:"+test01.toString());
