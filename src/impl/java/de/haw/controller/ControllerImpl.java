@@ -57,7 +57,7 @@ public class ControllerImpl implements Controller
     private JSONObject lastRequestResult = null;
     
 /******************************************************************************
- *                         Construction & Initialization                      
+ *                         Construction & Initialization                      *
  *****************************************************************************/
 
 	public ControllerImpl(Parser parser, Wrapper wrapper, DB db, Detector detector, Taxonomy taxonomy, Fuzzy fuzzy)
