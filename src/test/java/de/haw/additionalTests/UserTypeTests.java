@@ -1,4 +1,4 @@
-package de.haw;
+package de.haw.additionalTests;
 
 import de.haw.model.types.Type;
 import de.haw.model.types.UserType;
@@ -14,7 +14,7 @@ import static junit.framework.Assert.assertNotSame;
 /**
  * Created by Fenja on 15.12.2014.
  */
-public class GeneralTests {
+public class UserTypeTests {
 
     /*
     Two Types are equal, if there ID is equal

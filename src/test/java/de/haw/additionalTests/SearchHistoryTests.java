@@ -1,4 +1,4 @@
-package de.haw;
+package de.haw.additionalTests;
 
 import de.haw.model.SearchHistory;
 import org.junit.Test;
