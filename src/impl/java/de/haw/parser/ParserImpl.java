@@ -10,6 +10,7 @@ import java.util.Set;
 
 import org.json.JSONObject;
 
+import de.haw.model.exception.IllegalArgumentException;
 import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.ling.IndexedWord;
 import edu.stanford.nlp.pipeline.Annotation;
@@ -40,6 +41,11 @@ public class ParserImpl implements Parser{
 
 	@Override
 	public JSONObject parse(String naturalLanguage) {
+		if ((naturalLanguage == null) ||
+				(naturalLanguage.equals(""))) {
+			throw new de.haw.model.exception.IllegalArgumentException("Please specify a search term");
+		}
+ 		
 		//Annotate String and initialize evaluation graph
 		Annotation annotation = new Annotation(naturalLanguage);
 		pipeline.annotate(annotation);
@@ -62,28 +68,27 @@ public class ParserImpl implements Parser{
 		Set<IndexedWord> question=getQuestionWord(graph);	
 		Set<IndexedWord> subjects=getSubject(graph);
 		Set<IndexedWord> conjs=getConj(graph);
-			
+		
 		jsons.add(Serializer.serializeQuestionWords(question));
-		jsons.add(Serializer.serializeVerbs(verbs, question.iterator().next()));
+		
+		IndexedWord type = null;
+		if ((question.iterator() != null) && question.iterator().hasNext()) {
+			type = question.iterator().next();
+		}
+		
+		jsons.add(Serializer.serializeVerbs(verbs, type));
 		jsons.add(Serializer.serializeAdverbs(adverbs));
 		jsons.add(Serializer.serializeSubject(subjects));
 		jsons.add(Serializer.serializeConj(conjs));
-		return Serializer.mergeAll(jsons);
-	}
-	
-	
-	//TODO: Delete, not useful
-	private boolean containsWRB(Set<IndexedWord> subjects) 
-	{
-		boolean contains = false;
+		JSONObject finalJSON = Serializer.mergeAll(jsons);
 		
-		for (IndexedWord subject: subjects) {
-			if (subject.tag().equals("WRB")) {
-				contains = true;
-			}
+		if (!finalJSON.has(Dictionary.type)
+				|| !(finalJSON.has(Dictionary.age) || finalJSON.has(Dictionary.interests)
+						|| finalJSON.has(Dictionary.location) || finalJSON.has(Dictionary.name))) {
+			throw new IllegalArgumentException("incomplete search term");
 		}
 		
-		return contains;
+		return finalJSON;
 	}
 	
 	/**

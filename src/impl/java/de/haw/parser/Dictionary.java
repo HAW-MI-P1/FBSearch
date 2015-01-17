@@ -96,22 +96,22 @@ public class Dictionary {
 			
 		}
 		
-		public String mapVerb(String str){
+		public String mapVerb(String str) {
 			return verb_to_key.get(str.toLowerCase());
 		}
 		
-		public String mapSubject(String str){
+		public String mapSubject(String str) {
 			return word_to_subject.get(str.toLowerCase());
 		}
 		
-		public String mapOperation(String str){
+		public String mapOperation(String str) {
 			return word_to_Operation.get(str.toLowerCase());
 		}
 		
-		public String mapQuestionWord(String str){
+		public String mapQuestionWord(String str) {
 			return qword_to_type.get(str.toLowerCase());
 		}		
-		public String mapNer(String str){
+		public String mapNer(String str) {
 			return ners_to_description.get(str.toLowerCase());
 		}
 		

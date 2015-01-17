@@ -39,7 +39,7 @@ public class Serializer {
 		return json;
 	}
 	
-	static JSONObject serializeVerbs(Map <IndexedWord, Set<IndexedWord>> keywords, IndexedWord type){
+	static JSONObject serializeVerbs(Map <IndexedWord, Set<IndexedWord>> keywords, IndexedWord type) {
 		Map<String,Set<String>> prevJson=new HashMap<String,Set<String>>();
 		System.out.println("keywords: "+ keywords);
 		for(Map.Entry<IndexedWord, Set<IndexedWord>> entry :keywords.entrySet()){
@@ -101,7 +101,7 @@ public class Serializer {
 
 	}
 
-	static JSONObject serializeSubject(Set<IndexedWord> set){
+	static JSONObject serializeSubject(Set<IndexedWord> set) {
 		JSONObject json=new JSONObject();
 		//	Set<String> words=words_to_lemmas(set);
 
