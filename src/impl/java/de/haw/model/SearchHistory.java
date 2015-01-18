@@ -2,6 +2,8 @@ package de.haw.model;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import de.haw.model.exception.IllegalArgumentException;
+
 
 /**
  * Created by Fenja on 26.10.2014.
@@ -15,6 +17,7 @@ public class SearchHistory {
     }
 
     public SearchHistory(ObservableList<String> list){
+    	if(list == null) throw new IllegalArgumentException("list null");
         this.searchStringList = list;
     }
 
@@ -24,11 +27,19 @@ public class SearchHistory {
 
     public void newHistory(String searchString) {
         searchStringList.clear();
-        if(searchString != null && !searchString.isEmpty()) searchStringList.add(searchString);
+        if(searchString != null && !searchString.isEmpty()){
+        	searchStringList.add(searchString);
+        } else {
+        	throw new IllegalArgumentException("search string parameter empty or null");
+        }
     }
 
     public void addHistoryStep(String filterString) {
-        if(filterString != null && !filterString.isEmpty()) searchStringList.add(filterString);
+        if(filterString != null && !filterString.isEmpty()){
+        	searchStringList.add(filterString);
+        } else {
+        	throw new IllegalArgumentException("search string parameter empty or null");
+        }
     }
 
     public String getLabelFormattedString() {
