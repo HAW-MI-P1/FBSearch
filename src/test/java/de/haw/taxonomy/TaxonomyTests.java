@@ -28,6 +28,10 @@ public class TaxonomyTests {
         expResult = Arrays.asList("Hamburg");
         result = taxonomy.search("place","Altona");
         assertEquals(expResult, result);
+        
+        expResult = Arrays.asList("Hamburg");
+        result = taxonomy.search("place","altona");
+        assertEquals(expResult, result);
 
         expResult = new ArrayList<String>();
         result = taxonomy.search("place", "a");

@@ -45,6 +45,7 @@ public class TaxonomyImpl implements Taxonomy{
 	@Override
 	public List<String> search(String taxonomy,String elem) {
 		if(taxonomy == null || elem == null || taxonomy.isEmpty() || elem.isEmpty()) throw new IllegalArgumentException("An input parameter is empty or null");
+		elem = Character.toUpperCase(elem.charAt(0)) + elem.substring(1); //first char always upper-case character
 		String queryString = "PREFIX "+taxonomy+": <http://taxonomy.org/"+taxonomy+"s/> " +
 				"SELECT ?name " +
 				"WHERE {" +
@@ -52,7 +53,7 @@ public class TaxonomyImpl implements Taxonomy{
 					"?x "+taxonomy+":title ?name .}" +
 					" UNION "+
 					"{ ?x "+taxonomy+":childOf <http://taxonomy/"+elem+"> ." +
-					"?x "+taxonomy+":title ?name .}" +
+					"?x "+taxonomy+":title ?name .}"+
 				"}";
 	    Query query = QueryFactory.create(queryString);
 
