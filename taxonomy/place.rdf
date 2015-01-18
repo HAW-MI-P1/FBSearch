@@ -1,19 +1,143 @@
-<rdf:RDF
+﻿<rdf:RDF
     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
     xmlns:place="http://taxonomy.org/places/" > 
   <rdf:Description rdf:about="http://taxonomy/Deutschland">
     <place:title>Deutschland</place:title>
   </rdf:Description>
-  <rdf:Description rdf:about="http://taxonomy/Altona">
-    <place:childOf rdf:resource="http://taxonomy/Hamburg"/>
-    <place:title>Altona</place:title>
-  </rdf:Description>
   <rdf:Description rdf:about="http://taxonomy/Schleswig-Holstein">
     <place:childOf rdf:resource="http://taxonomy/Deutschland"/>
     <place:title>Schleswig-Holstein</place:title>
   </rdf:Description>
+  <rdf:Description rdf:about="http://taxonomy/Mecklenburg-Vorpommern">
+    <place:childOf rdf:resource="http://taxonomy/Deutschland"/>
+    <place:title>Mecklenburg-Vorpommern</place:title>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://taxonomy/Bremen">
+    <place:childOf rdf:resource="http://taxonomy/Deutschland"/>
+    <place:title>Bremen</place:title>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://taxonomy/Niedersachen">
+    <place:childOf rdf:resource="http://taxonomy/Deutschland"/>
+    <place:title>Niedersachen</place:title>
+  </rdf:Description>
+	  <rdf:Description rdf:about="http://taxonomy/Hannover">
+	  	<place:childOf rdf:resource="http://taxonomy/Niedersachen"/>
+	    <place:title>Hannover</place:title>
+	  </rdf:Description>
+  <rdf:Description rdf:about="http://taxonomy/Brandenburg">
+    <place:childOf rdf:resource="http://taxonomy/Deutschland"/>
+    <place:title>Brandenburg</place:title>
+  </rdf:Description>
+	  <rdf:Description rdf:about="http://taxonomy/Potsdam">
+	  	<place:childOf rdf:resource="http://taxonomy/Brandenburg"/>
+	    <place:title>Potsdam</place:title>
+	  </rdf:Description>
+  <rdf:Description rdf:about="http://taxonomy/Berlin">
+    <place:childOf rdf:resource="http://taxonomy/Deutschland"/>
+    <place:title>Berlin</place:title>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://taxonomy/Sachsen-Anhalt">
+    <place:childOf rdf:resource="http://taxonomy/Deutschland"/>
+    <place:title>Sachsen-Anhalt</place:title>
+  </rdf:Description>
+	  <rdf:Description rdf:about="http://taxonomy/Magdeburg">
+	    <place:childOf rdf:resource="http://taxonomy/Sachsen-Anhalt"/>
+	    <place:title>Magdeburg</place:title>
+	  </rdf:Description>
+  <rdf:Description rdf:about="http://taxonomy/Nordrhein-Westfalen">
+    <place:childOf rdf:resource="http://taxonomy/Deutschland"/>
+    <place:title>Nordrhein-Westfalen</place:title>
+  </rdf:Description>
+	  <rdf:Description rdf:about="http://taxonomy/Düsseldorf">
+	    <place:childOf rdf:resource="http://taxonomy/Nordrhein-Westfalen"/>
+	    <place:title>Düsseldorf</place:title>
+	  </rdf:Description>
+  <rdf:Description rdf:about="http://taxonomy/Hessen">
+    <place:childOf rdf:resource="http://taxonomy/Deutschland"/>
+    <place:title>Hessen</place:title>
+  </rdf:Description>
+	  <rdf:Description rdf:about="http://taxonomy/Wiesbaden">
+	    <place:childOf rdf:resource="http://taxonomy/Hessen"/>
+	    <place:title>Wiesbaden</place:title>
+	  </rdf:Description>
+  <rdf:Description rdf:about="http://taxonomy/Thüringen">
+    <place:childOf rdf:resource="http://taxonomy/Deutschland"/>
+    <place:title>Thüringen</place:title>
+  </rdf:Description>
+	  <rdf:Description rdf:about="http://taxonomy/Erfurt">
+	    <place:childOf rdf:resource="http://taxonomy/Thüringen"/>
+	    <place:title>Erfurt</place:title>
+	  </rdf:Description>
+  <rdf:Description rdf:about="http://taxonomy/Sachsen">
+    <place:childOf rdf:resource="http://taxonomy/Deutschland"/>
+    <place:title>Sachsen</place:title>
+  </rdf:Description>
+	  <rdf:Description rdf:about="http://taxonomy/Dresden">
+		<place:childOf rdf:resource="http://taxonomy/Sachsen"/>
+		<place:title>Dresden</place:title>
+	  </rdf:Description>
+  <rdf:Description rdf:about="http://taxonomy/Rheinland-Pfalz">
+    <place:childOf rdf:resource="http://taxonomy/Deutschland"/>
+    <place:title>Rheinland-Pfalz</place:title>
+  </rdf:Description>
+	  <rdf:Description rdf:about="http://taxonomy/Mainz">
+		<place:childOf rdf:resource="http://taxonomy/Rheinland-Pfalz"/>
+		<place:title>Mainz</place:title>
+	  </rdf:Description>
+  <rdf:Description rdf:about="http://taxonomy/Saarland">
+    <place:childOf rdf:resource="http://taxonomy/Deutschland"/>
+    <place:title>Saarland</place:title>
+  </rdf:Description>
+	  <rdf:Description rdf:about="http://taxonomy/Saarbrücken">
+		<place:childOf rdf:resource="http://taxonomy/Saarland"/>
+		<place:title>Saarbrücken</place:title>
+	  </rdf:Description>
+  <rdf:Description rdf:about="http://taxonomy/Bayern">
+    <place:childOf rdf:resource="http://taxonomy/Deutschland"/>
+    <place:title>Bayern</place:title>
+  </rdf:Description>
+	  <rdf:Description rdf:about="http://taxonomy/München">
+		<place:childOf rdf:resource="http://taxonomy/Bayern"/>
+		<place:title>München</place:title>
+	  </rdf:Description>
+  <rdf:Description rdf:about="http://taxonomy/Baden-Württemberg">
+    <place:childOf rdf:resource="http://taxonomy/Deutschland"/>
+    <place:title>Baden-Württemberg</place:title>
+  </rdf:Description>
+	  <rdf:Description rdf:about="http://taxonomy/Stuttgart">
+		<place:childOf rdf:resource="http://taxonomy/Baden-Württemberg"/>
+		<place:title>Stuttgart</place:title>
+	  </rdf:Description>
   <rdf:Description rdf:about="http://taxonomy/Hamburg">
     <place:childOf rdf:resource="http://taxonomy/Deutschland"/>
     <place:title>Hamburg</place:title>
   </rdf:Description>
+	  <rdf:Description rdf:about="http://taxonomy/Altona">
+	    <place:childOf rdf:resource="http://taxonomy/Hamburg"/>
+	    <place:title>Altona</place:title>
+	  </rdf:Description>
+	  <rdf:Description rdf:about="http://taxonomy/Harburg">
+	    <place:childOf rdf:resource="http://taxonomy/Hamburg"/>
+	    <place:title>Harburg</place:title>
+	  </rdf:Description>
+	  <rdf:Description rdf:about="http://taxonomy/Bergedorf">
+	    <place:childOf rdf:resource="http://taxonomy/Hamburg"/>
+	    <place:title>Bergedorf</place:title>
+	  </rdf:Description>
+	  <rdf:Description rdf:about="http://taxonomy/Wandsbek">
+	    <place:childOf rdf:resource="http://taxonomy/Hamburg"/>
+	    <place:title>Wandsbek</place:title>
+	  </rdf:Description>
+	  <rdf:Description rdf:about="http://taxonomy/Eimsbüttel">
+	    <place:childOf rdf:resource="http://taxonomy/Hamburg"/>
+	    <place:title>Eimsbüttel</place:title>
+	  </rdf:Description>
+	  <rdf:Description rdf:about="http://taxonomy/Hamburg Nord">
+	    <place:childOf rdf:resource="http://taxonomy/Hamburg"/>
+	    <place:title>Hamburg Nord</place:title>
+	  </rdf:Description>
+	  <rdf:Description rdf:about="http://taxonomy/Hamburg Mitte">
+	    <place:childOf rdf:resource="http://taxonomy/Hamburg"/>
+	    <place:title>Hamburg Mitte</place:title>
+	  </rdf:Description>
 </rdf:RDF>
