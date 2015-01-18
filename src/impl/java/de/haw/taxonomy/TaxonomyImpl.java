@@ -2,6 +2,7 @@ package de.haw.taxonomy;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +17,7 @@ import com.hp.hpl.jena.query.QueryExecutionFactory;
 import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.Model;
+
 import de.haw.model.exception.IllegalArgumentException;
 
 public class TaxonomyImpl implements Taxonomy{
@@ -51,7 +53,7 @@ public class TaxonomyImpl implements Taxonomy{
 					" UNION "+
 					"{ ?x "+taxonomy+":childOf <http://taxonomy/"+elem+"> ." +
 					"?x "+taxonomy+":title ?name .}" +
-				"} LIMIT 3";
+				"}";
 	    Query query = QueryFactory.create(queryString);
 
 	    // Execute the query and obtain results
@@ -61,8 +63,6 @@ public class TaxonomyImpl implements Taxonomy{
 		    QueryExecution qe = QueryExecutionFactory.create(query, model);
 		    ResultSet results = qe.execSelect();
 		    
-		    //ResultSetFormatter.out(System.out, (com.hp.hpl.jena.query.ResultSet) results,query);
-		    
 		    if (results.hasNext()) {
 				while (results.hasNext()) {
 					//format name of "elem" from http://xxx/elem style to "elem"
@@ -70,6 +70,7 @@ public class TaxonomyImpl implements Taxonomy{
 					result.add(currentElem);
 				}
 			}
+
 	    }
 		return result;
 	}
