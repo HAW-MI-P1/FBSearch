@@ -43,14 +43,14 @@ public class TaxonomyImpl implements Taxonomy{
 	@Override
 	public List<String> search(String taxonomy,String elem) {
 		if(taxonomy == null || elem == null || taxonomy.isEmpty() || elem.isEmpty()) throw new IllegalArgumentException("An input parameter is empty or null");
-		String queryString = "PREFIX place: <http://taxonomy.org/places/> " +
+		String queryString = "PREFIX "+taxonomy+": <http://taxonomy.org/"+taxonomy+"s/> " +
 				"SELECT ?name " +
 				"WHERE {" +
-					"{<http://taxonomy/"+elem+"> place:childOf ?x ." +
-					"?x place:title ?name .}" +
+					"{<http://taxonomy/"+elem+"> "+taxonomy+":childOf ?x ." +
+					"?x "+taxonomy+":title ?name .}" +
 					" UNION "+
-					"{ ?x place:childOf <http://taxonomy/"+elem+"> ." +
-					"?x place:title ?name .}" +
+					"{ ?x "+taxonomy+":childOf <http://taxonomy/"+elem+"> ." +
+					"?x "+taxonomy+":title ?name .}" +
 				"} LIMIT 3";
 	    Query query = QueryFactory.create(queryString);
 
