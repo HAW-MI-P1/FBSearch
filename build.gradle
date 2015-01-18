@@ -48,6 +48,8 @@ dependencies {
     compile 'edu.stanford.nlp:stanford-corenlp:3.5.0:models'
 
 	compile 'org.apache.jena:jena-arq:2.12.1'
+
+    compile 'org.xerial:sqlite-jdbc:3.8.7'
 }
 
 //forces gradle to use xml-apis:xml-apis:1.4.01 instead of the older xml-apis:xml-apis:2.0.2 (somebody should get punished for this!)
