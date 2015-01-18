@@ -62,7 +62,7 @@ public class TaxonomyImpl implements Taxonomy{
 	    if(model != null){
 		    QueryExecution qe = QueryExecutionFactory.create(query, model);
 		    ResultSet results = qe.execSelect();
-		    
+		    		    
 		    if (results.hasNext()) {
 				while (results.hasNext()) {
 					//format name of "elem" from http://xxx/elem style to "elem"
@@ -70,7 +70,15 @@ public class TaxonomyImpl implements Taxonomy{
 					result.add(currentElem);
 				}
 			}
-
+		    
+		    if(result.size() > 3){
+		    	Collections.shuffle(result);
+			    List<String> limitedResult = new ArrayList<String>();
+			    for(int i=0; i < 3;i++){
+			    	limitedResult.add(result.get(i));
+			    }
+			    result = limitedResult;
+		    }
 	    }
 		return result;
 	}
