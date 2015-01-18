@@ -123,12 +123,12 @@ public class WrapperImpl implements Wrapper {
             if(dataType.equals(ResultType.User.getName())) {
                 String city;
                 for(Type user : resultData){
-                    city = ((UserType)user).getCity().toLowerCase();
+                    city = ((UserType)user).getCity();
                     if(city != null && !city.isEmpty()) {
                         Iterator iterator = places.iterator();
                         while (iterator.hasNext()) {
                             String s = iterator.next().toString().toLowerCase();
-                            if (city.contains(s)) {
+                            if (city.toLowerCase().contains(s)) {
                                 results.add(user);
                             }
                         }
