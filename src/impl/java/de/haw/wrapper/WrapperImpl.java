@@ -1,16 +1,19 @@
 package de.haw.wrapper;
 
+import de.haw.db.SearchDB;
+import de.haw.db.SearchDBImpl;
 import de.haw.model.WebPicture;
-import de.haw.model.types.Type;
-import de.haw.model.types.UserType;
-
+import de.haw.model.types.*;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author lotte
@@ -20,8 +23,12 @@ public class WrapperImpl implements Wrapper {
 	private RequestHandler requestHandler;
 	private AuthHandler authHandler;
 
+    //additional DB
+    SearchDB searchDB;
+
 	public WrapperImpl() {
 		requestHandler = RequestHandler.getInstance();
+        searchDB = new SearchDBImpl();
 		authHandler = new AuthHandler();
 		authHandler.login();
 		testthings();
@@ -41,7 +48,11 @@ public class WrapperImpl implements Wrapper {
 
 	public Collection<Type> collect(JSONObject requests) {
 		Collection<Type> resultData = new ArrayList<Type>();
+        String dataType = null;
+        ResultType resultType = null;
 
+        //TODO is "subject" still in use? (or old json)
+        /*
 		// Get subject from requests
 		String subject = "-";
 		try {
@@ -49,9 +60,17 @@ public class WrapperImpl implements Wrapper {
 			System.out.println("subject is: " + subject);
 		} catch (JSONException e) {
 			System.out.println("no subject");
-		}
+		}*/
 
-		// Get places from requests
+
+        // Get type of data to search for
+        try {
+            dataType = requests.getString("type");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        // Get places from requests
 		List<String> places = getValues(requests, "place");
 
 		// Get names from request
@@ -59,13 +78,30 @@ public class WrapperImpl implements Wrapper {
 
 		// Start a request for names and add the response to the result data
 		if (names.size() > 0) {
-			JSONObject namesResponse = requestHandler
-					.searchForUser(concatStrings(names));
+            JSONObject namesResponse = null;
+            if(dataType.equals(ResultType.User.getName())) {
+                resultType = ResultType.User;
+                namesResponse = requestHandler
+                        .searchForUser(concatStrings(names));
+            }else if(dataType.equals("thing")){ //TODO Parser should place "page" here
+                resultType = ResultType.Page;
+                namesResponse = requestHandler
+                        .searchForPage(concatStrings(names));
+            }else if(dataType.equals(ResultType.Place.getName())) {
+                resultType = ResultType.Place;
+                namesResponse = requestHandler
+                        .searchForPlace(concatStrings(names));
+            }
 			resultData.addAll(transformResponse(namesResponse));
+
+            resultData.addAll(searchDB.getEntries(resultType, names));
 		}
 
 		// If a place exist, check all users
 		if (places.size() > 0) {
+            //No places were ever found via fb-api
+            //only search in SearchDB to save time
+            /*
 			for (Type t : resultData) {
 				String name = null;
 				JSONObject userResponse = requestHandler.searchForID(t.getID(),
@@ -82,9 +118,44 @@ public class WrapperImpl implements Wrapper {
 				} else {
 					System.out.println("no location for: " + t.getID());
 				}
-			}
-		}
+			}*/
+            List<Type> results = new ArrayList<>();
+            if(dataType.equals(ResultType.User.getName())) {
+                String city;
+                for(Type user : resultData){
+                    city = ((UserType)user).getCity();
+                    if(city != null && !city.isEmpty()) {
+                        Iterator iterator = places.iterator();
+                        while (iterator.hasNext()) {
+                            String s = iterator.next().toString().toLowerCase();
+                            if (city.toLowerCase().contains(s)) {
+                                results.add(user);
+                            }
+                        }
+                    }
+                }
+            }else if(dataType.equals(ResultType.Place.getName())) {
+                LocationType location;
+                for(Type place : resultData){
+                    location = ((PlaceType)place).getLocation();
+                    if(location != null) {
+                        Iterator iterator = places.iterator();
+                        while (iterator.hasNext()) {
+                            String s = iterator.next().toString().toLowerCase();
+                            if ((location.getCity().toLowerCase().contains(s))
+                                    || (location.getStreet().toLowerCase().contains(s))
+                                    || (location.getState().toLowerCase().contains(s))
+                                    || (location.getCountry().toLowerCase().contains(s))
+                                    ) {
+                                results.add(place);
+                            }
+                        }
+                    }
+                }
+            }
+            resultData = results;
 
+		}
         System.out.println("collect results: "+ resultData.size());
 
 		return resultData;

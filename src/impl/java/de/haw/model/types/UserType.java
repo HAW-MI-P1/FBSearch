@@ -18,10 +18,10 @@
  *****************************************************************************/
 package de.haw.model.types;
 
+import de.haw.model.WebPicture;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import de.haw.model.WebPicture;
 
 /******************************************************************************
  *                                 Imports                                    *
@@ -38,6 +38,7 @@ public class UserType extends Type {
 	private String name;
 	private String first_name;
 	private String last_name;
+    private String city;
 	private String link;
 	private String updated_time;
 	private boolean is_silhouette;
@@ -71,6 +72,14 @@ public class UserType extends Type {
 	public void setLast_name(String last_name) {
 		this.last_name = last_name;
 	}
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
 
 	public String getLink() {
 		return link;
@@ -137,6 +146,14 @@ public class UserType extends Type {
 		this.first_name = first_name;
 		this.last_name = last_name;
 	}
+
+    public UserType(String id, String name, String first_name, String last_name, String city) {
+        super(id);
+        this.name = name;
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.city = city;
+    }
 
 	public UserType(String id, String name, String first_name,
 			String last_name, String link, String updated_time) {

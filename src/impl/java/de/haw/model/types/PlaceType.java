@@ -88,6 +88,13 @@ public class PlaceType extends Type {
         return ResultType.Place;
     }
 
+    public PlaceType(String id, String name, String category, LocationType location) {
+        super(id);
+        this.name = name;
+        this.category = category;
+        this.location = location;
+    }
+
     public PlaceType(String id, String name, String category, LocationType location,
                      List<CategoryType> category_list) {
 		super(id);
