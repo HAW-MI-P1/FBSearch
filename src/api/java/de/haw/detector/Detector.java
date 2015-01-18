@@ -39,4 +39,6 @@ public interface Detector
  *****************************************************************************/
 	
     public Collection<Type> detectObject(Collection<Type> result, String objectName);
+
+    public boolean supportsPictureDetection();
 }

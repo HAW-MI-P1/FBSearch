@@ -34,6 +34,7 @@ public class SearchController {
     private int parentSearchID;
     private Controller controller;
     private SearchHistory searchHistory;
+    private boolean supportsPictureDetection;
 
     // Reference to the main application
     private GUIImpl GUIImpl;
@@ -44,6 +45,7 @@ public class SearchController {
 
     public void setController (Controller controller){
         this.controller = controller;
+        this.supportsPictureDetection = controller.supportsPictureDetection();
     }
 
     /**
@@ -62,12 +64,15 @@ public class SearchController {
     private void handleNewSearch() {
         informationLabel.setText(" ");
         String searchString = searchStringField.getText();
+        filterTextField.setText(" ");
         ObservableList<Type> resultData = FXCollections.observableArrayList();
         searchStringField.clear();
 
         searchHistory.newHistory(searchString);
         showSearchHistory();
-        checkPicture.setDisable(false);
+        if(supportsPictureDetection){
+            checkPicture.setDisable(false);
+        }
 
         try {
             int searchID = newSearchID();
@@ -96,7 +101,10 @@ public class SearchController {
     public void handleFilter() {
         String filterString = filterTextField.getText();
         ObservableList<Type> resultData = FXCollections.observableArrayList();
-        boolean searchPicture = checkPicture.isSelected();
+        boolean searchPicture = false;
+        if(supportsPictureDetection){
+            searchPicture = checkPicture.isSelected();
+        }
 
         try{
             searchHistory.addHistoryStep(filterString);
@@ -137,6 +145,7 @@ public class SearchController {
     }
 
     public void showResults(ObservableList<Type> resultData){
+        boolean pictures = checkPicture.isSelected();
         Type type = resultData.get(0);
         GUIImpl.setResultData(resultData);
     	getAndSetRecommendations("place");
@@ -150,8 +159,10 @@ public class SearchController {
             GUIImpl.showPageOverview();
         }else if(type.getType().equals(ResultType.Place)){
             GUIImpl.showPlaceOverview();
-        }else if(type.getType().equals(ResultType.User)){
+        }else if(type.getType().equals(ResultType.User) && !pictures){
             GUIImpl.showUserOverview();
+        }else if(type.getType().equals(ResultType.User) && pictures){
+            GUIImpl.showPictureOverview();
         }else {
             //something somewhere went terribly wrong...
         }
