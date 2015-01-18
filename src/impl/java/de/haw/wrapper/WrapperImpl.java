@@ -3,7 +3,9 @@ package de.haw.wrapper;
 import de.haw.db.SearchDB;
 import de.haw.db.SearchDBImpl;
 import de.haw.model.WebPicture;
+import de.haw.model.exception.IllegalArgumentException;
 import de.haw.model.types.*;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,12 +25,12 @@ public class WrapperImpl implements Wrapper {
 	private RequestHandler requestHandler;
 	private AuthHandler authHandler;
 
-    //additional DB
-    SearchDB searchDB;
+	// additional DB
+	SearchDB searchDB;
 
 	public WrapperImpl() {
 		requestHandler = RequestHandler.getInstance();
-        searchDB = new SearchDBImpl();
+		searchDB = new SearchDBImpl();
 		authHandler = new AuthHandler();
 		authHandler.login();
 		testthings();
@@ -47,30 +49,22 @@ public class WrapperImpl implements Wrapper {
 	}
 
 	public Collection<Type> collect(JSONObject requests) {
+		if (requests == null) {
+			throw new IllegalArgumentException("requests was null");
+		}
+
 		Collection<Type> resultData = new ArrayList<Type>();
-        String dataType = null;
-        ResultType resultType = null;
+		String dataType = null;
+		ResultType resultType = null;
 
-        //TODO is "subject" still in use? (or old json)
-        /*
-		// Get subject from requests
-		String subject = "-";
+		// Get type of data to search for
 		try {
-			subject = requests.getString("subject");
-			System.out.println("subject is: " + subject);
+			dataType = requests.getString("type");
 		} catch (JSONException e) {
-			System.out.println("no subject");
-		}*/
+			e.printStackTrace();
+		}
 
-
-        // Get type of data to search for
-        try {
-            dataType = requests.getString("type");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        // Get places from requests
+		// Get places from requests
 		List<String> places = getValues(requests, "place");
 
 		// Get names from request
@@ -78,90 +72,78 @@ public class WrapperImpl implements Wrapper {
 
 		// Start a request for names and add the response to the result data
 		if (names.size() > 0) {
-            JSONObject namesResponse = null;
-            if(dataType.equals(ResultType.User.getName())) {
-                resultType = ResultType.User;
-                namesResponse = requestHandler
-                        .searchForUser(concatStrings(names));
-            }else if(dataType.equals("thing")){ //TODO Parser should place "page" here
-                resultType = ResultType.Page;
-                namesResponse = requestHandler
-                        .searchForPage(concatStrings(names));
-            }else if(dataType.equals(ResultType.Place.getName())) {
-                resultType = ResultType.Place;
-                namesResponse = requestHandler
-                        .searchForPlace(concatStrings(names));
-            }
+			JSONObject namesResponse = null;
+			if (dataType.equals(ResultType.User.getName())) {
+				resultType = ResultType.User;
+				namesResponse = requestHandler
+						.searchForUser(concatStrings(names));
+			} else if (dataType.equals("thing")) { // TODO Parser should place
+													// "page" here
+				resultType = ResultType.Page;
+				namesResponse = requestHandler
+						.searchForPage(concatStrings(names));
+			} else if (dataType.equals(ResultType.Place.getName())) {
+				resultType = ResultType.Place;
+				namesResponse = requestHandler
+						.searchForPlace(concatStrings(names));
+			}
 			resultData.addAll(transformResponse(namesResponse));
 
-            resultData.addAll(searchDB.getEntries(resultType, names));
+			resultData.addAll(searchDB.getEntries(resultType, names));
 		}
 
 		// If a place exist, check all users
 		if (places.size() > 0) {
-            //No places were ever found via fb-api
-            //only search in SearchDB to save time
-            /*
-			for (Type t : resultData) {
-				String name = null;
-				JSONObject userResponse = requestHandler.searchForID(t.getID(),
-						"");
-				try {
-					JSONObject locationObject = userResponse
-							.getJSONObject("location");
-					name = locationObject.getString("name");
-				} catch (JSONException e) {
-					name = null;
+			// findLocations(resultData);
+			List<Type> results = new ArrayList<>();
+			if (dataType.equals(ResultType.User.getName())) {
+				String city;
+				for (Type user : resultData) {
+					city = ((UserType) user).getCity();
+					if (city != null && !city.isEmpty()) {
+						Iterator<String> iterator = places.iterator();
+						while (iterator.hasNext()) {
+							String s = iterator.next().toString().toLowerCase();
+							if (city.toLowerCase().contains(s)) {
+								results.add(user);
+							}
+						}
+					}
 				}
-				if (name != null) {
-					System.out.println("location is: " + name);
-				} else {
-					System.out.println("no location for: " + t.getID());
+			} else if (dataType.equals(ResultType.Place.getName())) {
+				LocationType location;
+				for (Type place : resultData) {
+					location = ((PlaceType) place).getLocation();
+					if (location != null) {
+						Iterator<String> iterator = places.iterator();
+						while (iterator.hasNext()) {
+							String s = iterator.next().toString().toLowerCase();
+							if ((location.getCity().toLowerCase().contains(s))
+									|| (location.getStreet().toLowerCase()
+											.contains(s))
+									|| (location.getState().toLowerCase()
+											.contains(s))
+									|| (location.getCountry().toLowerCase()
+											.contains(s))) {
+								results.add(place);
+							}
+						}
+					}
 				}
-			}*/
-            List<Type> results = new ArrayList<>();
-            if(dataType.equals(ResultType.User.getName())) {
-                String city;
-                for(Type user : resultData){
-                    city = ((UserType)user).getCity();
-                    if(city != null && !city.isEmpty()) {
-                        Iterator iterator = places.iterator();
-                        while (iterator.hasNext()) {
-                            String s = iterator.next().toString().toLowerCase();
-                            if (city.toLowerCase().contains(s)) {
-                                results.add(user);
-                            }
-                        }
-                    }
-                }
-            }else if(dataType.equals(ResultType.Place.getName())) {
-                LocationType location;
-                for(Type place : resultData){
-                    location = ((PlaceType)place).getLocation();
-                    if(location != null) {
-                        Iterator iterator = places.iterator();
-                        while (iterator.hasNext()) {
-                            String s = iterator.next().toString().toLowerCase();
-                            if ((location.getCity().toLowerCase().contains(s))
-                                    || (location.getStreet().toLowerCase().contains(s))
-                                    || (location.getState().toLowerCase().contains(s))
-                                    || (location.getCountry().toLowerCase().contains(s))
-                                    ) {
-                                results.add(place);
-                            }
-                        }
-                    }
-                }
-            }
-            resultData = results;
+			}
+			resultData = results;
 
 		}
-        System.out.println("collect results: "+ resultData.size());
+		System.out.println("collect results: " + resultData.size());
 
 		return resultData;
 	}
 
 	public Collection<Type> searchForName(String type, List<String> names) {
+		if (type == null || names == null) {
+			throw new IllegalArgumentException("type or names was null");
+		}
+
 		Collection<Type> resultData = new ArrayList<Type>();
 		if (names.size() > 0) {
 			JSONObject namesResponse = requestHandler.search(
@@ -171,19 +153,24 @@ public class WrapperImpl implements Wrapper {
 		return resultData;
 	}
 
-	public List<WebPicture> getPicturesForPersons(Collection<Type> personsOfInterest) {
+	public List<WebPicture> getPicturesForPersons(
+			Collection<Type> personsOfInterest) {
+		if (personsOfInterest == null) {
+			throw new IllegalArgumentException("personsOfIntrest was null");
+		}
+
 		List<WebPicture> result = new ArrayList<WebPicture>();
 		StringBuilder userIDs = new StringBuilder();
 		int count = 0;
 		for (Type p : personsOfInterest) {
-			
-			// Facebook ids are limited to 50
+
+			// FB IDs are limited to 50
 			count++;
 			if (count > 50) {
 				break;
 			}
-			
-			// Ids are comma separated
+
+			// IDs are comma separated
 			if (userIDs.length() > 0) {
 				userIDs.append(",");
 			}
@@ -191,7 +178,7 @@ public class WrapperImpl implements Wrapper {
 		}
 		JSONObject response = requestHandler.picturesForUserIDs(userIDs
 				.toString());
-		
+
 		@SuppressWarnings("unchecked")
 		Iterator<String> i = response.keys();
 		while (i.hasNext()) {
@@ -204,17 +191,26 @@ public class WrapperImpl implements Wrapper {
 				System.out.println("no picture for: " + key);
 			}
 		}
-		
+
 		return result;
 	}
 
 	public boolean idLivesIn(String id, String location) {
+		if (id == null || location == null) {
+			throw new IllegalArgumentException("id or location was null");
+		}
+		if (id.length() == 0 || location.length() == 0) {
+			return false;
+		}
+		if (!id.matches("[0-9]+")) {
+			throw new IllegalArgumentException(
+					"id contains non numerical characters...");
+		}
+
 		String name = null;
-		JSONObject userResponse = requestHandler.searchForID(id,
-				"location");
+		JSONObject userResponse = requestHandler.searchForID(id, "location");
 		try {
-			JSONObject locationObject = userResponse
-					.getJSONObject("location");
+			JSONObject locationObject = userResponse.getJSONObject("location");
 			name = locationObject.getString("name");
 		} catch (JSONException e) {
 			name = null;
@@ -228,25 +224,21 @@ public class WrapperImpl implements Wrapper {
 	@Override
 	public Collection<Type> collectExtended(JSONObject requests,
 			Collection<Type> personsOfInterest) {
-        // run second collect
-        Collection<Type> filterSearchResult = collect(requests);
-        /*if(!filterSearchResult.isEmpty()) {
-            System.out.println(personsOfInterest.size());
-            System.out.println(filterSearchResult.size());
-            filterSearchResult.retainAll(personsOfInterest);
-            //TODO: this stupid "retains" won't work
-        }
-        System.out.println("filter results: "+ filterSearchResult.size());
-		return filterSearchResult;*/
-        Collection<Type> results = new ArrayList<Type>();
+		if (requests == null || personsOfInterest == null) {
+			throw new IllegalArgumentException(
+					"requests or personsOfIntrest was null");
+		}
 
-        for (Type obj : personsOfInterest) {
-            if(filterSearchResult.contains(obj)) {
-                results.add(obj);
-            }
-        }
-        System.out.println("Results: "+results.size());
-        return results;
+		// run second collect
+		Collection<Type> filterSearchResult = collect(requests);
+		Collection<Type> results = new ArrayList<Type>();
+		for (Type obj : personsOfInterest) {
+			if (filterSearchResult.contains(obj)) {
+				results.add(obj);
+			}
+		}
+		System.out.println("Results: " + results.size());
+		return results;
 	}
 
 	private Collection<Type> transformResponse(JSONObject response) {
@@ -287,4 +279,24 @@ public class WrapperImpl implements Wrapper {
 		return sb.toString();
 	}
 
+	private void findLocations(Collection<Type> resultData) {
+		// No places were ever found via FB API
+		// only search in SearchDB to save time
+		for (Type t : resultData) {
+			String name = null;
+			JSONObject userResponse = requestHandler.searchForID(t.getID(), "");
+			try {
+				JSONObject locationObject = userResponse
+						.getJSONObject("location");
+				name = locationObject.getString("name");
+			} catch (JSONException e) {
+				name = null;
+			}
+			if (name != null) {
+				System.out.println("location is: " + name);
+			} else {
+				System.out.println("no location for: " + t.getID());
+			}
+		}
+	}
 }

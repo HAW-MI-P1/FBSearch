@@ -23,17 +23,21 @@ package de.haw.detector;
  *                                 Imports                                    *
  *****************************************************************************/
 
-import java.io.*;
-import java.util.*;
-
-import org.opencv.imgcodecs.*;
-import org.opencv.imgproc.*;
-import org.opencv.core.*;
-import org.opencv.core.Core.*;
-
 import de.haw.model.WebPicture;
 import de.haw.model.types.Type;
 import de.haw.model.types.UserType;
+import org.opencv.core.Core;
+import org.opencv.core.Core.MinMaxLocResult;
+import org.opencv.core.Mat;
+import org.opencv.core.Point;
+import org.opencv.core.Rect;
+import org.opencv.imgcodecs.Imgcodecs;
+import org.opencv.imgproc.Imgproc;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /******************************************************************************
  *                              Class Definition                              *
@@ -57,6 +61,7 @@ public class DetectorImpl implements Detector
 		else
 		{
 			this.supported = false;
+            System.out.println("System does not support picture detection");
 			//throw new RuntimeException("Your systeme doesnt support OpenCV Beta version.");
 		}
 	}
@@ -65,6 +70,11 @@ public class DetectorImpl implements Detector
  *                              Public Methods                                
  * @throws Exception *
  *****************************************************************************/
+
+    @Override
+    public boolean supportsPictureDetection(){
+        return this.supported;
+    }
 
 	@Override
 	public Collection<Type> detectObject(Collection<Type> result, String objectName)

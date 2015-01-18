@@ -93,42 +93,44 @@ public class ControllerImpl implements Controller
 	public Collection<Type> searchExtended(int searchID, int parentSearchID, String naturalLanguage, boolean searchPicture)
     {
         Logger.log("<searchExtended()>", ComponentID.Controller);
-        
-        JSONObject         requests        = parser  .parse         (naturalLanguage);
-        lastRequestResult = requests;
-        Collection<Type> personsOfInterest = db      .load          (parentSearchID);
-        Collection<Type> result            = wrapper.collectExtended(requests, personsOfInterest);
-        if(searchPicture) {
-            result            = detectObject           (result, requests);
+        Collection<Type> personsOfInterest = db.load(parentSearchID);
+        Collection<Type> result = personsOfInterest;
+        JSONObject requests = null;
+        //this makes it possible to only filter for pictures
+        if((naturalLanguage != null) && (!naturalLanguage.isEmpty()) && (naturalLanguage.length() > 1)) {
+            requests = parser.parse(naturalLanguage);
+            lastRequestResult = requests;
+            result = wrapper.collectExtended(requests, personsOfInterest);
         }
-                                             db      .save          (searchID, naturalLanguage, requests, result);
+        if(searchPicture) {
+            result = detectObject(result);
+        }
+        db.save(searchID, naturalLanguage, requests, result);
         
 		return result;
 	}
 
-	private Collection<Type> detectObject(Collection<Type> result, JSONObject requests)
+	private Collection<Type> detectObject(Collection<Type> result)
 	{
-		if (result == null)
-		{
+		if (result == null){
 			return result;
 		}
 		
-		try
-		{
+		try{
 			Collection<Type> tempResult;
 			HashSet<Type> set = new HashSet<Type>();
 			
 			// TODO give me an object to search for
-			tempResult = detector.detectObject(result, "lena");     set.addAll(tempResult);
-			tempResult = detector.detectObject(result, "elephant"); set.addAll(tempResult);
-			tempResult = detector.detectObject(result, "lion");     set.addAll(tempResult);
-			
-			return new ArrayList<Type>(set);
-		}
-		catch (Exception e)
-		{
+			tempResult = detector.detectObject(result, "lena");
+            set.addAll(tempResult);
+			tempResult = detector.detectObject(result, "elephant");
+            set.addAll(tempResult);
+			tempResult = detector.detectObject(result, "lion");
+            set.addAll(tempResult);
+			System.out.println("detected images: "+set.size());
+			return set;
+		}catch (Exception e){
 			e.printStackTrace();
-			
 			return result;
 		}
 	}
@@ -154,6 +156,11 @@ public class ControllerImpl implements Controller
         }
 		return result;
 	}
+
+    @Override
+    public boolean supportsPictureDetection() {
+        return this.detector.supportsPictureDetection();
+    }
 
     private Collection<String> clearSynonyms(Collection<String> synonyms){
         Set<String> results = new HashSet<String>();

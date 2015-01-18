@@ -206,6 +206,26 @@ public class GUIImpl extends Application implements GUI {
         }
     }
 
+    /**
+     * Shows the user overview after picture search scene.
+     */
+    public void showPictureOverview() {
+        try {
+            // Load the fxml file and set into the center of the main layout
+            FXMLLoader loader = new FXMLLoader(GUIImpl.class.getResource("view/PictureOverview.fxml"));
+            AnchorPane overviewPage = (AnchorPane) loader.load();
+            rootLayout.setCenter(overviewPage);
+
+            // Give the controller access to the main app
+            UserOverviewController controller = loader.getController();
+            controller.setGUIImpl(this);
+
+        } catch (IOException e) {
+            // Exception gets thrown if the fxml file could not be loaded
+            e.printStackTrace();
+        }
+    }
+
     public void showNoResults() {
         Node node = this.rootLayout.getCenter();
         this.rootLayout.getChildren().remove(node); //<****Remove the node from children****>
