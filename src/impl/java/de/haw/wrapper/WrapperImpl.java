@@ -229,14 +229,43 @@ public class WrapperImpl implements Wrapper {
 					"requests or personsOfIntrest was null");
 		}
 
+        Collection<Type> results = new ArrayList<Type>();
+        List<String> names = getValues(requests, "name");
+
 		// run second collect
-		Collection<Type> filterSearchResult = collect(requests);
-		Collection<Type> results = new ArrayList<Type>();
-		for (Type obj : personsOfInterest) {
-			if (filterSearchResult.contains(obj)) {
-				results.add(obj);
-			}
-		}
+		Collection<Type> filterSearchResult;
+        if(names.size() > 0) {
+            filterSearchResult = collect(requests);
+            results = new ArrayList<Type>();
+            for (Type obj : personsOfInterest) {
+                if (filterSearchResult.contains(obj)) {
+                    results.add(obj);
+                }
+            }
+        }else{
+            String dataType = null;
+            try {
+                dataType = requests.getString("type");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            List<String> places = getValues(requests, "place");
+            if(places.size() > 0) {
+                if (dataType.equals(ResultType.User.getName())) {
+                    for (Type t : personsOfInterest) {
+                        if (((UserType)t).getCity() != null &&((UserType)t).getCity().toLowerCase().equals(places.get(0).toLowerCase())) {
+                            results.add(t);
+                        }
+                    }
+                } else if (dataType.equals("thing")) { // TODO Parser should use place
+                    for (Type t : personsOfInterest) {
+                        if (((PlaceType) t).getLocation().getCity().equals(places.get(0))) {
+                            results.add(t);
+                        }
+                    }
+                }
+            }
+        }
 		System.out.println("Results: " + results.size());
 		return results;
 	}
