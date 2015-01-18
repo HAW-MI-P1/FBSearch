@@ -1,5 +1,6 @@
 package de.haw.taxonomy;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,23 +15,34 @@ import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.QueryExecutionFactory;
 import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.query.ResultSet;
-import com.hp.hpl.jena.query.ResultSetFormatter;
 import com.hp.hpl.jena.rdf.model.Model;
+import de.haw.model.exception.IllegalArgumentException;
 
 public class TaxonomyImpl implements Taxonomy{
 	
 	private Map<String, Model> models = new HashMap<String, Model>();
 	
 	public TaxonomyImpl(List<String> taxonomys){
+		if(taxonomys == null) throw new IllegalArgumentException("Inputparameter list is null");
 		LogManager.getRootLogger().setLevel(Level.OFF);
 		for(String taxonomy : taxonomys){
-			Model model = RDFDataMgr.loadModel("taxonomy/"+taxonomy+".rdf") ;
-			models.put(taxonomy,model);
+			if(taxonomy.isEmpty() || (taxonomy == null)){
+				throw new IllegalArgumentException("One or more elements of inputparameter list are empty or null");
+			} else {
+				File f = new File("taxonomy/"+taxonomy+".rdf");
+				if(f.exists()){
+					Model model = RDFDataMgr.loadModel("taxonomy/"+taxonomy+".rdf") ;
+					models.put(taxonomy,model);
+				} else {
+					throw new IllegalArgumentException("\""+taxonomy+".rdf\" could not be found");
+				}
+			}
 		}
 	}
 	
 	@Override
 	public List<String> search(String taxonomy,String elem) {
+		if(taxonomy == null || elem == null || taxonomy.isEmpty() || elem.isEmpty()) throw new IllegalArgumentException("An input parameter is empty or null");
 		String queryString = "PREFIX place: <http://taxonomy.org/places/> " +
 				"SELECT ?name " +
 				"WHERE {" +
