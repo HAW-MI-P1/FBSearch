@@ -1,18 +1,5 @@
 package de.haw.controller;
 
-import static org.junit.Assert.assertEquals;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
-
 import de.haw.db.DB;
 import de.haw.db.DBImpl;
 import de.haw.detector.Detector;
@@ -26,6 +13,14 @@ import de.haw.taxonomy.Taxonomy;
 import de.haw.taxonomy.TaxonomyImpl;
 import de.haw.wrapper.Wrapper;
 import de.haw.wrapper.WrapperImpl;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+
+import static org.junit.Assert.assertEquals;
 
 public class ControllerTests {
 

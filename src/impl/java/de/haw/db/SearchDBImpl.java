@@ -156,7 +156,7 @@ public class SearchDBImpl implements SearchDB{
                         user.setPictures(pictures);
                     }
                     results.add(user);
-                    System.out.println("Fake DB: " + nickName + "; city: "+city);
+                    //System.out.println("Fake DB: " + nickName + "; city: "+city);
                 }
                 rs.close();
             }else if(type == ResultType.Page){

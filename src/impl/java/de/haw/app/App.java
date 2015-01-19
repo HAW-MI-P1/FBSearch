@@ -3,7 +3,7 @@ package de.haw.app;
 import de.haw.controller.Controller;
 import de.haw.controller.ControllerImpl;
 import de.haw.db.DB;
-import de.haw.db.MockUpDBImpl;
+import de.haw.db.DBImpl;
 import de.haw.detector.Detector;
 import de.haw.detector.DetectorImpl;
 import de.haw.fuzzy.Fuzzy;
@@ -26,7 +26,7 @@ public class App {
 
     public static void main (String args[]){
         Wrapper wrapper = new WrapperImpl();
-        DB dbcontrol = new MockUpDBImpl();
+        DB dbcontrol = new DBImpl();
         Parser parser = new ParserImpl();
         Detector detector = new DetectorImpl();
         Taxonomy taxonomy = new TaxonomyImpl(Arrays.asList("place"));

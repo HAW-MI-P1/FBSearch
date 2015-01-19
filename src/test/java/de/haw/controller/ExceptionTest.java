@@ -1,7 +1,7 @@
 package de.haw.controller;
 
 import de.haw.db.DB;
-import de.haw.db.MockUpDBImpl;
+import de.haw.db.DBImpl;
 import de.haw.detector.Detector;
 import de.haw.detector.DetectorImpl;
 import de.haw.fuzzy.Fuzzy;
@@ -36,7 +36,7 @@ public class ExceptionTest
 	public void setUp()
 	{
         wrapper = new WrapperImpl();
-        dbcontrol = new MockUpDBImpl();
+        dbcontrol = new DBImpl();
         parser = new ParserImpl();
         detector = new DetectorImpl();
         taxonomy = new TaxonomyImpl(Arrays.asList("place"));
