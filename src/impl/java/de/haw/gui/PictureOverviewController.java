@@ -8,7 +8,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 public class PictureOverviewController {
 	@FXML
-	private TableView<Type> userTable;
+	private TableView<Type> pictureTable;
     @FXML
     private TableColumn<Type, String> pictureColumn;
 	@FXML
@@ -41,8 +41,6 @@ public class PictureOverviewController {
 	 */
 	public void setGUIImpl(GUIImpl GUIImpl) {
 		this.GUIImpl = GUIImpl;
-
-		// Add observable list data to the table
-		userTable.setItems(GUIImpl.getResultData());
+		pictureTable.setItems(GUIImpl.getResultData());
 	}
 }

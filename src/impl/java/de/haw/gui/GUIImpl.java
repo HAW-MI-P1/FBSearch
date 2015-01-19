@@ -217,7 +217,7 @@ public class GUIImpl extends Application implements GUI {
             rootLayout.setCenter(overviewPage);
 
             // Give the controller access to the main app
-            UserOverviewController controller = loader.getController();
+            PictureOverviewController controller = loader.getController();
             controller.setGUIImpl(this);
 
         } catch (IOException e) {

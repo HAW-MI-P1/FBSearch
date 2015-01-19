@@ -20,6 +20,8 @@ package de.haw.model.types;
 
 import de.haw.model.WebPicture;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -120,6 +122,21 @@ public class UserType extends Type {
 	public void setPictures(List<WebPicture> pictures) {
 		this.pictures = pictures;
 	}
+
+    public String getPicture(){
+        String picture = null;
+        if(this.pictures.size() > 0){
+            picture = this.pictures.get(0).getUrl().toString();
+        }
+        return picture;
+    }
+
+    public void setPicture(String picture){
+        try {
+            this.pictures.add(new WebPicture(new URL(picture)));
+        } catch (MalformedURLException e) {
+        }
+    }
 
 	/******************************************************************************
 	 * Construction & Initialization *
