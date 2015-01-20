@@ -65,3 +65,4 @@ build/
 ## don't push my secrets
 properties.txt
 /bin/
+temp.dat
