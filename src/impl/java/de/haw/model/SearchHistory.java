@@ -30,7 +30,8 @@ public class SearchHistory {
         if(searchString != null && !searchString.isEmpty()){
         	searchStringList.add(searchString);
         } else {
-        	throw new IllegalArgumentException("search string parameter empty or null");
+        	// Edited by RB & HH: ignoring this case
+        	//throw new IllegalArgumentException("search string parameter empty or null");
         }
     }
 
@@ -38,7 +39,8 @@ public class SearchHistory {
         if(filterString != null && !filterString.isEmpty()){
         	searchStringList.add(filterString);
         } else {
-        	throw new IllegalArgumentException("search string parameter empty or null");
+        	// Edited by RB & HH: ignoring this case
+        	//throw new IllegalArgumentException("search string parameter empty or null");
         }
     }
 

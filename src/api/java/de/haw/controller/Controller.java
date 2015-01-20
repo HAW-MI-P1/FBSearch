@@ -6,9 +6,9 @@
  *
  * Authors:         Ren�, Hagen
  *
- * Updated:         2014.11.07
+ * Updated:         2015.01.20
  *
- * Version:         0.01
+ * Version:         0.02
  ******************************************************************************
  * Description:     ----
  *****************************************************************************/
@@ -40,7 +40,7 @@ public interface Controller
 	
     public Collection<Type> search        (int searchID,                     String naturalLanguage);
     public Collection<Type> searchExtended(int searchID, int parentSearchID, String naturalLanguage, boolean searchPicture);
-    public Collection<String> searchRecs(String category);
+    public Collection<String> getRecommendations(String category);
 
     boolean supportsPictureDetection();
 }

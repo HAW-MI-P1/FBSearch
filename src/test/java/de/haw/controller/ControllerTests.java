@@ -84,18 +84,18 @@ public class ControllerTests {
 	@Test
 	public void TestSearchRecsEmpty() {
 		Collection<String> resultData = new ArrayList<String>();
-		Collection<String> result = controller.searchRecs("");
+		Collection<String> result = controller.getRecommendations("");
 		assertEquals(result, resultData);
 	}
 
 	@Test(expected = de.haw.model.exception.IllegalArgumentException.class)
 	public void TestSearchRecsNull() {
-		Collection<String> result = controller.searchRecs(null);
+		Collection<String> result = controller.getRecommendations(null);
 	}
 
 	@Test(expected = de.haw.model.exception.IllegalArgumentException.class)
 	public void TestSearchRecs01() {
-		Collection<String> result = controller.searchRecs("sadfdsd asdf");
+		Collection<String> result = controller.getRecommendations("sadfdsd asdf");
 	}
 
 }

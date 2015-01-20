@@ -68,8 +68,6 @@ public class SearchController {
         ObservableList<Type> resultData = FXCollections.observableArrayList();
         searchStringField.clear();
 
-        searchHistory.newHistory(searchString);
-        showSearchHistory();
         if(supportsPictureDetection){
             checkPicture.setDisable(false);
         }
@@ -77,9 +75,13 @@ public class SearchController {
         try {
             int searchID = newSearchID();
             resultData.addAll(controller.search(searchID, searchString));
+            searchHistory.newHistory(searchString); // Edited by RB & HH: changed order
+            showSearchHistory();
             this.parentSearchID = searchID;
             if(!resultData.isEmpty())showResults(resultData);
-
+        }catch(de.haw.model.exception.IllegalArgumentException ex0){
+            //Tell user to correct searchString
+            System.out.println("SearchController(GUI): Illegal argument: " + ex0.toString());
         }catch(IllegalArgumentException ex1){
             //Tell user to correct searchString
             System.out.println("SearchController(GUI): Illegal argument");
@@ -107,12 +109,15 @@ public class SearchController {
         }
 
         try{
-            searchHistory.addHistoryStep(filterString);
-            showSearchHistory();
             resultData.addAll(controller.searchExtended(newSearchID(),parentSearchID,filterString,searchPicture));
+            searchHistory.addHistoryStep(filterString); // Edited by RB & HH: changed order
+            showSearchHistory();
             if(!resultData.isEmpty())showResults(resultData);
             else discardResultTable();
-
+            
+        }catch(de.haw.model.exception.IllegalArgumentException ex0){
+            //Tell user to correct searchString
+            System.out.println("SearchController(GUI): Illegal argument: " + ex0.toString());
         }catch(IllegalArgumentException ex1){
             //Tell user to correct searchString
             System.out.println("SearchController(GUI): Illegal argument");
@@ -169,7 +174,7 @@ public class SearchController {
     }
     
 	private void getAndSetRecommendations(String category){
-		Collection<String> recData= controller.searchRecs(category);
+		Collection<String> recData= controller.getRecommendations(category);
 		recommendationLabel.setText("");
 		for(String data : recData){
 			if(recommendationLabel.getText().isEmpty()){

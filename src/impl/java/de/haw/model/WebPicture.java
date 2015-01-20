@@ -6,9 +6,9 @@
  *
  * Authors:         Ren�, Hagen
  *
- * Updated:         2014.11.07
+ * Updated:         2015.01.20
  *
- * Version:         0.01
+ * Version:         0.02
  ******************************************************************************
  * Description:     ----
  *****************************************************************************/
@@ -25,6 +25,8 @@ package de.haw.model;
 
 import java.io.*;
 import java.net.*;
+
+import de.haw.app.Logger;
 
 /******************************************************************************
  *                              Class Definition                              *
@@ -102,7 +104,7 @@ public class WebPicture
 		inputStream.close();
 		byteStream.close();
 		
-		System.out.println("[WEB_PICTURE] Download image from " + this.url.toString() + " completed.");
+		Logger.log("Download image from " + this.url.toString() + " completed.", ComponentID.Model);
 		
 		// download ok!
 		this.isDownloaded = true;

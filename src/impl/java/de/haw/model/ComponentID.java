@@ -6,9 +6,9 @@
  *
  * Authors:         René, Hagen
  *
- * Updated:         2014.11.07
+ * Updated:         2015.01.20
  *
- * Version:         0.01
+ * Version:         0.02
  ******************************************************************************
  * Description:     ----
  *****************************************************************************/
@@ -30,5 +30,7 @@ public enum ComponentID
     Parser, 
     Wrapper, 
     DB,
-    Fuzzy
+    Fuzzy,
+    ImageDetector,
+    Model
 }

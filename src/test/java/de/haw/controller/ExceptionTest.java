@@ -81,7 +81,7 @@ public class ExceptionTest
 	{
         Collection<String> expResult = Arrays.asList("Deutschland", "Altona");
         controller.search(0, "who is called guido westerwell and lives in Hamburg?");
-        Collection<String> result = controller.searchRecs("place");
+        Collection<String> result = controller.getRecommendations("place");
         assertEquals(result,expResult);
 	}
 }

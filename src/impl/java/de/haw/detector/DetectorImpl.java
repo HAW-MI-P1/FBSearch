@@ -6,9 +6,9 @@
  *
  * Authors:         Ren�, Hagen
  *
- * Updated:         2014.11.07
+ * Updated:         2015.01.20
  *
- * Version:         0.01
+ * Version:         0.02
  ******************************************************************************
  * Description:     ----
  *****************************************************************************/
@@ -23,9 +23,12 @@ package de.haw.detector;
  *                                 Imports                                    *
  *****************************************************************************/
 
+import de.haw.app.Logger;
+import de.haw.model.ComponentID;
 import de.haw.model.WebPicture;
 import de.haw.model.types.Type;
 import de.haw.model.types.UserType;
+
 import org.opencv.core.Core;
 import org.opencv.core.Core.MinMaxLocResult;
 import org.opencv.core.Mat;
@@ -49,30 +52,38 @@ public class DetectorImpl implements Detector
 	private static final double MINIMAL_MATCH_PERCENTAGE          = 50.0;
 	private static final double MINIMAL_NEEDED_MATCHES_PERCENTAGE = 60.0;
 	
+	private static final String OPENCV_NATIVELIB_WIN64 = Core.NATIVE_LIBRARY_NAME + "_64";
+	private static final String OPENCV_NATIVELIB_WIN32 = Core.NATIVE_LIBRARY_NAME + "_32";
+	
 	private boolean supported;
 	
 	public DetectorImpl()
-	{
+	{	
 		if(this.isWindows64())
 		{
 			this.supported = true;
-			System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+			System.loadLibrary(OPENCV_NATIVELIB_WIN64);
+		}
+		else if(this.isWindows32())
+		{
+			this.supported = true;
+			System.loadLibrary(OPENCV_NATIVELIB_WIN32);
 		}
 		else
 		{
 			this.supported = false;
-            System.out.println("System does not support picture detection");
+            Logger.log("System does not support picture detection", ComponentID.ImageDetector);
 			//throw new RuntimeException("Your systeme doesnt support OpenCV Beta version.");
 		}
 	}
 	
 /******************************************************************************
- *                              Public Methods                                
- * @throws Exception *
+ *                              Public Methods                                *
  *****************************************************************************/
 
     @Override
-    public boolean supportsPictureDetection(){
+    public boolean supportsPictureDetection()
+    {
         return this.supported;
     }
 
@@ -138,19 +149,19 @@ public class DetectorImpl implements Detector
 		
 		if(source.empty())
 		{
-			System.out.println("[IMAGE_DECODER] Empty source image.");
+			Logger.log("Empty source image", ComponentID.ImageDetector);
 			throw new IllegalArgumentException("[IMAGE_DECODER] Empty source image.");
 		}
 		
 		if(!folder.exists())
 		{
-			System.out.println("[IMAGE_DECODER] No images for the search string available.");
+			Logger.log("No images for the search string available", ComponentID.ImageDetector);
 			throw new IllegalArgumentException("[IMAGE_DECODER] No images for the search string available.");
 		}
 		
 		if(folder.listFiles().length <= 0)
 		{
-			System.out.println("[IMAGE_DECODER] No images for the search string available.");
+			Logger.log("No images for the search string available", ComponentID.ImageDetector);
 			throw new IllegalArgumentException("[IMAGE_DECODER] No images for the search string available.");
 		}
 		
@@ -158,12 +169,12 @@ public class DetectorImpl implements Detector
 		
 		for(int i = 0; i < folder.listFiles().length; i++)
 		{
-			System.out.println("[IMAGE_DECODER] " + folder.listFiles()[i].getPath());
+			Logger.log(folder.listFiles()[i].getPath(), ComponentID.ImageDetector);
 			Mat template = Imgcodecs.imread(folder.listFiles()[i].getPath());
 			
 			if(template.empty())
 			{
-				System.out.println("[IMAGE_DECODER] Empty template image.");
+				Logger.log("Empty template image", ComponentID.ImageDetector);
 				throw new IllegalArgumentException("[IMAGE_DECODER] Empty template image.");
 			}
 			
@@ -182,7 +193,7 @@ public class DetectorImpl implements Detector
 		}
 		
 		matchCountInPercent = (100.0 / (double)folder.listFiles().length) * matchCount;
-		System.out.println("[IMAGE_DECODER] " + matchCountInPercent + " % matches (count: " + matchCount + ")");
+		Logger.log(matchCountInPercent + " % matches (count: " + matchCount + ")", ComponentID.ImageDetector);
 		
 		if(matchCountInPercent >= MINIMAL_NEEDED_MATCHES_PERCENTAGE)
 		{
@@ -287,6 +298,19 @@ public class DetectorImpl implements Detector
 	{
 		if(System.getProperty("os.name").toLowerCase().indexOf("win") >= 0 &&
 		   System.getProperty("os.arch").toLowerCase().indexOf("64") >= 0)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}	
+	}
+	
+	private boolean isWindows32()
+	{
+		if(System.getProperty("os.name").toLowerCase().indexOf("win") >= 0 &&
+		   System.getProperty("os.arch").toLowerCase().indexOf("32") >= 0)
 		{
 			return true;
 		}

@@ -51,7 +51,12 @@ public class ParserImpl implements Parser{
 		pipeline.annotate(annotation);
 
 		List<CoreMap> sentences = annotation.get(CoreAnnotations.SentencesAnnotation.class);
-		ArrayCoreMap sentence = (ArrayCoreMap) sentences.get(0);
+		ArrayCoreMap sentence;
+		try {
+			sentence = (ArrayCoreMap) sentences.get(0); // Edited by RB & HH: throw correct exception when no sentence is present
+		} catch (Exception e) {
+			throw new de.haw.model.exception.IllegalArgumentException("Please specify a search term");
+		}
 		Tree tree = sentence.get(TreeCoreAnnotations.TreeAnnotation.class);
 
 		SemanticGraph graph = SemanticGraphFactory.generateUncollapsedDependencies(tree);
