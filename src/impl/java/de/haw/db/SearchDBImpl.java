@@ -68,6 +68,7 @@ public class SearchDBImpl implements SearchDB{
                 "('2344827780087398', 'Lena', 'Alena', 'Sauertopf', 'Hamburg','http://graphics8.nytimes.com/images/2012/09/08/opinion/08revkin-elephant/08revkin-elephant-blog480.jpg'  )," +
                 "('2004827788137398', 'Anna', 'Annabelle', 'Schulz', 'Bayern','http://i2.cdn.turner.com/cnnnext/dam/assets/130618175109-elephant-ivory-03-story-top.jpg'  )," +
                 "('2344827788937118', 'Bella', 'Annabell', 'Maier', 'Berlin',''  )," +
+                "('342827188937018', 'Anna', 'Annabelle', 'Mayer', 'Barmbek',''  )," +
                 "('1044827328937398', 'Leni', 'Lenelies', 'Furt', 'Bremen',''  )," +
                 "('9844111889374881', 'Felix', 'Felix', 'Schulz', 'Hamburg',''  )," +
                 "('1344827889373958', 'Guido', 'Guido', 'Hans', 'Brandenburg',''  )," +
@@ -84,7 +85,17 @@ public class SearchDBImpl implements SearchDB{
                 "('2675827788937668', 'Marlena', 'Marlena', '', 'Hessen','http://www.stevescottsite.com/elephant.jpg'  )," +
                 "('2344437780087398', 'Lena', 'Alena', '', 'Altona','http://graphics8.nytimes.com/images/2012/09/08/opinion/08revkin-elephant/08revkin-elephant-blog480.jpg'  )," +
                 "('2204827288136398', 'Sascha', '', '', 'Altona',''  )," +
-                "('2342778389374118', 'Lena', 'Charlene', 'Rodriguez', 'Berlin','http://www.hack4fun.org/h4f/sites/default/files/bindump/lena.bmp'  );";
+                "('2342778389374118', 'Lena', 'Charlene', 'Rodriguez', 'Berlin','http://www.hack4fun.org/h4f/sites/default/files/bindump/lena.bmp'  )," +
+                "('214827287678638', 'Lena', 'Magdalena', '', 'Sachsen',''  )," +
+                "('2459027288136398', 'Charlotte', '', '', 'Deutschland','http://www.mupin.it/wp-content/uploads/2012/06/lenna1.png'  )," +
+                "('245902720023398', 'Magdalena', 'Anna-Magdalena', 'Buschmann', 'Deutschland','http://www.mupin.it/wp-content/uploads/2012/06/lenna1.png'  )," +
+                "('8902728304536398', 'Magdalena', '', '', 'Hamburg',''  )," +
+                "('4590122881363540', 'Magdalena', '', '', 'Bremen',''  )," +
+                "('7456305748009273', 'Charlena', 'Chantalle-Lena', 'van Houten', 'Altona',''  )," +
+                "('7480092731234566', 'Lena', '', '', 'Altona','http://users.math.yale.edu/YCM/IMAGES/GCOMPRES/LENNA/LENNA.JPG'  )," +
+                "('3245874001893724', 'Thomas', 'Thomas', 'Schmidt', 'Hamburg','http://media-cdn.tripadvisor.com/media/photo-s/03/a9/70/9d/yorkshire-wildlife-park.jpg'  )," +
+                "('3118074001893723', 'Thomas', 'Thomas', 'Schmidt', 'Hamburg','http://i1-news.softpedia-static.com/images/news2/Lion-at-Dallas-Zoo-Kills-Lioness-Visitors-Witness-the-Attack-401435-2.jpg'  )" +
+                ";";
         execute(sql);
 
         sql = "INSERT INTO PAGE (ID,NAME,CATEGORY) " +
