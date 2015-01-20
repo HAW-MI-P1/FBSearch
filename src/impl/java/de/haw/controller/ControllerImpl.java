@@ -120,12 +120,6 @@ public class ControllerImpl implements Controller
 			Collection<Type> tempResult;
 			HashSet<Type> set = new HashSet<Type>();
 			
-			if(result.size() == 0)
-			{
-				Logger.log("No results, image detection not required.", ComponentID.Controller);	
-				return result;
-			}
-			
 			// TODO give me an object to search for
 			tempResult = detector.detectObject(result, "lena");
             set.addAll(tempResult);
@@ -133,7 +127,7 @@ public class ControllerImpl implements Controller
             set.addAll(tempResult);
 			tempResult = detector.detectObject(result, "lion");
             set.addAll(tempResult);
-			Logger.log("Images detected: "+set.size(), ComponentID.Controller);
+			System.out.println("detected images: "+set.size());
 			return set;
 		}catch (Exception e){
 			e.printStackTrace();
